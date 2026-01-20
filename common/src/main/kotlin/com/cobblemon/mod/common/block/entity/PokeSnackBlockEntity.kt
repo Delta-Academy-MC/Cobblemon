@@ -183,15 +183,19 @@ open class PokeSnackBlockEntity(pos: BlockPos, state: BlockState) :
             PokeSnackSpawnPokemonEvent.Pre(this, spawnAction),
             { },
             { event ->
-                spawnAction.complete()
-                val result = spawnAction.future
-                val resultingSpawn = result.get()
+                try {
+                    spawnAction.complete()
+                    val result = spawnAction.future
+                    val resultingSpawn = result.get()
 
-                if (resultingSpawn is EntitySpawnResult) {
-                    val pokemonEntity = resultingSpawn.entities.firstOrNull() as PokemonEntity
-                    CobblemonEvents.POKE_SNACK_SPAWN_POKEMON_POST.post(
-                        PokeSnackSpawnPokemonEvent.Post(this, spawnAction, pokemonEntity)
-                    )
+                    if (resultingSpawn is EntitySpawnResult) {
+                        val pokemonEntity = resultingSpawn.entities.firstOrNull() as PokemonEntity
+                        CobblemonEvents.POKE_SNACK_SPAWN_POKEMON_POST.post(
+                            PokeSnackSpawnPokemonEvent.Post(this, spawnAction, pokemonEntity)
+                        )
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
                 }
             }
         )
