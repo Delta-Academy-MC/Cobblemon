@@ -607,7 +607,7 @@ class FossilMultiblockStructure (
         result.putInt(DataKeys.ORGANIC_MATERIAL, organicMaterialInside)
         val fossilInv = ListTag()
 
-        fossilInventory.forEach { fossilInv.add(ItemStack.CODEC.encodeStart(NbtOps.INSTANCE, it).orThrow) }
+        fossilInventory.forEach { fossilInv.add(ItemStack.OPTIONAL_CODEC.encodeStart(NbtOps.INSTANCE, it).orThrow) }
         result.put(DataKeys.FOSSIL_INVENTORY, fossilInv)
         result.putString(DataKeys.CONNECTOR_DIRECTION, tankConnectorDirection?.toString())
 

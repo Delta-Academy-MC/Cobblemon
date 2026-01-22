@@ -100,7 +100,9 @@ open class PartyStore(override val uuid: UUID) : PokemonStore<PartyPosition>() {
 
     override operator fun set(position: PartyPosition, pokemon: Pokemon) {
         super.set(position, pokemon)
-        sendPacketToObservers(SetPartyPokemonPacket(uuid, position) { pokemon })
+        val copy = Pokemon()
+        copy.copyFrom(pokemon)
+        sendPacketToObservers(SetPartyPokemonPacket(uuid, position) { copy })
     }
 
     override fun remove(pokemon: Pokemon): Boolean {

@@ -242,7 +242,9 @@ open class PCStore(
 
     override operator fun set(position: PCPosition, pokemon: Pokemon) {
         super.set(position, pokemon)
-        sendPacketToObservers(SetPCPokemonPacket(uuid, position) { pokemon })
+        val copy = Pokemon()
+        copy.copyFrom(pokemon)
+        sendPacketToObservers(SetPCPokemonPacket(uuid, position) { copy })
     }
 
     override fun remove(pokemon: Pokemon): Boolean {
