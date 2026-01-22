@@ -28,7 +28,7 @@ object TerastallizationEventHandler {
             if (Random.nextInt(5) != 0) return@subscribe
             val shardType = if (Random.nextInt(10) == 0) TeraTypes.STELLAR else TeraTypes.forElementalType(pokemon.pokemon.types.toList().random())
             val drop = ItemDropEntry().also {
-                it.item = ResourceLocation.parse("gimmicks:${shardType.name.lowercase()}_tera_shard")
+                it.item = ResourceLocation.parse("cobblemon:${shardType.name.lowercase()}_tera_shard")
             }
             event.drops.add(drop)
         }
