@@ -11,6 +11,7 @@ package com.cobblemon.mod.common.net.serverhandling.storage
 import com.cobblemon.mod.common.Cobblemon
 import com.cobblemon.mod.common.api.events.CobblemonEvents
 import com.cobblemon.mod.common.api.events.storage.PCEvent
+import com.cobblemon.mod.common.api.events.storage.SwapPCPartyPokemon
 import com.cobblemon.mod.common.api.net.ServerNetworkPacketHandler
 import com.cobblemon.mod.common.api.storage.pc.link.PCLinkManager
 import com.cobblemon.mod.common.net.messages.client.storage.pc.ClosePCPacket
@@ -20,6 +21,13 @@ import net.minecraft.server.level.ServerPlayer
 
 object SwapPCPartyPokemonHandler : ServerNetworkPacketHandler<SwapPCPartyPokemonPacket> {
     override fun handle(packet: SwapPCPartyPokemonPacket, server: MinecraftServer, player: ServerPlayer) {
+        val event = SwapPCPartyPokemon(player)
+        CobblemonEvents.SWAP_PC_PARTY_POKEMON.emit(event)
+        if (event.isCanceled) {
+            ClosePCPacket(null).sendToPlayer(player)
+            return
+        }
+
         val party = Cobblemon.storage.getParty(player)
         val pc = PCLinkManager.getPC(player) ?: return run { ClosePCPacket(null).sendToPlayer(player) }
         val partyPokemon = party[packet.partyPosition] ?: return

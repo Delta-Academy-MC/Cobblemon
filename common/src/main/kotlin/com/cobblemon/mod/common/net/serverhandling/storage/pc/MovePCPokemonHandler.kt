@@ -9,6 +9,7 @@
 package com.cobblemon.mod.common.net.serverhandling.storage.pc
 
 import com.cobblemon.mod.common.api.events.CobblemonEvents
+import com.cobblemon.mod.common.api.events.storage.MovePCPokemon
 import com.cobblemon.mod.common.api.events.storage.PCEvent
 import com.cobblemon.mod.common.api.net.ServerNetworkPacketHandler
 import com.cobblemon.mod.common.api.storage.pc.link.PCLinkManager
@@ -19,6 +20,13 @@ import net.minecraft.server.level.ServerPlayer
 
 object MovePCPokemonHandler : ServerNetworkPacketHandler<MovePCPokemonPacket> {
     override fun handle(packet: MovePCPokemonPacket, server: MinecraftServer, player: ServerPlayer) {
+        val event = MovePCPokemon(player)
+        CobblemonEvents.MOVE_PC_POKEMON.emit(event)
+        if (event.isCanceled) {
+            ClosePCPacket(null).sendToPlayer(player)
+            return
+        }
+
         val pc = PCLinkManager.getPC(player) ?: return run { ClosePCPacket(null).sendToPlayer(player) }
         val pokemon = pc[packet.oldPosition] ?: return
         if (pokemon.uuid != packet.pokemonID) {

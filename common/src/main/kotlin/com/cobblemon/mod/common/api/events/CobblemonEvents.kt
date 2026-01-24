@@ -416,4 +416,19 @@ object CobblemonEvents {
 
     @JvmField
     val POKE_BAG_OPEN_REQUEST = SimpleObservable<PokeBagOpenRequestEvent>()
+
+    @JvmField
+    val MOVE_PARTY_POKEMON = EventObservable<MovePartyPokemon>()
+
+    @JvmField
+    val MOVE_PC_POKEMON = EventObservable<MovePCPokemon>()
+
+    @JvmField
+    val SWAP_PARTY_POKEMON = EventObservable<SwapPartyPokemon>()
+
+    @JvmField
+    val SWAP_PC_POKEMON = EventObservable<SwapPCPokemon>()
+
+    @JvmField
+    val SWAP_PC_PARTY_POKEMON = EventObservable<SwapPCPartyPokemon>()
 }
