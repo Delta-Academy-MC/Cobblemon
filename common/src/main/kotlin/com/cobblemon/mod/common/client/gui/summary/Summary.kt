@@ -99,6 +99,7 @@ class Summary private constructor(party: Collection<Pokemon?>, private val edita
         private val tabIconStats = cobblemonResource("textures/gui/summary/summary_tab_icon_stats.png")
         private val tabIconMarks = cobblemonResource("textures/gui/summary/summary_tab_icon_marks.png")
         val iconShinyResource = cobblemonResource("textures/gui/summary/icon_shiny.png")
+        val iconRadiantResource = cobblemonResource("textures/gui/summary/icon_radiant.png")
         val iconHeldItemResource = cobblemonResource("textures/gui/summary/icon_item_held.png")
         val iconCosmeticItemResource = cobblemonResource("textures/gui/summary/icon_item_cosmetic.png")
 
@@ -602,7 +603,17 @@ class Summary private constructor(party: Collection<Pokemon?>, private val edita
         )
 
         // Shiny Icon
-        if (selectedPokemon.shiny) {
+        if (selectedPokemon.aspects.contains("radiant")) {
+            blitk(
+                matrixStack = matrices,
+                texture = iconRadiantResource,
+                x = (x + 62.5) / SCALE,
+                y = (y + 33.5) / SCALE,
+                width = 16,
+                height = 16,
+                scale = SCALE
+            )
+        } else if (selectedPokemon.shiny) {
             blitk(
                 matrixStack = matrices,
                 texture = iconShinyResource,

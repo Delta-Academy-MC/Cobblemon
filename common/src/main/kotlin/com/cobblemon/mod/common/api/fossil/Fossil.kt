@@ -9,16 +9,20 @@
 package com.cobblemon.mod.common.api.fossil
 
 import com.cobblemon.mod.common.api.pokemon.PokemonProperties
+import com.cobblemon.mod.common.pokemon.Pokemon
 import net.minecraft.advancements.critereon.ItemPredicate
 import net.minecraft.network.chat.Component
 import net.minecraft.network.chat.MutableComponent
 import net.minecraft.resources.ResourceLocation
+import net.minecraft.server.level.ServerPlayer
 import net.minecraft.util.StringRepresentable
 import net.minecraft.world.item.ItemStack
+import java.util.Random
 
 class Fossil(
     identifier: ResourceLocation,
     val result: PokemonProperties,
+    val results: Map<String, Int>,
     val fossils: List<ItemPredicate>
 ): StringRepresentable {
 
@@ -28,6 +32,31 @@ class Fossil(
 
     override fun getSerializedName(): String {
         return identifier.toString()
+    }
+
+    fun createPokemon(player: ServerPlayer?): Pokemon? {
+        var properties = result
+
+        if (results != null && !results.isEmpty()) {
+            val random = Random()
+            val totalWeight = results.values.filter { x -> x > 0 }.sum()
+
+            if (totalWeight > 0) {
+                var roll = random.nextInt(totalWeight)
+
+                for ((pokemon, weight) in results) {
+                    if (weight <= 0) continue
+                    roll -= weight
+
+                    if (roll < 0) {
+                        properties = PokemonProperties.parse(pokemon)
+                        break
+                    }
+                }
+            }
+        }
+
+        return if (player == null) properties.create() else properties.create(player)
     }
 
     /**

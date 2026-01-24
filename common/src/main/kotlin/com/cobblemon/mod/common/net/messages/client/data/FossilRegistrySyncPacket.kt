@@ -35,6 +35,7 @@ class FossilRegistrySyncPacket(fossils: List<Fossil>) : DataRegistrySyncPacket<F
         return Fossil (
                 identifier = buffer.readIdentifier(),
                 result = Fossils.gson.fromJson(buffer.readString(), PokemonProperties::class.java),
+                results = mutableMapOf(),
                 fossils = emptyList()
         )
     }

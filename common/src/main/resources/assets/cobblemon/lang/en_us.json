@@ -9494,6 +9494,7 @@
   "cobblemon.snapshots.warning.dont_show_again": "Don't Show Again",
   "cobblemon.snapshots.warning.dont_show_again_tip": "This setting may be ignored on newer Cobblemon snapshots (e.g. 1.7.0 vs 1.8.0)",
 
+  "____comment": "delta starts here",
   "stat.cobblemon.battles_fled": "Pokémon Battles Fled",
   "stat.cobblemon.battles_lost": "Pokémon Battles Lost",
   "stat.cobblemon.battles_total": "Pokémon Total Battles",
