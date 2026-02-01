@@ -20,6 +20,7 @@ import com.cobblemon.mod.common.api.item.HealingSource
 import com.cobblemon.mod.common.api.text.red
 import com.cobblemon.mod.common.battles.BagItemActionResponse
 import com.cobblemon.mod.common.battles.BattleRegistry
+import com.cobblemon.mod.common.battles.BattleRules
 import com.cobblemon.mod.common.battles.pokemon.BattlePokemon
 import com.cobblemon.mod.common.item.CobblemonItem
 import com.cobblemon.mod.common.item.battle.BagItem
@@ -66,7 +67,7 @@ class ReviveItem(
             if (battle != null) {
                 val actor = battle.getActor(player)!!
                 val battlePokemon = actor.pokemonList
-                if (!actor.canFitForcedAction()) {
+                if (!actor.canFitForcedAction() || battle.format.ruleSet.contains(BattleRules.BAG_CLAUSE)) {
                     player.sendSystemMessage(battleLang("bagitem.cannot").red(), true)
                     return InteractionResultHolder.consume(stack)
                 } else {

@@ -15,6 +15,7 @@ import com.cobblemon.mod.common.api.callback.PartySelectCallbacks
 import com.cobblemon.mod.common.api.tags.CobblemonItemTags
 import com.cobblemon.mod.common.api.text.red
 import com.cobblemon.mod.common.battles.BagItemActionResponse
+import com.cobblemon.mod.common.battles.BattleRules
 import com.cobblemon.mod.common.battles.pokemon.BattlePokemon
 import com.cobblemon.mod.common.entity.pokemon.PokemonEntity
 import com.cobblemon.mod.common.item.battle.BagItem
@@ -49,7 +50,7 @@ interface PokemonSelectingItem {
             if (bagItem == null) return InteractionResultHolder.fail(stack)
             val battlePokemon = actor.pokemonList.find { it.effectedPokemon == entity?.pokemon }
 
-            if (!actor.canFitForcedAction()) {
+            if (!actor.canFitForcedAction() || actor.battle.format.ruleSet.contains(BattleRules.BAG_CLAUSE)) {
                 player.sendSystemMessage(battleLang("bagitem.cannot").red())
                 return InteractionResultHolder.fail(stack)
             }
@@ -91,7 +92,7 @@ interface PokemonSelectingItem {
     fun applyToBattlePokemon(player: ServerPlayer, stack: ItemStack, battlePokemon: BattlePokemon) {
         val battle = battlePokemon.actor.battle
         val bagItem = bagItem
-        if (!battlePokemon.actor.canFitForcedAction()) {
+        if (!battlePokemon.actor.canFitForcedAction() || battle.format.ruleSet.contains(BattleRules.BAG_CLAUSE)) {
             player.sendSystemMessage(battleLang("bagitem.cannot").red())
         } else if (!bagItem!!.canUse(stack, battle, battlePokemon)) {
             player.sendSystemMessage(battleLang("bagitem.invalid").red())
