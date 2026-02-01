@@ -733,11 +733,17 @@ open class PokemonEntity(
             this.ownerUUID?.let { ownerUUID ->
                 val player = level().getPlayerByUUID(ownerUUID) as? ServerPlayer
                 if (player != null) {
-                    val actualPokemon = Cobblemon.storage.getPC(player)[this.pokemon.uuid]
-                    actualPokemon?.let {
-                        if (it !== pokemon) {
-                            pokemon = it
+                    // TODO: A proper patch for this
+                    try {
+                        val actualPokemon = Cobblemon.storage.getPC(player)[this.pokemon.uuid]
+                        actualPokemon?.let {
+                            if (it !== pokemon) {
+                                pokemon = it
+                            }
                         }
+                    }
+                    catch (e: Exception) {
+                        e.printStackTrace()
                     }
                 }
             }
