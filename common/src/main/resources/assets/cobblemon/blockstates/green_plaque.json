@@ -1,0 +1,49 @@
+{
+  "variants": {
+    "face=ceiling,facing=east": {
+      "model": "cobblemon:block/green_plaque_hanging",
+      "y": 90
+    },
+    "face=ceiling,facing=north": {
+      "model": "cobblemon:block/green_plaque_hanging"
+    },
+    "face=ceiling,facing=south": {
+      "model": "cobblemon:block/green_plaque_hanging",
+      "y": 180
+    },
+    "face=ceiling,facing=west": {
+      "model": "cobblemon:block/green_plaque_hanging",
+      "y": 270
+    },
+    "face=floor,facing=east": {
+      "model": "cobblemon:block/green_plaque_floor",
+      "y": 90
+    },
+    "face=floor,facing=north": {
+      "model": "cobblemon:block/green_plaque_floor"
+    },
+    "face=floor,facing=south": {
+      "model": "cobblemon:block/green_plaque_floor",
+      "y": 180
+    },
+    "face=floor,facing=west": {
+      "model": "cobblemon:block/green_plaque_floor",
+      "y": 270
+    },
+    "face=wall,facing=east": {
+      "model": "cobblemon:block/green_plaque_wall",
+      "y": 90
+    },
+    "face=wall,facing=north": {
+      "model": "cobblemon:block/green_plaque_wall"
+    },
+    "face=wall,facing=south": {
+      "model": "cobblemon:block/green_plaque_wall",
+      "y": 180
+    },
+    "face=wall,facing=west": {
+      "model": "cobblemon:block/green_plaque_wall",
+      "y": 270
+    }
+  }
+}

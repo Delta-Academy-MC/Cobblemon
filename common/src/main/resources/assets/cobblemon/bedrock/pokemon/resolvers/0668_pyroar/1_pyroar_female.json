@@ -1,0 +1,16 @@
+{
+  "species": "cobblemon:pyroar",
+  "order": 1,
+  "variations": [
+    {
+      "aspects": ["female"],
+      "poser": "cobblemon:pyroar_female",
+      "model": "cobblemon:pyroar_female.geo",
+      "texture": "cobblemon:textures/pokemon/0668_pyroar/pyroar_female.png"
+    },
+    {
+      "aspects": ["shiny", "female"],
+      "texture": "cobblemon:textures/pokemon/0668_pyroar/pyroar_female_shiny.png"
+    }
+  ]
+}

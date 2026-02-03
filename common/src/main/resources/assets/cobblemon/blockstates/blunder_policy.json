@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "cobblemon:block/blunder_policy"
+    },
+    "facing=east": {
+      "model": "cobblemon:block/blunder_policy",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "cobblemon:block/blunder_policy",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "cobblemon:block/blunder_policy",
+      "y": 270
+    }
+  }
+}

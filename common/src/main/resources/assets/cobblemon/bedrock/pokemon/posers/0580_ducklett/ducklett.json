@@ -4,11 +4,12 @@
   "profileScale": 0.87,
   "profileTranslation": [0, 0.44, 0],
   "rootBone": "ducklett",
-  "animations": {},
+  "animations": {
+    "cry": "q.bedrock_stateful('ducklett', 'cry')"
+    },
   "poses": {
     "standing": {
       "poseTypes": ["STAND", "NONE", "PORTRAIT", "PROFILE"],
-      "isBattle": false,
       "animations": ["q.look('head')", "q.bedrock('ducklett', 'ground_idle')"],
       "quirks": ["q.bedrock_quirk('ducklett', 'blink')"],
       "transformedParts": [

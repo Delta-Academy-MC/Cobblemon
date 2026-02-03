@@ -187,17 +187,16 @@ class HorseBehaviour : RidingBehaviour<HorseSettings, HorseState> {
             return
         }
 
-        var newStam = stam
+
         val stamDrainRate = (1.0f / vehicle.runtime.resolveDouble(settings.staminaExpr ?: globalHorse.staminaExpr!!)).toFloat() / 20.0f
 
-        if (state.sprinting.get()) {
-            newStam = max(0.0f,stam - stamDrainRate)
-
+        val newStam = if (state.sprinting.get()) {
+            max(0.0f,stam - stamDrainRate)
         } else {
-            newStam = min(1.0f,stam + stamDrainRate * 4)
+            min(1.0f,stam + stamDrainRate * 4)
         }
 
-        state.stamina.set(newStam)
+        state.stamina.set(newStam.coerceIn(0F, 1F))
     }
 
     override fun updatePassengerRotation(

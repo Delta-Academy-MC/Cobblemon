@@ -19,8 +19,19 @@
     "cry": "q.bedrock_stateful('flygon', 'cry')"
   },
   "poses": {
+    "jump": {
+      "poseTypes": ["STAND", "WALK"],
+      "condition": "q.in_air",
+      "animations": [
+        "q.bedrock('flygon', 'ride_jump')"
+      ],
+      "quirks": [
+        "q.bedrock_quirk('flygon', 'blink')"
+      ]
+    },
     "standing": {
       "poseTypes": ["STAND", "FLOAT", "NONE", "PORTRAIT", "PROFILE"],
+      "condition": "!q.in_air",
       "animations": [
         "q.look('head_ai')",
         "q.bedrock('flygon', 'ground_idle')"
@@ -31,7 +42,7 @@
     },
     "walking": {
       "poseTypes": ["WALK", "SWIM"],
-      "condition": "q.has_entity ? !q.is_sprinting : 1.0",
+      "condition": "q.has_entity ? !q.in_air && !q.is_sprinting : 1.0",
       "animations": [
         "q.look('head_ai')",
         "q.bedrock('flygon', 'ground_walk')",
@@ -44,7 +55,7 @@
     },
     "running": {
       "poseTypes": ["WALK", "SWIM"],
-      "condition": "q.has_entity ? q.is_sprinting : 0.0",
+      "condition": "q.has_entity ? !q.in_air q.is_sprinting : 0.0",
       "animations": [
         "q.look('head_ai')",
         "q.bedrock('flygon', 'ground_run')",

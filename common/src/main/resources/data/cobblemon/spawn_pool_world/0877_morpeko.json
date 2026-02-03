@@ -6,6 +6,9 @@
         {
             "id": "morpeko-1",
             "pokemon": "morpeko",
+            "presets": [
+                "natural"
+            ],
             "type": "pokemon",
             "spawnablePositionType": "grounded",
             "bucket": "uncommon",

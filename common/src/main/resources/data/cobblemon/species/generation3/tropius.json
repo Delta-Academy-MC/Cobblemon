@@ -58,17 +58,26 @@
           {
             "muffleEnabled": true,
             "pitchExpr": "math.max(1.0 ,0.2 + math.pow(math.min(q.ride_velocity() / 1.5, 1.0),2))",
+            "playForNonPassengers": false,
+            "playForPassengers": true,
+            "soundLocation": "cobblemon:ride.loop.wind.stereo",
+            "volumeExpr": "math.pow(math.min(q.ride_velocity() / 1.5, 1.0),2)"
+          },
+          {
+            "muffleEnabled": true,
+            "pitchExpr": "math.max(1.0 ,0.2 + math.pow(math.min(q.ride_velocity() / 1.5, 1.0),2))",
             "playForNonPassengers": true,
-            "soundLocation": "cobblemon:ride.loop.wind",
+            "playForPassengers": false,
+            "soundLocation": "cobblemon:ride.loop.wind.mono",
             "volumeExpr": "math.pow(math.min(q.ride_velocity() / 1.5, 1.0),2)"
           }
         ],
         "stats": {
           "ACCELERATION": "20-45",
-          "JUMP": "15-55",
+          "JUMP": "70-90",
           "SKILL": "20-40",
-          "SPEED": "20-40",
-          "STAMINA": "40-70"
+          "SPEED": "20-45",
+          "STAMINA": "55-80"
         }
       },
       "LAND": {
@@ -76,7 +85,7 @@
         "rideSounds": [],
         "stats": {
           "ACCELERATION": "30-50",
-          "JUMP": "5-15",
+          "JUMP": "10-20",
           "SKILL": "30-50",
           "SPEED": "15-25",
           "STAMINA": "55-85"
@@ -245,6 +254,11 @@
     ]
   },
   "behaviour": {
+    "combat": {
+      "willDefendOwner": true,
+      "willDefendSelf": true,
+      "willFlee": false
+    },
     "herd": {
       "maxSize": "6",
       "toleratedLeaders": [
@@ -262,23 +276,18 @@
       "fly": {
         "canFly": true
       },
-      "walk": {
-        "walkSpeed": 0.147
-      },
       "swim": {
         "avoidsWater": true
+      },
+      "walk": {
+        "walkSpeed": 0.147
       }
     },
     "resting": {
       "canSleep": true,
-      "light": "0-4",
       "drowsyChance": 0.0333,
+      "light": "0-4",
       "rouseChance": 0.0042
-    },
-    "combat": {
-      "willDefendSelf": true,
-      "willDefendOwner": true,
-      "willFlee": false
     }
   },
   "drops": {

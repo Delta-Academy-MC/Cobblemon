@@ -39,7 +39,11 @@ class PoseAdapter(
     override fun deserialize(json: JsonElement, type: Type, ctx: JsonDeserializationContext): Pose {
         val model = modelFinder()
         val obj = json as JsonObject
-        val pose = JsonPose(model, obj)
+        val pose = try {
+            JsonPose(model, obj)
+        } catch (e: Exception) {
+            throw IllegalArgumentException("Failed to deserialize pose from JSON: $json", e)
+        }
 
         val conditionsList = mutableListOf<(PosableState) -> Boolean>()
 

@@ -58,12 +58,15 @@ open class MoveTemplate(
     val struct: MoStruct by lazy {
         QueryStruct(hashMapOf())
             .addFunction("name") { StringValue(name) }
+            .addFunction("display_name") { StringValue(displayName.string) }
+            .addFunction("description") { StringValue(description.string) }
             .addFunction("type") { StringValue(elementalType.showdownId) }
             .addFunction("damage_category") { StringValue(damageCategory.name) }
             .addFunction("power") { DoubleValue(power) }
             .addFunction("target") { StringValue(target.name) }
             .addFunction("accuracy") { DoubleValue(accuracy) }
             .addFunction("pp") { DoubleValue(pp) }
+            .addFunction("max_pp") { DoubleValue(maxPp) }
             .addFunction("priority") { DoubleValue(priority) }
             .addFunction("crit_ratio") { DoubleValue(critRatio) }
     }

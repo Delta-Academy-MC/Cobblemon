@@ -568,6 +568,9 @@ open class PosableModel(@Transient override val rootPart: Bone) : ModelFrame {
         // Is there any reason why we should actually change the pose?
         if (entity != null && (poseName == null || currentPose == null || !currentPose.isSuitable(state) || entityPoseType !in currentPose.poseTypes)) {
             val desirablePose = getFirstSuitablePose(state, entityPoseType)
+            if (desirablePose == currentPose) {
+                return currentPose
+            }
             // If this if succeeds then it just no longer fits this pose
             if (currentPose != null) {
                 // Don't apply pose correction until the current primary animation is complete.

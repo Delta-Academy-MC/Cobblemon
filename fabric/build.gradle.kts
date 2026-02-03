@@ -61,6 +61,8 @@ dependencies {
 
     modImplementation(libs.bundles.fabric.integrations.implementation)
     modRuntimeOnly(libs.bundles.fabric.integrations.runtimeOnly)
+    modRuntimeOnly(libs.bundles.mongo)
+    bundle(libs.bundles.mongo)
     modImplementation("dev.emi:trinkets:3.10.0")
 
 //    modImplementation(libs.flywheelFabric)

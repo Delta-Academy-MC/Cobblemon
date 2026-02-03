@@ -35,9 +35,16 @@ class SinisterTeaItem : Item(
             val effectsComponent = stack.get(CobblemonItemComponents.MOB_EFFECTS)
 
             if (effectsComponent != null) {
-                for (effect in effectsComponent.mobEffects) {
-                    val effectCopy = MobEffectInstance(effect)
-                    user.addEffect(effectCopy)
+                for (raw in effectsComponent.mobEffects) {
+                    val inst = MobEffectInstance(raw)
+                    val holder = inst.effect
+                    val effect = holder.value()
+
+                    if (effect.isInstantenous) {
+                        effect.applyInstantenousEffect(user as? Player, null, user, inst.amplifier, 1.0)
+                    } else {
+                        user.addEffect(inst)
+                    }
                 }
             }
         }

@@ -68,8 +68,8 @@ object BattleBuilder {
     ): BattleStartResult {
 
         val adjustLevel = battleFormat.adjustLevel
-        val team1 = partyAccessor(player1).toBattleTeam(clone = cloneParties || adjustLevel > 0,  healPokemon = healFirst, leadingPokemonPlayer1).sortedBy { it.health <= 0 }
-        val team2 = partyAccessor(player2).toBattleTeam(clone = cloneParties || adjustLevel > 0,  healPokemon = healFirst, leadingPokemonPlayer2).sortedBy { it.health <= 0 }
+        val team1 = partyAccessor(player1).toBattleTeam(clone = cloneParties || adjustLevel > 0,  healPokemon = healFirst, leadingPokemonPlayer1)
+        val team2 = partyAccessor(player2).toBattleTeam(clone = cloneParties || adjustLevel > 0,  healPokemon = healFirst, leadingPokemonPlayer2)
 
         val battlePartyStores = mutableListOf<PlayerPartyStore>()
 

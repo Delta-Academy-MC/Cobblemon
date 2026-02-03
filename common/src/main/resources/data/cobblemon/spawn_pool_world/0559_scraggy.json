@@ -6,6 +6,9 @@
         {
             "id": "scraggy-1",
             "pokemon": "scraggy",
+            "presets": [
+                "natural"
+            ],
             "type": "pokemon",
             "spawnablePositionType": "grounded",
             "bucket": "common",

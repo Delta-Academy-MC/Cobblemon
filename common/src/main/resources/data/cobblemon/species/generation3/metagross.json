@@ -57,23 +57,41 @@
           {
             "muffleEnabled": true,
             "pitchExpr": "math.max(1.0 ,0.2 + math.pow(math.min(q.ride_velocity() / 1.5, 1.0),2))",
-            "playForNonPassengers": true,
-            "soundLocation": "cobblemon:ride.loop.wind",
+            "playForNonPassengers": false,
+            "playForPassengers": true,
+            "soundLocation": "cobblemon:ride.loop.wind.stereo",
             "volumeExpr": "math.pow(math.min(q.ride_velocity() / 1.5, 1.0),2)"
           },
           {
             "muffleEnabled": true,
-            "pitchExpr": "math.pow(math.min(math.max(0.5,(q.ride_velocity()*0.5 / 1.5) + 0.5), 1.0),2)",
+            "pitchExpr": "math.max(1.0 ,0.2 + math.pow(math.min(q.ride_velocity() / 1.5, 1.0),2))",
             "playForNonPassengers": true,
-            "soundLocation": "cobblemon:ride.loop.saucer",
+            "playForPassengers": false,
+            "soundLocation": "cobblemon:ride.loop.wind.mono",
+            "volumeExpr": "math.pow(math.min(q.ride_velocity() / 1.5, 1.0),2)"
+          },
+          {
+            "muffleEnabled": true,
+            "pitchExpr": "math.max(1.0 ,0.2 + math.pow(math.min(q.ride_velocity() / 1.5, 1.0),2))",
+            "playForNonPassengers": false,
+            "playForPassengers": true,
+            "soundLocation": "cobblemon:ride.loop.saucer.stereo",
+            "volumeExpr": "math.pow(math.min(q.ride_velocity() / 1.5, 1.0),2)"
+          },
+          {
+            "muffleEnabled": true,
+            "pitchExpr": "math.max(1.0 ,0.2 + math.pow(math.min(q.ride_velocity() / 1.5, 1.0),2))",
+            "playForNonPassengers": true,
+            "playForPassengers": false,
+            "soundLocation": "cobblemon:ride.loop.saucer.mono",
             "volumeExpr": "math.pow(math.min(q.ride_velocity() / 1.5, 1.0),2)"
           }
         ],
         "stats": {
-          "ACCELERATION": "50-65",
-          "JUMP": "12-25",
-          "SKILL": "30-45",
-          "SPEED": "35-60",
+          "ACCELERATION": "60-75",
+          "JUMP": "25-45",
+          "SKILL": "35-55",
+          "SPEED": "45-75",
           "STAMINA": "10-25"
         }
       },
@@ -82,9 +100,9 @@
         "rideSounds": [],
         "stats": {
           "ACCELERATION": "50-70",
-          "JUMP": "20-30",
+          "JUMP": "30-45",
           "SKILL": "35-50",
-          "SPEED": "10-30",
+          "SPEED": "10-20",
           "STAMINA": "55-70"
         }
       }
@@ -99,7 +117,7 @@
         "poseOffsets": [
           {
             "offset": {
-              "x": -0.0007805396,
+              "x": -7.805396E-4,
               "y": -1.2943133,
               "z": -0.40744212
             },
@@ -119,7 +137,7 @@
           },
           {
             "offset": {
-              "x": 0.0007733833,
+              "x": 7.733833E-4,
               "y": -1.4106412,
               "z": -0.3683446
             },
@@ -129,7 +147,7 @@
           },
           {
             "offset": {
-              "x": 0.0007733833,
+              "x": 7.733833E-4,
               "y": -1.4106412,
               "z": -0.4224712
             },
@@ -139,7 +157,7 @@
           },
           {
             "offset": {
-              "x": 0.0007733833,
+              "x": 7.733833E-4,
               "y": -1.4106412,
               "z": -0.3683446
             },
@@ -149,7 +167,7 @@
           },
           {
             "offset": {
-              "x": 0.0007733833,
+              "x": 7.733833E-4,
               "y": -1.4106412,
               "z": -0.4224712
             },
@@ -159,7 +177,7 @@
           },
           {
             "offset": {
-              "x": 0.0007733833,
+              "x": 7.733833E-4,
               "y": -1.4106412,
               "z": -0.3683446
             },
@@ -356,7 +374,7 @@
           },
           {
             "offset": {
-              "x": 0.000753602,
+              "x": 7.53602E-4,
               "y": -1.3993053,
               "z": 0.38156968
             },
@@ -366,7 +384,7 @@
           },
           {
             "offset": {
-              "x": 0.000753602,
+              "x": 7.53602E-4,
               "y": -1.3993053,
               "z": 0.3274431
             },
@@ -376,7 +394,7 @@
           },
           {
             "offset": {
-              "x": 0.000753602,
+              "x": 7.53602E-4,
               "y": -1.3993053,
               "z": 0.38156968
             },
@@ -386,7 +404,7 @@
           },
           {
             "offset": {
-              "x": 0.000753602,
+              "x": 7.53602E-4,
               "y": -1.3993053,
               "z": 0.3274431
             },
@@ -396,7 +414,7 @@
           },
           {
             "offset": {
-              "x": 0.000753602,
+              "x": 7.53602E-4,
               "y": -1.3993053,
               "z": 0.38156968
             },
@@ -409,6 +427,11 @@
     ]
   },
   "behaviour": {
+    "combat": {
+      "willDefendOwner": true,
+      "willDefendSelf": true,
+      "willFlee": false
+    },
     "herd": {
       "maxSize": "6"
     },
@@ -425,17 +448,12 @@
     },
     "resting": {
       "canSleep": true,
+      "drowsyChance": 0.0014,
       "light": "0-4",
+      "rouseChance": 0.0042,
       "times": [
         "any"
-      ],
-      "drowsyChance": 0.0014,
-      "rouseChance": 0.0042
-    },
-    "combat": {
-      "willDefendSelf": true,
-      "willDefendOwner": true,
-      "willFlee": false
+      ]
     }
   },
   "drops": {
@@ -644,31 +662,31 @@
       },
       "baseExperienceYield": 350,
       "behaviour": {
+        "combat": {
+          "willDefendOwner": true,
+          "willDefendSelf": true,
+          "willFlee": false
+        },
         "herd": {
           "maxSize": "7"
         },
-        "resting": {
-          "times": [
-            "any"
-          ],
-          "drowsyChance": 0.0014,
-          "rouseChance": 0.0042
-        },
         "moving": {
-          "swim": {
-            "avoidsWater": true
-          },
           "fly": {
             "canFly": true
+          },
+          "swim": {
+            "avoidsWater": true
           },
           "walk": {
             "canWalk": false
           }
         },
-        "combat": {
-          "willDefendSelf": true,
-          "willDefendOwner": true,
-          "willFlee": false
+        "resting": {
+          "drowsyChance": 0.0014,
+          "rouseChance": 0.0042,
+          "times": [
+            "any"
+          ]
         }
       },
       "evolutions": [],

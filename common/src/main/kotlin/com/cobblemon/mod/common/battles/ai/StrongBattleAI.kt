@@ -31,6 +31,7 @@ import kotlin.collections.associateWith
 import kotlin.collections.partition
 import kotlin.math.absoluteValue
 
+
 /**
  * AI that tries to choose the best move for the given situations. Based off of the Pokemon Trainer Tournament Simulator Github
  * https://github.com/cRz-Shadows/Pokemon_Trainer_Tournament_Simulator/blob/main/pokemon-showdown/sim/examples/Simulation-test-1.ts#L330
@@ -270,6 +271,11 @@ class StrongBattleAI(skill: Int) : BattleAI {
             considerSwitching(activeBattlePokemon, activeTrackerPokemon, opponents, availableMoves, availableSwitches, battle, aiSide)
         }
         activeTrackerPokemon.firstTurn = false
+
+        // If HP is below 30% and not switching out, always use the most damaging move
+        if (activeTrackerPokemon.currentHpPercent < 0.3 && !shouldSwitchOut(aiSide, battle, activeBattlePokemon, moveset)) {
+            findAndUseMostDamagingMove(activeBattlePokemon, activeTrackerPokemon, opponents, availableMoves, moveset, battle, aiSide)?.let { return it }
+        }
 
         // Decision-making based on move availability and switch-out condition
         if (!shouldSwitchOut(aiSide, battle, activeBattlePokemon, moveset)) {
@@ -521,6 +527,19 @@ class StrongBattleAI(skill: Int) : BattleAI {
 
         val opponentActiveTracker = activeTracker.opponentSide.activePokemon
         val opponentSpeedEstimations = opponentActiveTracker.map { statEstimationActive(it, Stats.SPEED) }
+
+
+        // Only switch if a switch-in is significantly better than the current Pokémon
+        val currentScore = estimateMatchup(activeBattlePokemon, side, battle)
+        val bestSwitchScore = availableSwitches.maxOfOrNull { estimateMatchup(activeBattlePokemon, side, battle, it) } ?: currentScore
+        val improvementThreshold = currentScore.absoluteValue * 0.25 + 2
+        if (bestSwitchScore <= currentScore + improvementThreshold) {
+            return false
+        }
+
+        if(bestSwitchScore < 1) {
+            return false
+        }
         // todo add some way to keep track of the player's boosting to see if it needs to switch out to something that can stop it
 
         // if slower speed stat than the opposing pokemon and HP is less than 20% don't switch out
@@ -547,6 +566,8 @@ class StrongBattleAI(skill: Int) : BattleAI {
         // If there is a decent switch in and not trapped...
         if (availableSwitches.isEmpty() || availableSwitches.none { estimateMatchup(activeBattlePokemon, side, battle, it) > 0 })
             return false
+
+        
 
         // ...and a 'good' reason to switch out
         if (opponentActiveTracker.any { it.boosts.getOrDefault(Stats.ACCURACY, 0) <= accuracySwitchThreshold } ||

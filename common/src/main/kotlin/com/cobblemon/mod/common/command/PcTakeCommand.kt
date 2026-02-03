@@ -8,11 +8,11 @@
 
 package com.cobblemon.mod.common.command
 
+import com.cobblemon.mod.common.Cobblemon
 import com.cobblemon.mod.common.api.permission.CobblemonPermissions
 import com.cobblemon.mod.common.api.storage.pc.PCPosition
 import com.cobblemon.mod.common.api.storage.pc.POKEMON_PER_BOX
 import com.cobblemon.mod.common.api.text.red
-import com.cobblemon.mod.common.api.text.text
 import com.cobblemon.mod.common.util.*
 import com.mojang.brigadier.Command
 import com.mojang.brigadier.CommandDispatcher
@@ -35,7 +35,7 @@ object PcTakeCommand {
                     .then(
                         Commands.argument("box", IntegerArgumentType.integer(1))
                             .then(
-                                Commands.argument("slot", IntegerArgumentType.integer(1, 30))
+                                Commands.argument("slot", IntegerArgumentType.integer(1, POKEMON_PER_BOX))
                                     .executes(::execute)
                             )
                     )
@@ -60,8 +60,8 @@ object PcTakeCommand {
             val slot = IntegerArgumentType.getInteger(context, "slot")
             val pc = target.pc()
             
-            if (box > POKEMON_PER_BOX) {
-                context.source.sendFailure(commandLang("pctake.too_many_boxes", POKEMON_PER_BOX))
+            if (box > pc.boxes.size) {
+                context.source.sendFailure(commandLang("pctake.too_many_boxes", pc.boxes.size))
                 return 0
             }
             

@@ -73,7 +73,7 @@
         "poseOffsets": [
           {
             "offset": {
-              "x": 1.8626451e-09,
+              "x": 1.8626451E-9,
               "y": -1.2779657,
               "z": 0.059787232
             },
@@ -113,7 +113,7 @@
           },
           {
             "offset": {
-              "x": 1.8626451e-09,
+              "x": 1.8626451E-9,
               "y": -1.2779657,
               "z": 0.059787232
             },
@@ -146,30 +146,30 @@
     ]
   },
   "behaviour": {
+    "combat": {
+      "willDefendOwner": true,
+      "willDefendSelf": true,
+      "willFlee": false
+    },
     "entityInteract": {
       "avoidedBySkeleton": true
     },
+    "fireImmune": true,
     "moving": {
-      "walk": {
-        "walkSpeed": "0.25"
-      },
       "swim": {
         "avoidsWater": true,
         "canSwimInLava": true
+      },
+      "walk": {
+        "walkSpeed": "0.25"
       }
     },
     "resting": {
       "canSleep": true,
-      "light": "0-4",
       "drowsyChance": 0.0333,
+      "light": "0-4",
       "rouseChance": 0.0042
-    },
-    "combat": {
-      "willDefendSelf": true,
-      "willDefendOwner": true,
-      "willFlee": false
-    },
-    "fireImmune": true
+    }
   },
   "drops": {
     "amount": 3,
@@ -375,25 +375,25 @@
         }
       },
       "behaviour": {
+        "combat": {
+          "willDefendOwner": true,
+          "willDefendSelf": true,
+          "willFlee": false
+        },
+        "entityInteract": {
+          "avoidedBySkeleton": true
+        },
+        "fireImmune": true,
         "moving": {
           "swim": {
             "avoidsWater": true,
             "canSwimInLava": true
           }
         },
-        "entityInteract": {
-          "avoidedBySkeleton": true
-        },
-        "combat": {
-          "willDefendSelf": true,
-          "willDefendOwner": true,
-          "willFlee": false
-        },
         "resting": {
           "drowsyChance": 0.0333,
           "rouseChance": 0.0042
-        },
-        "fireImmune": true
+        }
       },
       "moves": [
         "1:rockslide",

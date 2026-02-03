@@ -1,0 +1,28 @@
+{
+  "portraitScale": 1.98,
+  "portraitTranslation": [-0.96, 1.39, 0],
+  "profileScale": 0.59,
+  "profileTranslation": [0.13, 0.82, 0],
+  "rootBone": "pyroar_female",
+  "animations": {
+    "cry": "q.bedrock_stateful('pyroar_female', 'cry')"
+  },
+  "poses": {
+    "standing": {
+      "poseTypes": ["STAND", "FLOAT", "PORTRAIT", "PROFILE", "NONE"],
+      "animations": [
+        "q.look('head_ai', 1, 1, 10, -35, 25, -25)",
+        "q.bedrock('pyroar_female', 'ground_idle')"
+      ]
+    },
+    "walking": {
+      "poseName": "walking",
+      "poseTypes": ["WALK", "SWIM"],
+      "animations": [
+        "q.look('head_ai', 1, 1, 10, -35, 25, -25)",
+        "q.bedrock('pyroar_female', 'ground_idle')",
+        "q.quadruped_walk(1, 1, 'leg_front_left', 'leg_front_right', 'leg_back_left', 'leg_back_right')"
+      ]
+    }
+  }
+}

@@ -8,6 +8,8 @@
 
 package com.cobblemon.mod.common.client.persisted
 
+import com.cobblemon.mod.common.Cobblemon
+import com.cobblemon.mod.common.Cobblemon.LOGGER
 import com.cobblemon.mod.common.config.CobblemonConfig
 import java.io.BufferedReader
 import java.io.BufferedWriter
@@ -31,7 +33,14 @@ object ClientPersistedData {
     fun readSnapshotsData() : SnapshotAcknowledgementData? {
         if (snapshotsPath.exists()) {
             BufferedReader(InputStreamReader(FileInputStream(snapshotsPath.toFile()))).use { reader ->
-                return gson.fromJson(reader, SnapshotAcknowledgementData::class.java)
+                try {
+                    return gson.fromJson(reader, SnapshotAcknowledgementData::class.java)
+                } catch (exception: Exception) {
+                    LOGGER.error("Failed to load snapshots.json... Resetting File")
+                    val data = SnapshotAcknowledgementData(Cobblemon.VERSION, false)
+                    writeSnapshotsData(data)
+                    return data
+                }
             }
         }
 
@@ -46,16 +55,23 @@ object ClientPersistedData {
     fun readRidingPerspectivesData() : RidingPerspectiveData? {
         if (ridingPerspectivesPath.exists()) {
             BufferedReader(InputStreamReader(FileInputStream(ridingPerspectivesPath.toFile()))).use { reader ->
-                return gson.fromJson(reader, RidingPerspectiveData::class.java)
+                try {
+                    return gson.fromJson(reader, RidingPerspectiveData::class.java)
+                } catch (exception: Exception) {
+                    LOGGER.error("Failed to load riding_perspectives.json... Resetting File")
+                    val data = RidingPerspectiveData()
+                    saveRidingPerspectivesData(data)
+                    return data
+                }
             }
         }
 
         return null
     }
 
-    fun saveRidingPerspectivesData() {
+    fun saveRidingPerspectivesData(data: RidingPerspectiveData) {
         ridingPerspectivesPath.toFile().parentFile.mkdirs()
-        BufferedWriter(FileWriter(ridingPerspectivesPath.toFile())).use { writer -> gson.toJson(ridingPerspectives, writer) }
+        BufferedWriter(FileWriter(ridingPerspectivesPath.toFile())).use { writer -> gson.toJson(data, writer) }
     }
 
     data class SnapshotAcknowledgementData(val version: String, val dontShowAgain: Boolean)
@@ -64,7 +80,7 @@ object ClientPersistedData {
     ) {
         fun updatePerspective(key: ResourceLocation, cameraType: CameraType) {
             perspectives[key] = cameraType
-            saveRidingPerspectivesData()
+            saveRidingPerspectivesData(this)
         }
     }
 }

@@ -12,7 +12,7 @@
       "requirements": [
         {
           "variant": "owner_held_item",
-          "itemCondition": "#c:tools/shears"
+          "itemCondition": "#c:tools/shear"
         }
       ],
       "effects": [

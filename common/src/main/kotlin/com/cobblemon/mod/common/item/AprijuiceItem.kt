@@ -59,6 +59,7 @@ class AprijuiceItem(val type: Apricorn): CobblemonItem(Properties().stacksTo(16)
         val prefixKey = when {
             hasBoosts && quality == CookingQuality.HIGH -> "item.cobblemon.aprijuice.prefix.delicious"
             hasBoosts && quality == CookingQuality.MEDIUM -> "item.cobblemon.aprijuice.prefix.tasty"
+            hasBoosts && quality == CookingQuality.LOW -> "item.cobblemon.aprijuice.prefix.plain"
             !hasBoosts -> "item.cobblemon.aprijuice.prefix.plain"
             else -> null
         }

@@ -21,6 +21,7 @@
                 }
             },
             "condition": {
+                "canSeeSky": false,
                 "minSkyLight": 8,
                 "maxSkyLight": 15,
                 "biomes": [
@@ -28,15 +29,33 @@
                     "#cobblemon:is_ocean",
                     "#cobblemon:is_sky"
                 ]
-            },
-            "anticondition": {
-                "biomes": [
-                    "#cobblemon:is_freezing"
-                ]
             }
         },
         {
             "id": "wattrel-2",
+            "pokemon": "wattrel",
+            "type": "pokemon",
+            "spawnablePositionType": "grounded",
+            "bucket": "common",
+            "level": "3-28",
+            "weight": 1.8,
+            "weightMultiplier": {
+                "multiplier": 5.0,
+                "condition": {
+                    "isThundering": true
+                }
+            },
+            "condition": {
+                "canSeeSky": true,
+                "biomes": [
+                    "#cobblemon:is_island",
+                    "#cobblemon:is_ocean",
+                    "#cobblemon:is_sky"
+                ]
+            }
+        },
+        {
+            "id": "wattrel-3",
             "pokemon": "wattrel",
             "presets": [
                 "natural"
@@ -53,6 +72,7 @@
                 }
             },
             "condition": {
+                "canSeeSky": false,
                 "minSkyLight": 8,
                 "maxSkyLight": 15,
                 "biomes": [
@@ -68,7 +88,35 @@
             }
         },
         {
-            "id": "wattrel-3",
+            "id": "wattrel-4",
+            "pokemon": "wattrel",
+            "type": "pokemon",
+            "spawnablePositionType": "grounded",
+            "bucket": "common",
+            "level": "3-28",
+            "weight": 1.8,
+            "weightMultiplier": {
+                "multiplier": 5.0,
+                "condition": {
+                    "isThundering": true
+                }
+            },
+            "condition": {
+                "canSeeSky": true,
+                "biomes": [
+                    "#cobblemon:is_coast"
+                ],
+                "timeRange": "night"
+            },
+            "anticondition": {
+                "biomes": [
+                    "#cobblemon:is_beach",
+                    "#cobblemon:is_freezing"
+                ]
+            }
+        },
+        {
+            "id": "wattrel-5",
             "pokemon": "wattrel",
             "presets": [
                 "water"
@@ -102,7 +150,7 @@
             }
         },
         {
-            "id": "wattrel-5",
+            "id": "wattrel-7",
             "pokemon": "wattrel",
             "type": "pokemon",
             "spawnablePositionType": "fishing",
@@ -132,7 +180,7 @@
             }
         },
         {
-            "id": "wattrel-6",
+            "id": "wattrel-8",
             "pokemon": "wattrel",
             "type": "pokemon",
             "spawnablePositionType": "fishing",

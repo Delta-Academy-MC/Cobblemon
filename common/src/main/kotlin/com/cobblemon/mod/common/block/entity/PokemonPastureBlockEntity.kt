@@ -17,7 +17,6 @@ import com.cobblemon.mod.common.api.pasture.PastureLinkManager
 import com.cobblemon.mod.common.api.scheduling.afterOnServer
 import com.cobblemon.mod.common.api.text.italicise
 import com.cobblemon.mod.common.api.text.red
-import com.cobblemon.mod.common.api.text.textClickHandlers
 import com.cobblemon.mod.common.block.PastureBlock
 import com.cobblemon.mod.common.entity.pokemon.PokemonEntity
 import com.cobblemon.mod.common.net.messages.client.effect.SpawnSnowstormEntityParticlePacket
@@ -116,10 +115,10 @@ class PokemonPastureBlockEntity(pos: BlockPos, state: BlockState) :
             for (tetheredPokemon in tetheredPokemonList) {
                 val pokemon = tetheredPokemon.getPokemon()!!
                 if (pokemon.currentFullness > 0) {
-                    pokemon.tickMetabolism()
+                    pokemon.tickMetabolism(1)
                 }
                 if (pokemon.interactionCooldowns.any()) {
-                    pokemon.tickInteractionCooldown()
+                    pokemon.tickInteractionCooldown(1)
                 }
             }
             blockEntity.togglePastureOn(blockEntity.getInRangeViewerCount(world, blockEntity.blockPos) > 0)

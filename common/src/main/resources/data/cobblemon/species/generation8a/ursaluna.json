@@ -225,27 +225,27 @@
     ]
   },
   "behaviour": {
-    "moving": {
-      "walk": {
-        "walkSpeed": 0.28
-      },
-      "swim": {
-        "avoidsWater": true
-      }
-    },
-    "resting": {
-      "canSleep": true,
-      "light": "0-4",
-      "drowsyChance": 0.0333,
-      "rouseChance": 0.0042
-    },
     "combat": {
-      "willDefendSelf": true,
       "willDefendOwner": true,
+      "willDefendSelf": true,
       "willFlee": false
     },
     "herd": {
       "maxSize": "4"
+    },
+    "moving": {
+      "swim": {
+        "avoidsWater": true
+      },
+      "walk": {
+        "walkSpeed": 0.28
+      }
+    },
+    "resting": {
+      "canSleep": true,
+      "drowsyChance": 0.0333,
+      "light": "0-4",
+      "rouseChance": 0.0042
     }
   },
   "drops": {
@@ -466,25 +466,25 @@
       "baseExperienceYield": 278,
       "catchRate": 5,
       "behaviour": {
-        "moving": {
-          "swim": {
-            "avoidsWater": true
-          }
-        },
         "combat": {
-          "willDefendSelf": true,
           "willDefendOwner": true,
+          "willDefendSelf": true,
           "willFlee": false
         },
         "herd": {
           "maxSize": "5"
         },
+        "moving": {
+          "swim": {
+            "avoidsWater": true
+          }
+        },
         "resting": {
+          "drowsyChance": 0.0033,
+          "rouseChance": 0.0042,
           "times": [
             "day"
-          ],
-          "drowsyChance": 0.0033,
-          "rouseChance": 0.0042
+          ]
         }
       },
       "moves": [

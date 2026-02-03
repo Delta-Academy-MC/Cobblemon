@@ -1,0 +1,74 @@
+{
+    "portraitScale": 1.8,
+    "portraitTranslation": [-1.42, -1.12, 0],
+    "profileScale": 0.5,
+    "profileTranslation": [0.1, 0.9, 0],
+    "rootBone": "falinks",
+    "animations": {
+        "physical": "q.bedrock_primary('falinks', 'physical', q.curve('symmetrical_wide'))",
+        "faint": "q.bedrock_primary('falinks', 'faint', q.curve('symmetrical_wide'))"
+    },
+    "poses": {
+        "portrait-profile": {
+            "poseTypes": ["PROFILE", "PORTRAIT"],
+            "animations": [
+                "q.bedrock('falinks', 'summary_idle')"
+            ],
+            "quirks": []
+        },
+        "battle-standing": {
+            "poseTypes": ["STAND"],
+            "isBattle": true,
+            "animations": [
+              "q.bedrock('falinks', 'battle_idle')"
+            ],
+            "quirks": [
+                "q.bedrock_quirk('falinks', 'blink')",
+                "q.bedrock_quirk('falinks', 'blink2')",
+                "q.bedrock_quirk('falinks', 'blink3')",
+                "q.bedrock_quirk('falinks', 'blink4')",
+                "q.bedrock_quirk('falinks', 'blink5')",
+                "q.bedrock_quirk('falinks', 'blink6')"
+            ]
+        },
+        "standing": {
+            "poseTypes": ["STAND", "NONE", "FLOAT"],
+            "isBattle": false,
+            "animations": [
+                "q.bedrock('falinks', 'ground_idle')"
+            ],
+            "quirks": [
+                "q.bedrock_quirk('falinks', 'blink')",
+                "q.bedrock_quirk('falinks', 'blink2')",
+                "q.bedrock_quirk('falinks', 'blink3')",
+                "q.bedrock_quirk('falinks', 'blink4')",
+                "q.bedrock_quirk('falinks', 'blink5')",
+                "q.bedrock_quirk('falinks', 'blink6')"
+            ]
+        },
+        "walking": {
+            "poseTypes": ["WALK", "SWIM"],
+            "animations": [
+                "q.bedrock('falinks', 'ground_walk')"
+            ],
+            "quirks": [
+                "q.bedrock_quirk('falinks', 'blink')",
+                "q.bedrock_quirk('falinks', 'blink2')",
+                "q.bedrock_quirk('falinks', 'blink3')",
+                "q.bedrock_quirk('falinks', 'blink4')",
+                "q.bedrock_quirk('falinks', 'blink5')",
+                "q.bedrock_quirk('falinks', 'blink6')"
+            ]
+        },
+        "sleep": {
+            "poseTypes": ["SLEEP"],
+            "animations": [
+                "q.bedrock('falinks', 'sleep')"
+            ],
+            "quirks": [],
+            "namedAnimations": {
+                "cry": "q.bedrock_stateful('dummy', 'cry')"
+            }
+        }
+    }
+}

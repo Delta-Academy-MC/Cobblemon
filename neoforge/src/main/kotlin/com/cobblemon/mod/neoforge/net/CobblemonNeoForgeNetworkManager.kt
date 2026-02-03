@@ -27,6 +27,7 @@ object CobblemonNeoForgeNetworkManager : NetworkManager {
         val registrar = event
             .registrar(Cobblemon.MODID)
             .versioned(PROTOCOL_VERSION)
+            .executesOn(HandlerThread.MAIN)
 
         val netRegistrar = event
             .registrar(Cobblemon.MODID)

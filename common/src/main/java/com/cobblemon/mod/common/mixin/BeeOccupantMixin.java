@@ -11,7 +11,9 @@ package com.cobblemon.mod.common.mixin;
 
 import com.cobblemon.mod.common.CobblemonMemories;
 import com.cobblemon.mod.common.api.ai.config.task.PathToBeeHiveTaskConfig;
+import com.cobblemon.mod.common.api.pokemon.PokemonProperties;
 import com.cobblemon.mod.common.entity.pokemon.PokemonEntity;
+import com.cobblemon.mod.common.world.feature.SaccharineTreeFeature;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.tags.BlockTags;
@@ -42,7 +44,21 @@ public abstract class BeeOccupantMixin {
         if (cir.getReturnValue() == null) {
             final BeehiveBlockEntity.Occupant occupant = (BeehiveBlockEntity.Occupant) (Object) this;
             CompoundTag compoundTag = occupant.entityData().copyTag();
-            Entity entity = EntityType.loadEntityRecursive(compoundTag, level, (entityx) -> entityx);
+            String id = compoundTag.getString("id");
+            Entity entity = null;
+            if (id.equals(SaccharineTreeFeature.Companion.getPOKEMON_PLACEHOLD_ID())) {
+                // Special case for Pokemon stuffed into a beenest upon world gen.
+                // For technical reasons we cannot create them as full entities during world gen.
+                // So we look for this special id tag and complete the entity when it attempts to exit a hive.
+                if (compoundTag.contains("pokemonProperties")) {
+                    String properties = compoundTag.getString("pokemonProperties");
+                    PokemonProperties pokemon = PokemonProperties.Companion.parse(properties);
+                    entity = pokemon.createEntity(level);
+                }
+            } else {
+                entity = EntityType.loadEntityRecursive(compoundTag, level, (entityx) -> entityx);
+            }
+
             if (entity instanceof PokemonEntity pokemonEntity) {
                 var state = level.getBlockState(pos);
                 var newPos = Vec3.ZERO;

@@ -7,6 +7,8 @@
     "minecraft:dead_bush",
     "minecraft:honey_bottle",
     "minecraft:pink_petals",
+    "minecraft:spore_blossom",
+    "minecraft:chorus_flower",
     "minecraft:poisonous_potato",
     "minecraft:rotten_flesh",
     "minecraft:spore_blossom",
@@ -15,9 +17,9 @@
     "cobblemon:big_root",
     "cobblemon:energy_root",
     "cobblemon:galarica_nuts",
-    "cobblemon:mirror_herb",
+    "#cobblemon:herbs",
     "cobblemon:pep_up_flower",
-    "cobblemon:power_herb",
-    "cobblemon:revival_herb"
+    "minecraft:milk_bucket",
+    "cobblemon:moomoo_milk"
   ]
 }

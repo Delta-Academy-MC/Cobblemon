@@ -58,24 +58,42 @@
           {
             "muffleEnabled": true,
             "pitchExpr": "math.max(1.0 ,0.2 + math.pow(math.min(q.ride_velocity() / 1.5, 1.0),2))",
-            "playForNonPassengers": true,
-            "soundLocation": "cobblemon:ride.loop.wind",
+            "playForNonPassengers": false,
+            "playForPassengers": true,
+            "soundLocation": "cobblemon:ride.loop.wind.stereo",
             "volumeExpr": "math.pow(math.min(q.ride_velocity() / 1.5, 1.0),2)"
           },
           {
             "muffleEnabled": true,
             "pitchExpr": "math.max(1.0 ,0.2 + math.pow(math.min(q.ride_velocity() / 1.5, 1.0),2))",
             "playForNonPassengers": true,
-            "soundLocation": "cobblemon:ride.loop.plumage",
+            "playForPassengers": false,
+            "soundLocation": "cobblemon:ride.loop.wind.mono",
+            "volumeExpr": "math.pow(math.min(q.ride_velocity() / 1.5, 1.0),2)"
+          },
+          {
+            "muffleEnabled": true,
+            "pitchExpr": "math.max(1.0 ,0.2 + math.pow(math.min(q.ride_velocity() / 1.5, 1.0),2))",
+            "playForNonPassengers": false,
+            "playForPassengers": true,
+            "soundLocation": "cobblemon:ride.loop.plumage.stereo",
+            "volumeExpr": "math.pow(math.min(q.ride_velocity() / 1.5, 1.0),2)"
+          },
+          {
+            "muffleEnabled": true,
+            "pitchExpr": "math.max(1.0 ,0.2 + math.pow(math.min(q.ride_velocity() / 1.5, 1.0),2))",
+            "playForNonPassengers": true,
+            "playForPassengers": false,
+            "soundLocation": "cobblemon:ride.loop.plumage.mono",
             "volumeExpr": "math.pow(math.min(q.ride_velocity() / 1.5, 1.0),2)"
           }
         ],
         "stats": {
-          "ACCELERATION": "20-35",
+          "ACCELERATION": "35-50",
           "JUMP": "50-70",
-          "SKILL": "20-35",
-          "SPEED": "30-50",
-          "STAMINA": "40-60"
+          "SKILL": "40-65",
+          "SPEED": "30-45",
+          "STAMINA": "40-65"
         }
       },
       "LAND": {
@@ -175,6 +193,9 @@
     ]
   },
   "behaviour": {
+    "combat": {
+      "willDefendOwner": true
+    },
     "herd": {
       "maxSize": "9",
       "toleratedLeaders": [
@@ -193,8 +214,8 @@
         "canFly": true
       },
       "swim": {
-        "swimSpeed": "0.2",
-        "canWalkOnWater": true
+        "canWalkOnWater": true,
+        "swimSpeed": "0.2"
       },
       "walk": {
         "walkSpeed": 0.21
@@ -202,12 +223,9 @@
     },
     "resting": {
       "canSleep": true,
-      "light": "0-4",
       "drowsyChance": 0.0333,
+      "light": "0-4",
       "rouseChance": 0.0042
-    },
-    "combat": {
-      "willDefendOwner": true
     }
   },
   "drops": {

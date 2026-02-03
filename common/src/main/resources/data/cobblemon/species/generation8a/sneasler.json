@@ -85,7 +85,7 @@
           },
           {
             "offset": {
-              "x": -0.000930856,
+              "x": -9.30856E-4,
               "y": -1.8752725,
               "z": 0.43995833
             },
@@ -148,22 +148,22 @@
     ]
   },
   "behaviour": {
+    "combat": {
+      "willDefendOwner": true,
+      "willDefendSelf": true,
+      "willFlee": false
+    },
     "entityInteract": {
       "avoidedByCreeper": true,
       "avoidedByPhantom": true
     },
     "moving": {
-      "walk": {
-        "walkSpeed": 0.35
-      },
       "swim": {
         "avoidsWater": true
+      },
+      "walk": {
+        "walkSpeed": 0.35
       }
-    },
-    "combat": {
-      "willDefendSelf": true,
-      "willDefendOwner": true,
-      "willFlee": false
     },
     "resting": {
       "drowsyChance": 0.0333,

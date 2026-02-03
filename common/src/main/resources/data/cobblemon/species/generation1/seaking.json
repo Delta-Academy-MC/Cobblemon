@@ -52,8 +52,8 @@
     "behaviours": {
       "LIQUID": {
         "key": "cobblemon:liquid/submarine",
-        "hitboxBreachPercentage": 0.9,
         "rideSounds": [],
+        "hitboxBreachPercentage": 0.9,
         "stats": {
           "ACCELERATION": "55-70",
           "JUMP": "30-45",
@@ -146,6 +146,11 @@
     ]
   },
   "behaviour": {
+    "combat": {
+      "willDefendOwner": true,
+      "willDefendSelf": true,
+      "willFlee": false
+    },
     "herd": {
       "maxSize": "9",
       "toleratedLeaders": [
@@ -172,11 +177,6 @@
         "avoidsLand": true,
         "walkSpeed": 0.17
       }
-    },
-    "combat": {
-      "willDefendSelf": true,
-      "willDefendOwner": true,
-      "willFlee": false
     },
     "resting": {
       "drowsyChance": 0.0333,

@@ -4,7 +4,7 @@
     "neededUninstalledMods": [],
     "spawns": [
         {
-            "id": "malamar-6",
+            "id": "malamar-7",
             "pokemon": "malamar",
             "type": "pokemon",
             "spawnablePositionType": "fishing",
@@ -26,7 +26,7 @@
             }
         },
         {
-            "id": "malamar-7",
+            "id": "malamar-8",
             "pokemon": "malamar",
             "type": "pokemon",
             "spawnablePositionType": "fishing",
@@ -54,7 +54,7 @@
             }
         },
         {
-            "id": "malamar-8",
+            "id": "malamar-9",
             "pokemon": "malamar",
             "type": "pokemon",
             "spawnablePositionType": "fishing",
@@ -78,7 +78,7 @@
             }
         },
         {
-            "id": "malamar-9",
+            "id": "malamar-10",
             "pokemon": "malamar",
             "type": "pokemon",
             "spawnablePositionType": "fishing",
@@ -120,21 +120,36 @@
             "level": "30-48",
             "weight": 0.32,
             "condition": {
+                "canSeeSky": false,
                 "minSkyLight": 8,
                 "maxSkyLight": 15,
                 "biomes": [
                     "#cobblemon:is_coast",
                     "#cobblemon:is_ocean"
                 ]
-            },
-            "anticondition": {
-                "biomes": [
-                    "#cobblemon:is_beach"
-                ]
             }
         },
         {
             "id": "malamar-2",
+            "pokemon": "malamar",
+            "presets": [
+                "wild"
+            ],
+            "type": "pokemon",
+            "spawnablePositionType": "grounded",
+            "bucket": "uncommon",
+            "level": "30-48",
+            "weight": 0.32,
+            "condition": {
+                "canSeeSky": true,
+                "biomes": [
+                    "#cobblemon:is_coast",
+                    "#cobblemon:is_ocean"
+                ]
+            }
+        },
+        {
+            "id": "malamar-3",
             "pokemon": "malamar",
             "presets": [
                 "natural",
@@ -152,7 +167,7 @@
             }
         },
         {
-            "id": "malamar-3",
+            "id": "malamar-4",
             "pokemon": "malamar",
             "presets": [
                 "water"
@@ -170,7 +185,7 @@
             }
         },
         {
-            "id": "malamar-4",
+            "id": "malamar-5",
             "pokemon": "malamar",
             "presets": [
                 "water"
@@ -190,7 +205,7 @@
             }
         },
         {
-            "id": "malamar-5",
+            "id": "malamar-6",
             "pokemon": "malamar",
             "presets": [
                 "water"
@@ -213,7 +228,7 @@
             }
         },
         {
-            "id": "malamar-10",
+            "id": "malamar-11",
             "pokemon": "malamar",
             "type": "pokemon",
             "spawnablePositionType": "fishing",
@@ -236,7 +251,7 @@
             }
         },
         {
-            "id": "malamar-11",
+            "id": "malamar-12",
             "pokemon": "malamar",
             "type": "pokemon",
             "spawnablePositionType": "fishing",

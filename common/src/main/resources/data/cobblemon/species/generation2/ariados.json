@@ -73,7 +73,7 @@
         "poseOffsets": [
           {
             "offset": {
-              "x": 0.0009895586,
+              "x": 9.895586E-4,
               "y": -0.6805381,
               "z": 0.0058082193
             },
@@ -85,7 +85,7 @@
             "offset": {
               "x": 0.008947004,
               "y": -0.6557218,
-              "z": 0.0005530901
+              "z": 5.530901E-4
             },
             "poseTypes": [
               "WALK"
@@ -146,30 +146,30 @@
     ]
   },
   "behaviour": {
+    "combat": {
+      "willDefendOwner": true,
+      "willDefendSelf": true,
+      "willFlee": false
+    },
     "herd": {
       "maxSize": "5"
-    },
-    "resting": {
-      "canSleep": true,
-      "light": "0-4",
-      "times": [
-        "any"
-      ],
-      "drowsyChance": 0.0014,
-      "rouseChance": 0.0042
-    },
-    "walking": {
-      "walkSpeed": 0.18
     },
     "moving": {
       "swim": {
         "avoidsWater": true
       }
     },
-    "combat": {
-      "willDefendSelf": true,
-      "willDefendOwner": true,
-      "willFlee": false
+    "resting": {
+      "canSleep": true,
+      "drowsyChance": 0.0014,
+      "light": "0-4",
+      "rouseChance": 0.0042,
+      "times": [
+        "any"
+      ]
+    },
+    "walking": {
+      "walkSpeed": 0.18
     }
   },
   "drops": {

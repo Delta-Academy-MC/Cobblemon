@@ -5,7 +5,6 @@
   "profileTranslation": [0, 0.50, 0],
   "rootBone": "tepig",
   "animations": {
-    "faint": "q.bedrock_primary('tepig', 'faint', q.curve('one'))",
     "cry": "q.bedrock_stateful('tepig', 'cry')",
     "recoil": "q.bedrock_stateful('tepig', 'recoil')"
   },

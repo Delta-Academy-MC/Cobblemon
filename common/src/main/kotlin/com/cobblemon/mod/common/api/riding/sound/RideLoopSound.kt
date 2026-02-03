@@ -12,6 +12,7 @@ package com.cobblemon.mod.common.api.riding.sound
 import com.cobblemon.mod.common.api.riding.behaviour.types.composite.CompositeBehaviour
 import com.cobblemon.mod.common.api.riding.behaviour.types.composite.CompositeState
 import com.cobblemon.mod.common.entity.pokemon.PokemonEntity
+import com.cobblemon.mod.common.util.getIsSubmerged
 import com.cobblemon.mod.common.util.resolveDouble
 import net.minecraft.client.Minecraft
 import net.minecraft.client.resources.sounds.AbstractTickableSoundInstance
@@ -61,6 +62,21 @@ class RideLoopSound(val ride: PokemonEntity, val soundSettings: RideSoundSetting
 
         // If the ride is out of attenuation distance then don't play
         if (this.outOfRange()) {
+            this.volume = 0.0f
+            return
+        }
+
+        // Mute the sound if it's not meant to play for the passenger
+        if (this.isPassenger && !this.soundSettings.playForPassengers) {
+            this.volume = 0.0f
+            return
+        }
+
+        // Mute sounds when submerged unless they support underwater sounds, underwater sounds don't play above water
+        if (this.ride.getIsSubmerged() && !this.soundSettings.submerged) {
+            this.volume = 0.0f
+            return
+        } else if (!this.ride.getIsSubmerged() && this.soundSettings.submerged) {
             this.volume = 0.0f
             return
         }

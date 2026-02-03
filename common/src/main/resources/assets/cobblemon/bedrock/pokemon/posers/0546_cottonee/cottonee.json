@@ -1,0 +1,32 @@
+{
+  "portraitScale": 2,
+  "portraitTranslation": [-0.1, -1.38, 0],
+  "profileScale": 0.9,
+  "profileTranslation": [0.0, 0.35, 0.0],
+  "rootBone": "cottonee",
+  "animations": {
+    "cry": "q.bedrock_stateful('cottonee', 'cry')"
+  },
+  "poses": {
+    "standing": {
+      "poseTypes": ["STAND", "NONE", "PORTRAIT", "PROFILE", "HOVER", "FLOAT"],
+      "animations": [
+        "q.look('head_ai')",
+        "q.bedrock('cottonee', 'ground_idle')"
+      ],
+      "quirks": [
+        "q.bedrock_quirk('cottonee', 'blink')"
+      ]
+    },
+    "walking": {
+      "poseTypes": ["WALK", "FLY", "SWIM"],
+      "animations": [
+        "q.look('head_ai')",
+        "q.bedrock('cottonee', 'ground_idle')"
+      ],
+      "quirks": [
+        "q.bedrock_quirk('cottonee', 'blink')"
+      ]
+    }
+  }
+}

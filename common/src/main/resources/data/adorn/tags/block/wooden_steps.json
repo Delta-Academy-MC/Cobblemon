@@ -1,6 +1,1 @@
-{
-  "replace": false,
-  "values": [
-    { "id": "adorn:cobblemon/apricorn_step", "required": false }
-  ]
-}
+{"replace":false,"values":[{"id":"adorn:cobblemon/apricorn_step","required":false}, {"id":"adorn:cobblemon/saccharine_step","required":false}]}

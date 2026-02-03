@@ -22,7 +22,7 @@
             },
             "anticondition": {
                 "structures": [
-                    "minecraft:ocean_monument"
+                    "minecraft:monument"
                 ]
             }
         },
@@ -142,7 +142,7 @@
             },
             "anticondition": {
                 "structures": [
-                    "minecraft:ocean_monument"
+                    "minecraft:monument"
                 ]
             }
         },

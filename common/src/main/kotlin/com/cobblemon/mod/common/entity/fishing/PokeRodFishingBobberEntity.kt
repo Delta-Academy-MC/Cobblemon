@@ -802,13 +802,14 @@ class PokeRodFishingBobberEntity(type: EntityType<out PokeRodFishingBobberEntity
 
         spawnAction.complete()
         val result = spawnAction.future
-        if (result.isCompletedExceptionally) {
+        val resultingSpawn = result.get()
+
+        if (resultingSpawn == null) {
             noBite(player)
             return false
         }
 
         var spawnedPokemon: PokemonEntity? = null
-        val resultingSpawn = result.get()
 
         if (resultingSpawn is EntitySpawnResult) {
             for (entity in resultingSpawn.entities) {

@@ -2,8 +2,8 @@
   "replace": false,
   "values": [
     "minecraft:birch_planks",
-	"minecraft:cobblestone_stairs",
-	"minecraft:cobblestone_wall",
-	"minecraft:dark_oak_planks"
+	  "minecraft:cobblestone_stairs",
+	  "minecraft:cobblestone_wall",
+	  "minecraft:dark_oak_planks"
   ]
 }

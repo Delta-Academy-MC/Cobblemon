@@ -129,6 +129,11 @@ class GraalShowdownService : ShowdownService {
         startBattleFunction.execute(this, battle.battleId.toString(), messages)
     }
 
+    override fun endBattle(battle: PokemonBattle) {
+        val endBattleFunction = context.getBindings("js").getMember("endBattle")
+        endBattleFunction.execute(battle.battleId.toString())
+    }
+
     override fun send(battleId: UUID, messages: Array<String>) {
         sendToShowdown(battleId, messages)
     }

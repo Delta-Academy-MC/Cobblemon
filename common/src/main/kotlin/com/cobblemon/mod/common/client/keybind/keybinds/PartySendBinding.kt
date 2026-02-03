@@ -143,18 +143,18 @@ object PartySendBinding : CobblemonBlockingKeyBinding(
     }
 
     private fun canAttemptDismount(player: LocalPlayer, selectedPartyPokemon: Pokemon?): Boolean {
-        if (player.vehicle !is PokemonEntity) return false
-        val vehicle = player.vehicle as PokemonEntity
-        if (player != vehicle.controllingPassenger) {
-            return true
-        }
+        val vehicle = player.vehicle as? PokemonEntity ?: return false
+
+        if (player != vehicle.controllingPassenger) return true
+
         val isAirRide = vehicle.ridingController?.context?.style == RidingStyle.AIR
         val hasLandRide = vehicle.rideProp.behaviours?.get(RidingStyle.LAND) != null
-        return if (isAirRide && hasLandRide) {
-            false
-        } else {
-            vehicle.pokemon.uuid == selectedPartyPokemon?.uuid
+
+        if (!Cobblemon.config.enableInFlightDismounting && isAirRide && hasLandRide) {
+            return false
         }
+
+        return vehicle.pokemon.uuid == selectedPartyPokemon?.uuid
     }
 
     private fun isRidingPokemon(player: LocalPlayer, ignoreControlling: Boolean = false): Boolean {

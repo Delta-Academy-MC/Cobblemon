@@ -11,9 +11,9 @@ package com.cobblemon.mod.common.pokemon.requirements
 import com.cobblemon.mod.common.api.pokemon.requirement.OwnerQueryRequirement
 import com.cobblemon.mod.common.entity.npc.NPCEntity
 import com.cobblemon.mod.common.pokemon.Pokemon
-import net.minecraft.server.level.ServerPlayer
 import net.minecraft.resources.ResourceLocation
-import kotlin.collections.iterator
+import net.minecraft.server.level.ServerPlayer
+import net.minecraft.world.entity.player.Player
 
 /**
  * An [com.cobblemon.mod.common.api.pokemon.requirement.Requirement] that checks if the player has a certain [net.minecraft.advancements.Advancement]
@@ -26,13 +26,16 @@ class AdvancementRequirement(val requiredAdvancement: ResourceLocation) : OwnerQ
 
     override fun checkPlayer(
         pokemon: Pokemon,
-        owner: ServerPlayer
+        owner: Player
     ): Boolean {
-        for (entry in owner.advancements.progress) {
+        val serverPlayer = owner as? ServerPlayer ?: return false
+
+        for (entry in serverPlayer.advancements.progress) {
             if (entry.key.id == requiredAdvancement && entry.value.isDone) {
                 return true
             }
         }
+
         return false
     }
 

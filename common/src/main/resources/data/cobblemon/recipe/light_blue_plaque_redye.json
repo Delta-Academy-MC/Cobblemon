@@ -1,0 +1,15 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "group": "plaque_redye",
+    "ingredients": [
+        {
+            "tag": "cobblemon:plaques"
+        },
+        {
+            "tag": "c:dyes/light_blue"
+        }
+    ],
+    "result": {
+        "id": "cobblemon:light_blue_plaque"
+    }
+}

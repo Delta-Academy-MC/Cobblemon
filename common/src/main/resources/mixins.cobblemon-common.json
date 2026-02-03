@@ -90,6 +90,7 @@
     "accessor.BlockEntityAccessor",
     "accessor.BoatEntityAccessor",
     "accessor.ChunkMapAccessor",
+    "accessor.DispenserBlockAccessor",
     "accessor.StatusEffectInstanceAccessor",
     "accessor.TrackedEntityAccessor",
     "brewing.BrewingStandBlockEntityMixin",

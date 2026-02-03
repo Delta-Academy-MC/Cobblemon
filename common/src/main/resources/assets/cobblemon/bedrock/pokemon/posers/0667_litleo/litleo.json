@@ -1,0 +1,28 @@
+{
+  "portraitScale": 1.72,
+  "portraitTranslation": [-0.36, 0.07, 0],
+  "profileScale": 0.69,
+  "profileTranslation": [0, 0.64, 0],
+  "rootBone": "litleo",
+  "animations": {
+    "cry": "q.bedrock_stateful('litleo', 'cry')"
+  },
+  "poses": {
+    "standing": {
+      "poseTypes": ["STAND", "FLOAT", "PORTRAIT", "PROFILE", "NONE"],
+      "animations": [
+        "q.look('head_ai')",
+        "q.bedrock('litleo', 'ground_idle')"
+      ]
+    },
+    "walking": {
+      "poseName": "walking",
+      "poseTypes": ["WALK", "SWIM"],
+      "animations": [
+        "q.look('head_ai')",
+        "q.bedrock('litleo', 'ground_idle')",
+        "q.quadruped_walk(1, 1, 'leg_front_left', 'leg_front_right', 'leg_back_left', 'leg_back_right')"
+      ]
+    }
+  }
+}

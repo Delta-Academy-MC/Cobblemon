@@ -144,6 +144,9 @@
     ]
   },
   "behaviour": {
+    "combat": {
+      "willFlee": false
+    },
     "herd": {
       "maxSize": "8"
     },
@@ -159,17 +162,14 @@
     },
     "resting": {
       "canSleep": true,
-      "light": "0-14",
-      "sleepChance": "0.0023",
       "depth": "comatose",
+      "drowsyChance": 0.0028,
+      "light": "0-14",
+      "rouseChance": 0.0028,
+      "sleepChance": "0.0023",
       "times": [
         "any"
-      ],
-      "drowsyChance": 0.0028,
-      "rouseChance": 0.0028
-    },
-    "combat": {
-      "willFlee": false
+      ]
     }
   },
   "drops": {

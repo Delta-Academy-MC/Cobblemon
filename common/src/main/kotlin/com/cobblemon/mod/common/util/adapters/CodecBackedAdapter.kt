@@ -8,22 +8,22 @@
 
 package com.cobblemon.mod.common.util.adapters
 
-import com.google.gson.JsonDeserializationContext
-import com.google.gson.JsonDeserializer
-import com.google.gson.JsonElement
-import com.google.gson.JsonSerializationContext
-import com.google.gson.JsonSerializer
+import com.google.gson.*
 import com.mojang.serialization.Codec
-import com.mojang.serialization.JsonOps
 import java.lang.reflect.Type
 
 class CodecBackedAdapter<T>(val codec: Codec<T>) : JsonDeserializer<T>, JsonSerializer<T> {
+
     override fun deserialize(
         jElement: JsonElement,
         typeOfT: Type,
         context: JsonDeserializationContext
     ): T {
-        return JsonOps.INSTANCE.withDecoder(codec).apply(jElement).result().get().first as T
+        val ops = RegistryOpsProvider.getOpsWithDefaultFallback()
+        val result = ops.withDecoder(codec).apply(jElement)
+        return result.result().orElseThrow {
+            IllegalStateException("Failed to deserialize $jElement: ${result.error().orElse(null)}")
+        }.first
     }
 
     override fun serialize(
@@ -31,6 +31,10 @@ class CodecBackedAdapter<T>(val codec: Codec<T>) : JsonDeserializer<T>, JsonSeri
         typeOfSrc: Type?,
         context: JsonSerializationContext?
     ): JsonElement {
-        return JsonOps.INSTANCE.withEncoder(codec).apply(src).result().get()
+        val ops = RegistryOpsProvider.getOpsWithDefaultFallback()
+        val result = ops.withEncoder(codec).apply(src)
+        return result.result().orElseThrow {
+            IllegalStateException("Failed to serialize $src: ${result.error().orElse(null)}")
+        }
     }
 }

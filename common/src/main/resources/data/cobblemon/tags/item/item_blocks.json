@@ -1,0 +1,35 @@
+{
+    "replace": false,
+    "values": [
+        "cobblemon:relic_coin_pouch",
+		
+        "cobblemon:blunder_policy",
+        "cobblemon:weakness_policy",
+        "cobblemon:cleanse_tag",
+        "cobblemon:spell_tag",
+        
+        "cobblemon:potion",
+        "cobblemon:super_potion",
+        "cobblemon:hyper_potion",
+        "cobblemon:max_potion",
+        "cobblemon:full_restore",
+        "cobblemon:antidote",
+        "cobblemon:awakening",
+        "cobblemon:burn_heal",
+        "cobblemon:ice_heal",
+        "cobblemon:paralyze_heal",
+        "cobblemon:full_heal",
+        "cobblemon:ether",
+        "cobblemon:max_ether",
+        "cobblemon:elixir",
+        "cobblemon:max_elixir",
+        "cobblemon:dire_hit",
+        "cobblemon:guard_spec",
+        "cobblemon:x_accuracy",
+        "cobblemon:x_attack",
+        "cobblemon:x_defence",
+        "cobblemon:x_special_attack",
+        "cobblemon:x_special_defence",
+        "cobblemon:x_speed"
+    ]
+}

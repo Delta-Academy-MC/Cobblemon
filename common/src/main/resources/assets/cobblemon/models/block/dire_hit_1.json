@@ -1,0 +1,104 @@
+{
+  "textures": {
+    "texture": "cobblemon:block/decorative/dire_hit",
+    "particle": "cobblemon:block/decorative/dire_hit"
+  },
+  "elements": [
+    {
+      "from": [9.5, 4, 6.5],
+      "to": [14.5, 6, 11.5],
+      "faces": {
+        "north": {"uv": [11, 9, 16, 11], "texture": "#texture"},
+        "east": {"uv": [11, 9, 16, 11], "texture": "#texture"},
+        "south": {"uv": [11, 9, 16, 11], "texture": "#texture"},
+        "west": {"uv": [11, 9, 16, 11], "texture": "#texture"},
+        "up": {"uv": [11, 4, 16, 9], "texture": "#texture"},
+        "down": {"uv": [11, 11, 16, 16], "texture": "#texture"}
+      }
+    },
+    {
+      "from": [10.5, 0.5, 7.5],
+      "to": [13.5, 3.5, 10.5],
+      "faces": {
+        "north": {"uv": [8, 13, 11, 16], "texture": "#texture"},
+        "east": {"uv": [8, 13, 11, 16], "texture": "#texture"},
+        "south": {"uv": [8, 13, 11, 16], "texture": "#texture"},
+        "west": {"uv": [8, 13, 11, 16], "texture": "#texture"},
+        "up": {"uv": [8, 13, 11, 16], "texture": "#texture"},
+        "down": {"uv": [8, 13, 11, 16], "texture": "#texture"}
+      }
+    },
+    {
+      "from": [10.35, 0.35, 7.35],
+      "to": [13.65, 3.65, 10.65],
+      "faces": {
+        "north": {"uv": [8, 10, 11, 13], "texture": "#texture"},
+        "east": {"uv": [8, 10, 11, 13], "texture": "#texture"},
+        "south": {"uv": [8, 10, 11, 13], "texture": "#texture"},
+        "west": {"uv": [8, 10, 11, 13], "texture": "#texture"},
+        "up": {"uv": [8, 10, 11, 13], "texture": "#texture"},
+        "down": {"uv": [8, 10, 11, 13], "texture": "#texture"}
+      }
+    },
+    {
+      "from": [10, 0, 7],
+      "to": [14, 7, 11],
+      "faces": {
+        "north": {"uv": [0, 9, 4, 16], "texture": "#texture"},
+        "east": {"uv": [4, 9, 8, 16], "texture": "#texture"},
+        "south": {"uv": [0, 2, 4, 9], "texture": "#texture"},
+        "west": {"uv": [4, 2, 8, 9], "texture": "#texture"},
+        "up": {"uv": [16, 4, 12, 0], "texture": "#texture"},
+        "down": {"uv": [12, 0, 8, 4], "texture": "#texture", "cullface": "down"}
+      }
+    },
+    {
+      "from": [1.5, 4, 5.5],
+      "to": [6.5, 6, 10.5],
+      "faces": {
+        "north": {"uv": [11, 9, 16, 11], "texture": "#texture"},
+        "east": {"uv": [11, 9, 16, 11], "texture": "#texture"},
+        "south": {"uv": [11, 9, 16, 11], "texture": "#texture"},
+        "west": {"uv": [11, 9, 16, 11], "texture": "#texture"},
+        "up": {"uv": [11, 4, 16, 9], "texture": "#texture"},
+        "down": {"uv": [11, 11, 16, 16], "texture": "#texture"}
+      }
+    },
+    {
+      "from": [2.5, 0.5, 6.5],
+      "to": [5.5, 3.5, 9.5],
+      "faces": {
+        "north": {"uv": [8, 13, 11, 16], "texture": "#texture"},
+        "east": {"uv": [8, 13, 11, 16], "texture": "#texture"},
+        "south": {"uv": [8, 13, 11, 16], "texture": "#texture"},
+        "west": {"uv": [8, 13, 11, 16], "texture": "#texture"},
+        "up": {"uv": [8, 13, 11, 16], "texture": "#texture"},
+        "down": {"uv": [8, 13, 11, 16], "texture": "#texture"}
+      }
+    },
+    {
+      "from": [2.35, 0.35, 6.35],
+      "to": [5.65, 3.65, 9.65],
+      "faces": {
+        "north": {"uv": [8, 10, 11, 13], "texture": "#texture"},
+        "east": {"uv": [8, 10, 11, 13], "texture": "#texture"},
+        "south": {"uv": [8, 10, 11, 13], "texture": "#texture"},
+        "west": {"uv": [8, 10, 11, 13], "texture": "#texture"},
+        "up": {"uv": [8, 10, 11, 13], "texture": "#texture"},
+        "down": {"uv": [8, 10, 11, 13], "texture": "#texture"}
+      }
+    },
+    {
+      "from": [2, 0, 6],
+      "to": [6, 7, 10],
+      "faces": {
+        "north": {"uv": [0, 9, 4, 16], "texture": "#texture"},
+        "east": {"uv": [4, 9, 8, 16], "texture": "#texture"},
+        "south": {"uv": [0, 2, 4, 9], "texture": "#texture"},
+        "west": {"uv": [4, 2, 8, 9], "texture": "#texture"},
+        "up": {"uv": [16, 4, 12, 0], "texture": "#texture"},
+        "down": {"uv": [12, 0, 8, 4], "texture": "#texture", "cullface": "down"}
+      }
+    }
+  ]
+}

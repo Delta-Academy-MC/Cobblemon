@@ -22,7 +22,7 @@
         "q.bedrock('weezing_galar', 'ground_idle')"
       ],
       "quirks": [
-        "q.bedrock_quirk('weezing_galar', 'blink1')",
+        "q.bedrock_quirk('weezing_galar', 'blink')",
         "q.bedrock_quirk('weezing_galar', 'blink2')"
       ]
     },
@@ -36,11 +36,11 @@
         "q.bedrock('weezing_galar', 'ground_idle')"
       ],
       "quirks": [
-        "q.bedrock_quirk('weezing_galar', 'blink1')",
+        "q.bedrock_quirk('weezing_galar', 'blink')",
         "q.bedrock_quirk('weezing_galar', 'blink2')"
       ]
     },
-            "sleeping": {
+    "sleeping": {
       "poseTypes": ["SLEEP"],
       "animations": ["q.bedrock('weezing_galar', 'sleep')"]
     }

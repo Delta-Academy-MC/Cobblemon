@@ -32,6 +32,7 @@ import com.cobblemon.mod.common.pokemon.Pokemon
 import com.cobblemon.mod.common.util.asTranslated
 import com.cobblemon.mod.common.util.cobblemonResource
 import com.cobblemon.mod.common.util.lang
+import com.cobblemon.mod.common.util.toAssetPath
 import com.mojang.blaze3d.platform.InputConstants
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.GuiGraphics
@@ -584,7 +585,7 @@ class TradeGUI(
 
             // Poké Ball
             val nameXOffset = if (isOpposing) 75 else 0
-            val ballResource = cobblemonResource("textures/item/poke_balls/" + pokemon.caughtBall.name.path + ".png")
+            val ballResource = pokemon.caughtBall.name.toAssetPath("textures/item/poke_balls/", ".png")
             blitk(
                 matrixStack = context.pose(),
                 texture = ballResource,

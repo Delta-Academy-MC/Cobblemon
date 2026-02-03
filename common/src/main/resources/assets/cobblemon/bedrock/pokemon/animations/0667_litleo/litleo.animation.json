@@ -1,0 +1,48 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"animation.litleo.ground_idle": {
+			"loop": true,
+			"bones": {
+				"litleo": {
+					"scale": 1
+				},
+				"tail": {
+					"rotation": [27.5, 0, 0]
+				},
+				"tail2": {
+					"rotation": [22.5, 0, 0]
+				},
+				"tail_tip": {
+					"rotation": [22.5, 0, 0]
+				},
+				"ear_left": {
+					"rotation": [0, 0, 45]
+				},
+				"ear_right": {
+					"rotation": [0, 0, -45]
+				},
+				"foot_front_left_claws": {
+					"position": [0, 0, 2]
+				},
+				"foot_front_right_claws": {
+					"position": [0, 0, 2]
+				},
+				"foot_back_left_claws": {
+					"position": [0, 0, 2]
+				},
+				"foot_back_right_claws": {
+					"position": [0, 0, 2]
+				}
+			}
+		},
+		"animation.litleo.cry": {
+			"animation_length": 1.75,
+			"sound_effects": {
+				"0.0417": {
+					"effect": "pokemon.litleo.cry"
+				}
+			}
+		}
+	}
+}

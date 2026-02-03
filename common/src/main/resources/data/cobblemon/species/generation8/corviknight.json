@@ -57,15 +57,33 @@
           {
             "muffleEnabled": true,
             "pitchExpr": "math.max(1.0 ,0.2 + math.pow(math.min(q.ride_velocity() / 1.5, 1.0),2))",
-            "playForNonPassengers": true,
-            "soundLocation": "cobblemon:ride.loop.wind",
+            "playForNonPassengers": false,
+            "playForPassengers": true,
+            "soundLocation": "cobblemon:ride.loop.wind.stereo",
             "volumeExpr": "math.pow(math.min(q.ride_velocity() / 1.5, 1.0),2)"
           },
           {
             "muffleEnabled": true,
             "pitchExpr": "math.max(1.0 ,0.2 + math.pow(math.min(q.ride_velocity() / 1.5, 1.0),2))",
             "playForNonPassengers": true,
-            "soundLocation": "cobblemon:ride.loop.plumage",
+            "playForPassengers": false,
+            "soundLocation": "cobblemon:ride.loop.wind.mono",
+            "volumeExpr": "math.pow(math.min(q.ride_velocity() / 1.5, 1.0),2)"
+          },
+          {
+            "muffleEnabled": true,
+            "pitchExpr": "math.max(1.0 ,0.2 + math.pow(math.min(q.ride_velocity() / 1.5, 1.0),2))",
+            "playForNonPassengers": false,
+            "playForPassengers": true,
+            "soundLocation": "cobblemon:ride.loop.plumage.stereo",
+            "volumeExpr": "math.pow(math.min(q.ride_velocity() / 1.5, 1.0),2)"
+          },
+          {
+            "muffleEnabled": true,
+            "pitchExpr": "math.max(1.0 ,0.2 + math.pow(math.min(q.ride_velocity() / 1.5, 1.0),2))",
+            "playForNonPassengers": true,
+            "playForPassengers": false,
+            "soundLocation": "cobblemon:ride.loop.plumage.mono",
             "volumeExpr": "math.pow(math.min(q.ride_velocity() / 1.5, 1.0),2)"
           }
         ],
@@ -99,7 +117,7 @@
         "poseOffsets": [
           {
             "offset": {
-              "x": 3.7252903e-09,
+              "x": 3.7252903E-9,
               "y": -3.2956975,
               "z": 0.12137693
             },
@@ -159,7 +177,7 @@
           },
           {
             "offset": {
-              "x": 3.7252903e-09,
+              "x": 3.7252903E-9,
               "y": -3.2956975,
               "z": 0.12137693
             },
@@ -178,7 +196,7 @@
         "poseOffsets": [
           {
             "offset": {
-              "x": 3.7252903e-09,
+              "x": 3.7252903E-9,
               "y": -2.5119905,
               "z": 0.53009856
             },
@@ -238,7 +256,7 @@
           },
           {
             "offset": {
-              "x": 3.7252903e-09,
+              "x": 3.7252903E-9,
               "y": -2.5119905,
               "z": 0.53009856
             },
@@ -251,6 +269,11 @@
     ]
   },
   "behaviour": {
+    "combat": {
+      "willDefendOwner": true,
+      "willDefendSelf": true,
+      "willFlee": false
+    },
     "herd": {
       "maxSize": "9",
       "toleratedLeaders": [
@@ -264,23 +287,18 @@
       "fly": {
         "canFly": true
       },
-      "walk": {
-        "walkSpeed": 0.18
-      },
       "swim": {
         "avoidsWater": true
+      },
+      "walk": {
+        "walkSpeed": 0.18
       }
     },
     "resting": {
       "canSleep": true,
-      "light": "0-4",
       "drowsyChance": 0.0333,
+      "light": "0-4",
       "rouseChance": 0.0042
-    },
-    "combat": {
-      "willDefendSelf": true,
-      "willDefendOwner": true,
-      "willFlee": false
     }
   },
   "drops": {

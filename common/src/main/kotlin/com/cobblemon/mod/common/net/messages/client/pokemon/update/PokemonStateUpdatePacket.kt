@@ -21,7 +21,9 @@ class PokemonStateUpdatePacket(pokemon: () -> Pokemon?, value: PokemonState): Si
         value.writeToBuffer(buffer)
     }
 
-    override fun set(pokemon: Pokemon, value: PokemonState) { pokemon.state = value }
+    override fun set(pokemon: Pokemon, value: PokemonState) {
+        pokemon.state = value
+    }
 
     companion object {
         val ID = cobblemonResource("state_update")

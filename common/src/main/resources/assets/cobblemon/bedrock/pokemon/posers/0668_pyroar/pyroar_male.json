@@ -1,0 +1,28 @@
+{
+  "portraitScale": 1.89,
+  "portraitTranslation": [-1.12, 1.78, 0],
+  "profileScale": 0.51,
+  "profileTranslation": [0.12, 0.94, 0],
+  "rootBone": "pyroar_male",
+  "animations": {
+    "cry": "q.bedrock_stateful('pyroar_male', 'cry')"
+  },
+  "poses": {
+    "standing": {
+      "poseTypes": ["STAND", "FLOAT", "PORTRAIT", "PROFILE", "NONE"],
+      "animations": [
+        "q.look('head_ai', 1, 1, 30, -12.5, 25, -25)",
+        "q.bedrock('pyroar_male', 'ground_idle')"
+      ]
+    },
+    "walking": {
+      "poseName": "walking",
+      "poseTypes": ["WALK", "SWIM"],
+      "animations": [
+        "q.look('head_ai', 1, 1, 30, -12.5, 25, -25)",
+        "q.bedrock('pyroar_male', 'ground_idle')",
+        "q.quadruped_walk(1, 1, 'leg_front_left', 'leg_front_right', 'leg_back_left', 'leg_back_right')"
+      ]
+    }
+  }
+}

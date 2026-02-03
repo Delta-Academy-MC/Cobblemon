@@ -21,6 +21,7 @@
                 }
             },
             "condition": {
+                "canSeeSky": false,
                 "minSkyLight": 8,
                 "maxSkyLight": 15,
                 "biomes": [
@@ -28,15 +29,33 @@
                     "#cobblemon:is_ocean",
                     "#cobblemon:is_sky"
                 ]
-            },
-            "anticondition": {
-                "biomes": [
-                    "#cobblemon:is_freezing"
-                ]
             }
         },
         {
             "id": "kilowattrel-2",
+            "pokemon": "kilowattrel",
+            "type": "pokemon",
+            "spawnablePositionType": "grounded",
+            "bucket": "common",
+            "level": "25-49",
+            "weight": 0.2,
+            "weightMultiplier": {
+                "multiplier": 5.0,
+                "condition": {
+                    "isThundering": true
+                }
+            },
+            "condition": {
+                "canSeeSky": true,
+                "biomes": [
+                    "#cobblemon:is_island",
+                    "#cobblemon:is_ocean",
+                    "#cobblemon:is_sky"
+                ]
+            }
+        },
+        {
+            "id": "kilowattrel-3",
             "pokemon": "kilowattrel",
             "presets": [
                 "natural"
@@ -53,6 +72,7 @@
                 }
             },
             "condition": {
+                "canSeeSky": false,
                 "minSkyLight": 8,
                 "maxSkyLight": 15,
                 "biomes": [
@@ -68,7 +88,35 @@
             }
         },
         {
-            "id": "kilowattrel-3",
+            "id": "kilowattrel-4",
+            "pokemon": "kilowattrel",
+            "type": "pokemon",
+            "spawnablePositionType": "grounded",
+            "bucket": "common",
+            "level": "25-49",
+            "weight": 0.2,
+            "weightMultiplier": {
+                "multiplier": 5.0,
+                "condition": {
+                    "isThundering": true
+                }
+            },
+            "condition": {
+                "canSeeSky": true,
+                "biomes": [
+                    "#cobblemon:is_coast"
+                ],
+                "timeRange": "night"
+            },
+            "anticondition": {
+                "biomes": [
+                    "#cobblemon:is_beach",
+                    "#cobblemon:is_freezing"
+                ]
+            }
+        },
+        {
+            "id": "kilowattrel-5",
             "pokemon": "kilowattrel",
             "presets": [
                 "water"
@@ -102,7 +150,7 @@
             }
         },
         {
-            "id": "kilowattrel-5",
+            "id": "kilowattrel-7",
             "pokemon": "kilowattrel",
             "type": "pokemon",
             "spawnablePositionType": "fishing",
@@ -132,7 +180,7 @@
             }
         },
         {
-            "id": "kilowattrel-6",
+            "id": "kilowattrel-8",
             "pokemon": "kilowattrel",
             "type": "pokemon",
             "spawnablePositionType": "fishing",

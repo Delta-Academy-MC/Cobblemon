@@ -1,0 +1,43 @@
+{
+    "elements": [
+        {
+            "name": "plaque",
+            "from": [1, 4, 7],
+            "to": [15, 16, 9],
+            "faces": {
+                "north": {"uv": [1, 2, 15, 14], "texture": "#texture"},
+                "east": {"uv": [0, 2, 2, 14], "texture": "#texture"},
+                "south": {"uv": [15, 2, 1, 14], "texture": "#texture"},
+                "west": {"uv": [14, 2, 16, 14], "texture": "#texture"},
+                "up": {"uv": [15, 0, 1, 2], "texture": "#texture"},
+                "down": {"uv": [1, 14, 15, 16], "texture": "#texture", "cullface": "down"}
+            }
+        },
+        {
+            "name": "plaque",
+            "from": [2, 0, 7],
+            "to": [4, 4, 9],
+            "faces": {
+                "north": {"uv": [14, 11, 16, 15], "texture": "#texture"},
+                "east": {"uv": [14, 11, 16, 15], "texture": "#texture"},
+                "south": {"uv": [14, 11, 16, 15], "texture": "#texture"},
+                "west": {"uv": [14, 11, 16, 15], "texture": "#texture"},
+                "up": {"uv": [14, 11, 16, 13], "texture": "#texture"},
+                "down": {"uv": [14, 12, 16, 14], "texture": "#texture"}
+            }
+        },
+        {
+            "name": "plaque",
+            "from": [12, 0, 7],
+            "to": [14, 4, 9],
+            "faces": {
+                "north": {"uv": [0, 11, 2, 15], "texture": "#texture"},
+                "east": {"uv": [0, 11, 2, 15], "texture": "#texture"},
+                "south": {"uv": [0, 11, 2, 15], "texture": "#texture"},
+                "west": {"uv": [0, 11, 2, 15], "texture": "#texture"},
+                "up": {"uv": [0, 11, 2, 13], "texture": "#texture"},
+                "down": {"uv": [0, 12, 2, 14], "texture": "#texture"}
+            }
+        }
+    ]
+}

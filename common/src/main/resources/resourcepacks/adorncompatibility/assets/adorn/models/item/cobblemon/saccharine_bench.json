@@ -1,0 +1,8 @@
+{
+  "parent": "adorn:item/templates/bench",
+  "textures": {
+    "planks": "cobblemon:block/wood/saccharine_planks",
+    "log": "cobblemon:block/wood/saccharine_log",
+    "end": "cobblemon:block/wood/saccharine_log_top"
+  }
+}

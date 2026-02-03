@@ -1517,73 +1517,136 @@
       { "name": "cobblemon:animation/wings/steel_wing_flap_medium_8", "volume": 0.25 }
     ]
   },
-  "ride.loop.wind": {
+  "ride.loop.wind.mono": {
     "sounds": [
       {
-        "name": "cobblemon:ride/loop/wind_loop",
+        "name": "cobblemon:ride/loop/wind_loop_mono",
         "stream": true,
         "attenuation_distance": 48.0,
         "volume": 0.15
       }
     ]
   },
-  "ride.loop.leather": {
+  "ride.loop.wind.stereo": {
     "sounds": [
       {
-        "name": "cobblemon:ride/loop/leather_flight_loop",
+        "name": "cobblemon:ride/loop/wind_loop_stereo",
+        "stream": true,
+        "volume": 0.04
+      }
+    ]
+  },
+  "ride.loop.leather.mono": {
+    "sounds": [
+      {
+        "name": "cobblemon:ride/loop/leather_flight_loop_mono",
         "stream": true,
         "attenuation_distance": 48.0,
         "volume": 0.25
       }
     ]
   },
-  "ride.loop.plumage": {
+  "ride.loop.leather.stereo": {
     "sounds": [
       {
-        "name": "cobblemon:ride/loop/plumage_flight_loop",
+        "name": "cobblemon:ride/loop/leather_flight_loop_stereo",
+        "stream": true,
+        "volume": 0.05
+      }
+    ]
+  },
+  "ride.loop.plumage.mono": {
+    "sounds": [
+      {
+        "name": "cobblemon:ride/loop/plumage_flight_loop_mono",
         "stream": true,
         "attenuation_distance": 48.0,
         "volume": 0.25
       }
     ]
   },
-  "ride.loop.saucer": {
+  "ride.loop.plumage.stereo": {
     "sounds": [
       {
-        "name": "cobblemon:ride/loop/saucer_flight_loop",
+        "name": "cobblemon:ride/loop/plumage_flight_loop_stereo",
+        "stream": true,
+        "volume": 0.05
+      }
+    ]
+  },
+  "ride.loop.saucer.mono": {
+    "sounds": [
+      {
+        "name": "cobblemon:ride/loop/saucer_flight_loop_mono",
         "stream": true,
         "attenuation_distance": 48.0,
         "volume": 0.25
       }
     ]
   },
-  "ride.loop.rocket": {
+  "ride.loop.saucer.stereo": {
     "sounds": [
       {
-        "name": "cobblemon:ride/loop/rocket_flight_loop",
+        "name": "cobblemon:ride/loop/saucer_flight_loop_stereo",
+        "stream": true,
+        "volume": 0.1
+      }
+    ]
+  },
+  "ride.loop.rocket.mono": {
+    "sounds": [
+      {
+        "name": "cobblemon:ride/loop/rocket_flight_loop_mono",
         "stream": true,
         "attenuation_distance": 48.0,
         "volume": 0.4
       }
     ]
   },
-  "ride.loop.water_surface": {
+  "ride.loop.rocket.stereo": {
     "sounds": [
       {
-        "name": "cobblemon:ride/loop/water_surface_loop",
+        "name": "cobblemon:ride/loop/rocket_flight_loop_stereo",
+        "stream": true,
+        "volume": 0.3
+      }
+    ]
+  },
+  "ride.loop.water_surface.mono": {
+    "sounds": [
+      {
+        "name": "cobblemon:ride/loop/water_surface_loop_mono",
         "stream": true,
         "attenuation_distance": 32.0,
         "volume": 0.4
       }
     ]
   },
-  "ride.loop.underwater": {
+  "ride.loop.water_surface.stereo": {
     "sounds": [
       {
-        "name": "cobblemon:ride/loop/underwater_loop",
+        "name": "cobblemon:ride/loop/water_surface_loop_stereo",
+        "stream": true,
+        "volume": 0.13
+      }
+    ]
+  },
+  "ride.loop.underwater.mono": {
+    "sounds": [
+      {
+        "name": "cobblemon:ride/loop/underwater_loop_mono",
         "stream": true,
         "attenuation_distance": 16.0,
         "volume": 0.4
+      }
+    ]
+  },
+  "ride.loop.underwater.stereo": {
+    "sounds": [
+      {
+        "name": "cobblemon:ride/loop/underwater_loop_stereo",
+        "stream": true,
+        "volume": 0.2
       }
     ]
   },

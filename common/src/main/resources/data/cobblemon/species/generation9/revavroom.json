@@ -46,7 +46,7 @@
   "hitbox": {
     "height": 1.55,
     "fixed": false,
-    "width": 0.7
+    "width": 1.4
   },
   "riding": {
     "behaviours": {
@@ -224,6 +224,11 @@
     ]
   },
   "behaviour": {
+    "combat": {
+      "willDefendOwner": true,
+      "willDefendSelf": true,
+      "willFlee": false
+    },
     "herd": {
       "maxSize": "5",
       "toleratedLeaders": [
@@ -234,23 +239,18 @@
       ]
     },
     "moving": {
-      "swim": {
-        "avoidsWater": true
-      },
       "fly": {
         "canFly": true
+      },
+      "swim": {
+        "avoidsWater": true
       }
     },
     "resting": {
       "canSleep": true,
-      "light": "0-4",
       "drowsyChance": 0.0333,
+      "light": "0-4",
       "rouseChance": 0.0042
-    },
-    "combat": {
-      "willDefendSelf": true,
-      "willDefendOwner": true,
-      "willFlee": false
     }
   },
   "drops": {

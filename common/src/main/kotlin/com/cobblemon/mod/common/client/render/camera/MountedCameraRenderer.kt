@@ -82,7 +82,6 @@ object MountedCameraRenderer {
         var offset = Vec3(0.0, currEyeHeight - (driver.bbHeight / 2), 0.0)
         var eyeOffset = Vec3(0.0, currEyeHeight - (driver.bbHeight / 2), 0.0)
 
-        val shouldFlip = !(vehicleController.active && vehicleController.orientation != null) // Do not flip the offset for 3rd person reverse unless we are using normal mc camera rotation.
         val isFirstPerson = Minecraft.getInstance().options.cameraType == CameraType.FIRST_PERSON
 
         eyeOffset = eyeOffset.add(getFirstPersonOffset(model, locatorName))
@@ -91,9 +90,9 @@ object MountedCameraRenderer {
             if (isFirstPerson) {
                 getFirstPersonOffset(model, locatorName)
             } else /* if (Cobblemon.config.thirdPersonViewBobbing) */ {
-                getThirdPersonOffset(thirdPersonReverse, model.thirdPersonCameraOffset, locatorName, shouldFlip)
+                getThirdPersonOffset(thirdPersonReverse, model.thirdPersonCameraOffset, locatorName)
             } /* else {
-                getThirdPersonOffset(thirdPersonReverse, model.thirdPersonCameraOffsetNoViewBobbing, locatorName, shouldFlip)
+                getThirdPersonOffset(thirdPersonReverse, model.thirdPersonCameraOffsetNoViewBobbing, locatorName)
             } */
         )
 
@@ -325,19 +324,20 @@ object MountedCameraRenderer {
         thirdPersonReverse: Boolean,
         cameraOffsets: Map<String, Vec3>,
         locatorName: String,
-        shouldFlip: Boolean = true
     ): Vec3 {
         val offset = if (thirdPersonReverse && cameraOffsets.containsKey(locatorName + "_reverse")) {
             cameraOffsets[locatorName + "_reverse"]!!
+        } else if (thirdPersonReverse && cameraOffsets.containsKey("seat_default_reverse")) {
+            cameraOffsets[locatorName + "seat_default_reverse"]!!
         } else if (cameraOffsets.containsKey(locatorName)) {
             cameraOffsets[locatorName]!!
+        } else if (cameraOffsets.containsKey("seat_default")) {
+            cameraOffsets["seat_default"]!!
         } else {
             Vec3.ZERO
         }
 
-        // Don't need to account for this since orientation is derived from camera rotation and that z is already flipped.
-        // Flip only when not on a rollable.
-        return if (thirdPersonReverse && shouldFlip) offset.multiply(1.0, 1.0, -1.0) else offset
+        return if (thirdPersonReverse) offset.multiply(1.0, 1.0, -1.0) else offset
     }
 
     private fun getFirstPersonOffset(model: PosableModel, locatorName: String): Vec3 {
@@ -345,6 +345,8 @@ object MountedCameraRenderer {
 
         return if (cameraOffsets.containsKey(locatorName)) {
             cameraOffsets[locatorName]!!
+        } else if (cameraOffsets.containsKey("seat_default")) {
+            cameraOffsets["seat_default"]!!
         } else {
             Vec3.ZERO
         }

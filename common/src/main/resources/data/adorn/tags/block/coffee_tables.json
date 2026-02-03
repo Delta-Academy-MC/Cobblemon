@@ -1,6 +1,1 @@
-{
-  "replace": false,
-  "values": [
-    { "id": "adorn:cobblemon/apricorn_coffee_table", "required": false }
-  ]
-}
+{"replace":false,"values":[{"id":"adorn:cobblemon/apricorn_coffee_table","required":false}, {"id":"adorn:cobblemon/saccharine_coffee_table","required":false}]}

@@ -1,0 +1,7 @@
+{
+  "parent": "cobblemon:block/full_heal_0",
+  "textures": {
+        "texture": "cobblemon:block/decorative/ice_heal",
+        "particle": "cobblemon:block/decorative/ice_heal"
+  }
+}

@@ -21,6 +21,7 @@ import com.cobblemon.mod.common.util.isInBattle
 import com.cobblemon.mod.common.util.playSoundServer
 import com.cobblemon.mod.common.util.toVec3d
 import com.cobblemon.mod.common.util.voxelShape
+import com.cobblemon.mod.common.util.rotateShape
 import com.mojang.serialization.MapCodec
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
@@ -71,10 +72,10 @@ class PastureBlock(settings: Properties): BaseEntityBlock(settings), SimpleWater
         private val WEST_AABB_TOP = buildCollider(top = true, Direction.WEST)
         private val EAST_AABB_TOP = buildCollider(top = true, Direction.EAST)
 
-        private val SOUTH_AABB_BOTTOM = buildCollider(top = false, Direction.SOUTH)
-        private val NORTH_AABB_BOTTOM = buildCollider(top = false, Direction.NORTH)
-        private val WEST_AABB_BOTTOM = buildCollider(top = false, Direction.WEST)
         private val EAST_AABB_BOTTOM = buildCollider(top = false, Direction.EAST)
+        private val SOUTH_AABB_BOTTOM = rotateShape(Direction.EAST, Direction.SOUTH, EAST_AABB_BOTTOM)
+        private val NORTH_AABB_BOTTOM = rotateShape(Direction.EAST, Direction.NORTH, EAST_AABB_BOTTOM)
+        private val WEST_AABB_BOTTOM = rotateShape(Direction.EAST, Direction.WEST, EAST_AABB_BOTTOM)
 
         private fun buildCollider(top: Boolean, direction: Direction): VoxelShape {
             if (top) {

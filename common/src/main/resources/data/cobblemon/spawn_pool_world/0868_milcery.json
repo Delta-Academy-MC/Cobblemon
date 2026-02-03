@@ -30,12 +30,17 @@
         {
             "id": "milcery-2",
             "pokemon": "milcery",
+            "presets": [
+                "natural"
+            ],
             "type": "pokemon",
             "spawnablePositionType": "grounded",
             "bucket": "common",
             "level": "2-27",
             "weight": 1.9,
             "condition": {
+                "minSkyLight": 8,
+                "maxSkyLight": 15,
                 "biomes": [
                     "#aether:is_aether",
                     "#cobblemon:is_overworld"
@@ -54,12 +59,17 @@
         {
             "id": "milcery-3",
             "pokemon": "milcery",
+            "presets": [
+                "natural"
+            ],
             "type": "pokemon",
             "spawnablePositionType": "grounded",
             "bucket": "uncommon",
             "level": "2-27",
             "weight": 1.84,
             "condition": {
+                "minSkyLight": 8,
+                "maxSkyLight": 15,
                 "biomes": [
                     "#aether:is_aether",
                     "#cobblemon:is_overworld"
@@ -79,7 +89,7 @@
             "id": "milcery-4",
             "pokemon": "milcery",
             "presets": [
-                "mansion"
+                "mansion_dining"
             ],
             "type": "pokemon",
             "spawnablePositionType": "grounded",
@@ -90,11 +100,6 @@
                 "canSeeSky": false,
                 "biomes": [
                     "#cobblemon:is_overworld"
-                ],
-                "neededNearbyBlocks": [
-                    "minecraft:light_grey_carpet",
-                    "minecraft:magenta_carpet",
-                    "minecraft:white_carpet"
                 ]
             }
         }

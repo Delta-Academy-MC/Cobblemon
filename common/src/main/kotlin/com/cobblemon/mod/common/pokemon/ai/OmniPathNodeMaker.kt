@@ -562,8 +562,8 @@ class OmniPathNodeMaker : NodeEvaluator() {
 ////            PathType.WALKABLE
 ////        } else if (blockState.canPathfindThrough(world, pos, NavigationType.AIR) && !blockStateBelow.isSideSolid(world, below, Direction.UP, SideShapeType.FULL)) {
 ////            PathType.OPEN
-//        } else if (blockState.`is`(BlockTags.LEAVES) && blockState.block == CobblemonBlocks.SACCHARINE_LEAVES && canPathThroughLeaves()) {
-//            return PathType.OPEN
+        if (canPathThroughLeaves() && blockState.block == CobblemonBlocks.SACCHARINE_LEAVES)
+            return PathType.OPEN
 //        } else PathType.BLOCKED
 
         // This is the 1.6.1 logic but with some optimizations
@@ -633,9 +633,6 @@ class OmniPathNodeMaker : NodeEvaluator() {
             pfContext, x, y, z, sizeX, sizeY, sizeZ, canOpenDoors, canPassDoors, set, PathType.BLOCKED, BlockPos(x, y, z), returnedEarlyPathType
         )
 
-        if (PathType.LEAVES in set) {
-            return PathType.OPEN
-        }
 
         if (PathType.FENCE in set) {
             return PathType.FENCE
@@ -755,7 +752,7 @@ class OmniPathNodeMaker : NodeEvaluator() {
         } else if (type == PathType.RAIL && block !is BaseRailBlock && pfContext.getCachedBlockState(pos.below()).block !is BaseRailBlock) {
             PathType.UNPASSABLE_RAIL
         } else if (type == PathType.LEAVES) {
-            if (blockState.block === CobblemonBlocks.SACCHARINE_LEAVES && canPathThroughLeaves()) {
+            if (canPathThroughLeaves() && blockState.block === CobblemonBlocks.SACCHARINE_LEAVES) {
                 PathType.OPEN
             } else {
                 PathType.BLOCKED

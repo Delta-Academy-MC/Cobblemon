@@ -9,6 +9,7 @@
 package com.cobblemon.mod.common.net.serverhandling.riding
 
 import com.cobblemon.mod.common.api.net.ServerNetworkPacketHandler
+import com.cobblemon.mod.common.api.riding.RidingStyle
 import com.cobblemon.mod.common.entity.pokemon.PokemonEntity
 import com.cobblemon.mod.common.net.messages.server.riding.DismountPokemonPacket
 import net.minecraft.server.MinecraftServer
@@ -25,12 +26,16 @@ object DismountPokemonPacketHandler : ServerNetworkPacketHandler<DismountPokemon
 
         val pokemon = player.vehicle as PokemonEntity
         if (!canPlayerStopRidingPokemon(pokemon, player)) return
+
+        val isRidingInAir = pokemon.ridingController?.context?.style == RidingStyle.AIR
+
         if (pokemon.controllingPassenger == player) {
             pokemon.passengers.forEach { it.stopRiding() }
-        }
-        else {
+        } else {
             player.stopRiding()
         }
+
+        if (isRidingInAir) pokemon.setFlying(true)
     }
 
     private fun canPlayerStopRidingPokemon(pokemon: PokemonEntity, player: ServerPlayer): Boolean {

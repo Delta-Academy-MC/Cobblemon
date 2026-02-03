@@ -40,6 +40,7 @@ import com.cobblemon.mod.common.util.asTranslated
 import com.cobblemon.mod.common.util.cobblemonResource
 import com.cobblemon.mod.common.util.isInventoryKeyPressed
 import com.cobblemon.mod.common.util.lang
+import com.cobblemon.mod.common.util.toAssetPath
 import com.mojang.blaze3d.platform.InputConstants
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.GuiGraphics
@@ -463,7 +464,7 @@ class PCGUI(
             )
 
             // Poké Ball
-            val ballResource = cobblemonResource("textures/item/poke_balls/" + pokemon.caughtBall.name.path + ".png")
+            val ballResource = pokemon.caughtBall.name.toAssetPath("textures/item/poke_balls/", ".png")
             blitk(
                 matrixStack = matrices,
                 texture = ballResource,

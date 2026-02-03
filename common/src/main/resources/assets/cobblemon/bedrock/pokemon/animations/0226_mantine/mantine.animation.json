@@ -271,6 +271,119 @@
 				}
 			}
 		},
+		"animation.mantine.ride_jump": {
+			"loop": true,
+			"bones": {
+				"torso": {
+					"rotation": ["0+q.r.velocity_y(0)*-30+math.sin(q.anim_time*90*16)*1", 0, 0],
+					"position": [0, "0+math.sin(q.anim_time*90*16-90)*0.1", 0]
+				},
+				"antenna_right": {
+					"rotation": ["-10+q.r.velocity_y(0)*20+math.sin(q.anim_time*90*16-90)*3", 15, -12.5]
+				},
+				"antenna_right2": {
+					"rotation": ["0+math.sin(q.anim_time*90*16-150)*3", 0, 17.5]
+				},
+				"antenna_right3": {
+					"rotation": ["0+math.sin(q.anim_time*90*16-210)*8", 0, 10]
+				},
+				"antenna_left": {
+					"rotation": ["-10+q.r.velocity_y(0)*20+math.sin(q.anim_time*90*16-90)*3", -15, 12.5]
+				},
+				"antenna_left2": {
+					"rotation": ["0+math.sin(q.anim_time*90*16-150)*3", 0, -17.5]
+				},
+				"antenna_left3": {
+					"rotation": ["0+math.sin(q.anim_time*90*16-210)*8", 0, -10]
+				},
+				"wing_right": {
+					"rotation": [0, 0, "-2.5+q.r.velocity_y(0)*-20+math.sin(q.anim_time*90*16-90)*-1"]
+				},
+				"wing_right2": {
+					"rotation": [0, 0, "-7.5+q.r.velocity_y(0)*-10+math.sin(q.anim_time*90*16-120)*-1"]
+				},
+				"wing_right3": {
+					"rotation": [0, 0, "-5+q.r.velocity_y(0)*-5+math.sin(q.anim_time*90*16-180)*-1"]
+				},
+				"wing_right4": {
+					"rotation": [0, 0, "5+q.r.velocity_y(0)*-5+math.sin(q.anim_time*90*16-250)*-3"]
+				},
+				"wing_left": {
+					"rotation": [0, 0, "2.5+q.r.velocity_y(0)*20+math.sin(q.anim_time*90*16-90)*1"]
+				},
+				"wing_left2": {
+					"rotation": [0, 0, "7.5+q.r.velocity_y(0)*10+math.sin(q.anim_time*90*16-120)*1"]
+				},
+				"wing_left3": {
+					"rotation": [0, 0, "5+q.r.velocity_y(0)*5+math.sin(q.anim_time*90*16-180)*1"]
+				},
+				"wing_left4": {
+					"rotation": [0, 0, "-5+q.r.velocity_y(0)*5+math.sin(q.anim_time*90*16-250)*3"]
+				},
+				"tail": {
+					"rotation": ["-12.5+q.r.velocity_y(0)*-10+math.sin(q.anim_time*90*16-45)*1", 0, 0]
+				},
+				"tail2": {
+					"rotation": ["5+q.r.velocity_y(0)*-10+math.sin(q.anim_time*90*16-90)*1", 0, 0]
+				},
+				"tail3": {
+					"rotation": ["7.5+q.r.velocity_y(0)*-10+math.sin(q.anim_time*90*16-130)*3", 0, 0]
+				},
+				"tail4": {
+					"rotation": ["10+q.r.velocity_y(0)*-10+math.sin(q.anim_time*90*16-180)*6", 0, 0]
+				}
+			}
+		},
+		"animation.mantine.ride_water_swim": {
+			"loop": true,
+			"bones": {
+				"torso": {
+					"rotation": ["0+q.r.pitch_change(0)*-8", "0+q.r.yaw_change(0)*12", "0+q.r.roll_change(0)*-12"]
+				},
+				"antenna_right2": {
+					"rotation": [0, 0, "0+q.r.yaw_change(0)*12"]
+				},
+				"antenna_left2": {
+					"rotation": [0, 0, "0+q.r.yaw_change(0)*12"]
+				},
+				"wing_right": {
+					"rotation": [0, "0+q.r.pitch_change(0)*8", "0+q.r.roll_change(0)*12"]
+				},
+				"wing_right2": {
+					"rotation": [0, 0, "0+q.r.roll_change(0)*12"]
+				},
+				"wing_right3": {
+					"rotation": [0, 0, "0+q.r.roll_change(0)*12"]
+				},
+				"wing_right4": {
+					"rotation": [0, 0, "0+q.r.roll_change(0)*12"]
+				},
+				"wing_left": {
+					"rotation": [0, "0+q.r.pitch_change(0)*-8", "0+q.r.roll_change(0)*12"]
+				},
+				"wing_left2": {
+					"rotation": [0, 0, "0+q.r.roll_change(0)*12"]
+				},
+				"wing_left3": {
+					"rotation": [0, 0, "0+q.r.roll_change(0)*12"]
+				},
+				"wing_left4": {
+					"rotation": [0, 0, "0+q.r.roll_change(0)*12"]
+				},
+				"tail": {
+					"rotation": ["0+q.r.pitch_change(0)*-8", "0+q.r.yaw_change(0)*-12", 0]
+				},
+				"tail2": {
+					"rotation": ["0+q.r.pitch_change(0)*-8", "0+q.r.yaw_change(0)*-4", 0]
+				},
+				"tail3": {
+					"rotation": ["0+q.r.pitch_change(0)*-8", 0, 0]
+				},
+				"tail4": {
+					"rotation": ["0+q.r.pitch_change(0)*-8", 0, 0]
+				}
+			}
+		},
 		"animation.mantine.sleep": {
 			"loop": true,
 			"animation_length": 4,
@@ -588,7 +701,16 @@
 				}
 			}
 		},
+		"animation.mantine.walkspeedtest": {
+			"loop": true,
+			"bones": {
+				"mantine": {
+					"position": [0, 0, "-q.anim_time*90*0.4"]
+				}
+			}
+		},
 		"animation.mantine.cry": {
+			"animation_length": 1.25,
 			"sound_effects": {
 				"0.0417": {
 					"effect": "pokemon.mantine.cry"

@@ -1,0 +1,7 @@
+{
+  "parent": "cobblemon:block/template_wall_plane",
+    "textures": {
+      "texture": "cobblemon:block/decorative/weakness_policy",
+      "particle": "cobblemon:block/decorative/weakness_policy"
+    }
+}

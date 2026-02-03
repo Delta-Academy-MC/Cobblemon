@@ -74,7 +74,7 @@
         "poseOffsets": [
           {
             "offset": {
-              "x": 0.00012022187,
+              "x": 1.2022187E-4,
               "y": -3.0589306,
               "z": -0.023141712
             },
@@ -147,6 +147,12 @@
     ]
   },
   "behaviour": {
+    "combat": {
+      "willDefendOwner": true,
+      "willDefendSelf": true,
+      "willFlee": false
+    },
+    "fireImmune": true,
     "herd": {
       "maxSize": "2"
     },
@@ -159,16 +165,10 @@
         "walkSpeed": 0.2
       }
     },
-    "combat": {
-      "willDefendSelf": true,
-      "willDefendOwner": true,
-      "willFlee": false
-    },
     "resting": {
       "drowsyChance": 0.0333,
       "rouseChance": 0.0042
-    },
-    "fireImmune": true
+    }
   },
   "drops": {
     "amount": 2,

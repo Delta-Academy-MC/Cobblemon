@@ -1,0 +1,22 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "CC",
+	"ID",
+        "II"
+    ],
+    "key": {
+        "I": {
+            "tag": "c:ingots/iron"
+        },
+        "C": {
+            "tag": "c:chains"
+        },
+        "D": {
+            "tag": "c:dyes/black"
+        }
+    },
+    "result": {
+        "id": "cobblemon:black_plaque"
+    }
+}

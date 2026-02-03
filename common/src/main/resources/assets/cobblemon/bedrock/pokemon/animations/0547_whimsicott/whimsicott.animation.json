@@ -11,98 +11,91 @@
 					"rotation": [5, 0, 0]
 				},
 				"head": {
-					"rotation": [-5, 0, 0]
+					"rotation": [-7.5, 0, 0]
 				},
 				"arm_right": {
-					"rotation": [0, -20, -47.5]
+					"rotation": [0, -10, -40]
 				},
 				"arm_left": {
-					"rotation": [0, 20, 47.5]
+					"rotation": [0, 10, 40]
+				},
+				"leg_left": {
+					"rotation": [11, 0, 0]
+				},
+				"leg_right": {
+					"rotation": [11, 0, 0]
+				},
+				"body": {
+					"position": [0, 0, -0.5]
 				}
 			}
 		},
 		"animation.whimsicott.blink": {
-			"animation_length": 0.16667,
+			"animation_length": 0.1667,
 			"bones": {
 				"eyelid_right": {
 					"position": {
 						"0.0": [0, 0, -0.1],
-						"0.125": [0, 0, -0.1],
-						"0.1667": [0, 0, 0]
+						"0.1667": {
+							"pre": [0, 0, -0.1],
+							"post": [0, 0, 0]
+						}
+					}
+				},
+				"eye_right": {
+					"position": {
+						"0.0": [0, 0, 0.1],
+						"0.1667": {
+							"pre": [0, 0, 0.1],
+							"post": [0, 0, 0]
+						}
+					}
+				},
+				"eyes_closed_ditto": {
+					"position": {
+						"0.0": [0, 0, -0.1],
+						"0.1667": {
+							"pre": [0, 0, -0.1],
+							"post": [0, 0, 0]
+						}
+					}
+				},
+				"eye_left": {
+					"position": {
+						"0.0": [0, 0, 0.1],
+						"0.1667": {
+							"pre": [0, 0, 0.1],
+							"post": [0, 0, 0]
+						}
 					}
 				},
 				"eyelid_left": {
 					"position": {
 						"0.0": [0, 0, -0.1],
-						"0.125": [0, 0, -0.1],
-						"0.1667": [0, 0, 0]
+						"0.1667": {
+							"pre": [0, 0, -0.1],
+							"post": [0, 0, 0]
+						}
 					}
 				}
 			}
 		},
 		"animation.whimsicott.cry": {
-			"animation_length": 1.16667,
-			"bones": {
-				"neck": {
-					"rotation": {
-						"0.0": {
-							"post": [0, 0, 0],
-							"lerp_mode": "catmullrom"
-						},
-						"0.1667": {
-							"post": [-7.5, 0, 0],
-							"lerp_mode": "catmullrom"
-						},
-						"0.5": {
-							"post": [-7.5, 0, 0],
-							"lerp_mode": "catmullrom"
-						},
-						"1.1667": {
-							"post": [0, 0, 0],
-							"lerp_mode": "catmullrom"
-						}
-					}
-				},
-				"head": {
-					"rotation": {
-						"0.0": {
-							"post": [0, 0, 0],
-							"lerp_mode": "catmullrom"
-						},
-						"0.1667": {
-							"post": [-7.5, 0, 0],
-							"lerp_mode": "catmullrom"
-						},
-						"0.5": {
-							"post": [-7.5, 0, 0],
-							"lerp_mode": "catmullrom"
-						},
-						"1.1667": {
-							"post": [0, 0, 0],
-							"lerp_mode": "catmullrom"
-						}
-					}
-				},
-				"mouth_closed": {
-					"position": {
-						"0.0": [0, 0, 0],
-						"0.0833": [0, 0, 0.1],
-						"0.9167": [0, 0, 0.1],
-						"1.0": [0, 0, 0]
-					}
-				},
-				"mouth_open": {
-					"position": {
-						"0.0": [0, 0, 0],
-						"0.0833": [0, 0, -0.1],
-						"0.9167": [0, 0, -0.1],
-						"1.0": [0, 0, 0]
-					}
-				}
-			},
+			"animation_length": 1.0417,
 			"sound_effects": {
 				"0.0833": {
 					"effect": "pokemon.whimsicott.cry"
+				}
+			}
+		},
+		"animation.whimsicott.ditto_face": {
+			"loop": true,
+			"bones": {
+				"face": {
+					"position": [0, 0, 1]
+				},
+				"face_ditto": {
+					"position": [0, 0, -0.1]
 				}
 			}
 		}

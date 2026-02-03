@@ -11,11 +11,15 @@ package com.cobblemon.mod.common.mixin;
 import com.cobblemon.mod.common.Cobblemon;
 import com.cobblemon.mod.common.OrientationControllable;
 import com.cobblemon.mod.common.PlayerSpawnerAccessor;
+import com.cobblemon.mod.common.api.riding.RidingStyle;
 import com.cobblemon.mod.common.api.spawning.spawner.PlayerSpawner;
 import com.cobblemon.mod.common.api.spawning.spawner.PlayerSpawnerFactory;
+import com.cobblemon.mod.common.api.stats.CobblemonStats;
 import com.cobblemon.mod.common.entity.pokemon.PokemonEntity;
 import com.cobblemon.mod.common.world.gamerules.CobblemonGameRules;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -88,5 +92,33 @@ public abstract class ServerPlayerMixin implements PlayerSpawnerAccessor {
     @ModifyExpressionValue(method = "addAdditionalSaveData", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;hasExactlyOnePlayerPassenger()Z"))
     private boolean cobblemon$cancelSavingPokemonMounts(boolean original, @Local(ordinal=0) Entity entity) {
         return original && !(entity instanceof PokemonEntity);
+    }
+
+    @WrapOperation(method = "checkRidingStatistics", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerPlayer;getVehicle()Lnet/minecraft/world/entity/Entity;"))
+    public Entity cobblemon$checkRidingStatistics(ServerPlayer player, Operation<Entity> original, @Local int distance) {
+        var entity = original.call(player);
+        if (!(entity instanceof PokemonEntity pokemonEntity)) {
+            return entity;
+        }
+
+        var ridingController = pokemonEntity.getRidingController();
+        if (ridingController == null) return entity;
+
+        var activeContext = ridingController.getContext();
+        if (activeContext == null) return entity;
+
+        var ridingStyle = activeContext.getStyle();
+        CobblemonStats.CobblemonStat stat = switch (ridingStyle) {
+            case RidingStyle.LAND -> CobblemonStats.RIDING_LAND;
+            case RidingStyle.AIR -> CobblemonStats.RIDING_AIR;
+            case RidingStyle.LIQUID -> CobblemonStats.RIDING_LIQUID;
+            default -> null;
+        };
+
+        if (stat != null) {
+            player.awardStat(CobblemonStats.getStat(stat), distance);
+        }
+
+        return entity;
     }
 }

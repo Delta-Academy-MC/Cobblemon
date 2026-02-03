@@ -17,7 +17,6 @@ import com.cobblemon.mod.common.api.item.HealingSource
 import com.cobblemon.mod.common.api.item.PokemonSelectingItem
 import com.cobblemon.mod.common.api.molang.ExpressionLike
 import com.cobblemon.mod.common.battles.pokemon.BattlePokemon
-import com.cobblemon.mod.common.item.CobblemonItem
 import com.cobblemon.mod.common.item.battle.BagItem
 import com.cobblemon.mod.common.pokemon.Pokemon
 import com.cobblemon.mod.common.util.asExpressionLike
@@ -31,12 +30,12 @@ import net.minecraft.world.item.Items
 import net.minecraft.server.level.ServerPlayer
 import net.minecraft.world.InteractionHand
 import net.minecraft.world.InteractionResultHolder
+import net.minecraft.world.item.ItemNameBlockItem
 import net.minecraft.world.item.Rarity
 import net.minecraft.world.level.Level
+import net.minecraft.world.level.block.Block
 
-class PotionItem(
-    val type: PotionType
-) : CobblemonItem(Properties().apply {
+class PotionItem(val type: PotionType, block: Block) : ItemNameBlockItem(block, Properties().apply {
     when (type.name) {
         PotionType.MAX_POTION.name -> rarity(Rarity.UNCOMMON)
         PotionType.FULL_RESTORE.name -> rarity(Rarity.UNCOMMON)

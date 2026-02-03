@@ -30,21 +30,13 @@ import com.cobblemon.mod.common.api.events.battles.BattleStartedEvent
 import com.cobblemon.mod.common.api.events.battles.BattleVictoryEvent
 import com.cobblemon.mod.common.api.events.fishing.PokerodCastEvent
 import com.cobblemon.mod.common.api.events.fishing.PokerodReelEvent
-import com.cobblemon.mod.common.api.events.pokemon.CollectEggEvent
-import com.cobblemon.mod.common.api.events.pokemon.FossilRevivedEvent
-import com.cobblemon.mod.common.api.events.pokemon.HatchEggEvent
-import com.cobblemon.mod.common.api.events.pokemon.LevelUpEvent
-import com.cobblemon.mod.common.api.events.pokemon.PokemonCapturedEvent
-import com.cobblemon.mod.common.api.events.pokemon.PokemonGainedEvent
-import com.cobblemon.mod.common.api.events.pokemon.RidePokemonEvent
-import com.cobblemon.mod.common.api.events.pokemon.TradeEvent
+import com.cobblemon.mod.common.api.events.pokemon.*
 import com.cobblemon.mod.common.api.events.pokemon.evolution.EvolutionCompleteEvent
 import com.cobblemon.mod.common.api.events.storage.ReleasePokemonEvent
+import com.cobblemon.mod.common.api.stats.CobblemonStats.getStat
 import com.cobblemon.mod.common.util.getPlayer
-import net.minecraft.core.registries.BuiltInRegistries
-import net.minecraft.resources.ResourceLocation
 import net.minecraft.server.level.ServerPlayer
-import java.util.UUID
+import java.util.*
 
 object StatHandler : EventHandler {
     override fun registerListeners() {
@@ -100,13 +92,13 @@ object StatHandler : EventHandler {
 
     fun onBattleStart(event : BattleStartedEvent) {
         event.battle.players.forEach { player ->
-            player.awardStat(this.getStat(getStat(Cobblemon.statistics.BATTLES_TOTAL)))
+            player.awardStat(getStat(Cobblemon.statistics.BATTLES_TOTAL))
         }
     }
 
     fun onDexEntryGain(event : PokemonGainedEvent) {
         val player = event.pokemon.getOwnerPlayer()
-        player?.awardStat(getStat(getStat(Cobblemon.statistics.DEX_ENTRIES)))
+        player?.awardStat(getStat(Cobblemon.statistics.DEX_ENTRIES))
     }
 
     fun onCollectEgg(event : CollectEggEvent) {
@@ -138,13 +130,5 @@ object StatHandler : EventHandler {
 
     fun onReelIn(event : PokerodReelEvent) {
         event.player.awardStat(getStat(Cobblemon.statistics.REEL_INS))
-    }
-
-    fun getStat(resourceLocation: ResourceLocation) : ResourceLocation {
-        val stat = BuiltInRegistries.CUSTOM_STAT.get(resourceLocation)
-        if (stat == null) {
-            Cobblemon.LOGGER.error("Could not find stat with id {}", resourceLocation)
-        }
-        return stat ?: throw NullPointerException("Could not find stat with id $resourceLocation")
     }
 }

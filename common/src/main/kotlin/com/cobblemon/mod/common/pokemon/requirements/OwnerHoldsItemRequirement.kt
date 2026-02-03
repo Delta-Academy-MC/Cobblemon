@@ -12,11 +12,9 @@ import com.cobblemon.mod.common.api.pokemon.requirement.OwnerQueryRequirement
 import com.cobblemon.mod.common.entity.npc.NPCEntity
 import com.cobblemon.mod.common.pokemon.Pokemon
 import net.minecraft.advancements.critereon.ItemPredicate
-import net.minecraft.server.level.ServerPlayer
-import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.InteractionHand
 import net.minecraft.world.entity.LivingEntity
-import kotlin.collections.iterator
+import net.minecraft.world.entity.player.Player
 
 /**
  * An [OwnerQueryRequirement] that checks if the player/npc is holding a certain [ItemPredicate]
@@ -30,7 +28,7 @@ class OwnerHoldsItemRequirement(val itemCondition: ItemPredicate)
 
     override fun checkPlayer(
         pokemon: Pokemon,
-        owner: ServerPlayer
+        owner: Player
     ): Boolean {
         return checkItem(owner)
     }

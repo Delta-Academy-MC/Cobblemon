@@ -1,10 +1,10 @@
 {
   "condition": {
-	"structures": [
-	  "#minecraft:ruined_portal"
+	  "structures": [
+	    "#minecraft:ruined_portal"
     ],
-	"neededNearbyBlocks": [
-      "ruined_portal_blocks"
-	]
+	  "neededNearbyBlocks": [
+      "#cobblemon:ruined_portal_blocks"
+	  ]
   }
 }

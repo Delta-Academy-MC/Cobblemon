@@ -45,6 +45,7 @@ import com.cobblemon.mod.common.pokemon.Pokemon
 import com.cobblemon.mod.common.util.cobblemonResource
 import com.cobblemon.mod.common.util.isInventoryKeyPressed
 import com.cobblemon.mod.common.util.lang
+import com.cobblemon.mod.common.util.toAssetPath
 import com.mojang.blaze3d.platform.InputConstants
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.GuiGraphics
@@ -559,7 +560,7 @@ class Summary private constructor(party: Collection<Pokemon?>, private val edita
         }
 
         // Poké Ball
-        val ballResource = cobblemonResource("textures/item/poke_balls/" + selectedPokemon.caughtBall.name.path + ".png")
+        val ballResource = selectedPokemon.caughtBall.name.toAssetPath("textures/item/poke_balls/", ".png")
         blitk(
             matrixStack = matrices,
             texture = ballResource,

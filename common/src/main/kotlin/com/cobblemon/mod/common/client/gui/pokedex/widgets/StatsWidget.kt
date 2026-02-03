@@ -237,9 +237,11 @@ class StatsWidget(val pX: Int, val pY: Int) : SoundlessWidget(
             blitk(matrixStack = matrices, texture = divider, x = pX + 51, y = pY + 10, height = 27.5, width = 1)
             blitk(matrixStack = matrices, texture = divider, x = pX + 9, y = pY + 2, height = 6, width = 121)
 
+            val rideStyle = selectedBehaviour.value.key.path.toString().split("/").last().lowercase()
             drawScaledText(
                 context = context,
-                text = lang("ui.ride_style.${selectedBehaviour.key.name.lowercase()}").bold(),
+                text = lang("ui.ride_style.${selectedBehaviour.key.toString().lowercase()}.${rideStyle}")
+                    .append(" | ").append(lang("ui.ride_style.${selectedBehaviour.key.toString().lowercase()}")).bold(),
                 x = pX + 69.5,
                 y = pY + 3,
                 colour = 0x3A96B6,

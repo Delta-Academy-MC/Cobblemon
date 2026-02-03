@@ -145,6 +145,9 @@
     ]
   },
   "behaviour": {
+    "combat": {
+      "willDefendOwner": true
+    },
     "herd": {
       "maxSize": "2",
       "toleratedLeaders": [
@@ -166,9 +169,6 @@
       "swim": {
         "avoidsWater": true
       }
-    },
-    "combat": {
-      "willDefendOwner": true
     },
     "resting": {
       "drowsyChance": 0.0333,

@@ -18,7 +18,7 @@
 				{
 					"name": "body",
 					"parent": "croagunk",
-					"pivot": [0, 0, 0]
+					"pivot": [0, 12, 0]
 				},
 				{
 					"name": "torso",
@@ -35,7 +35,7 @@
 				{
 					"name": "torso2",
 					"parent": "torso",
-					"pivot": [0, 13, 1.3],
+					"pivot": [0, 13, 2.3],
 					"cubes": [
 						{"origin": [-4.5, 12, -2.7], "size": [9, 8, 8], "uv": [29, 34]}
 					]
@@ -53,7 +53,7 @@
 					"parent": "arm_left",
 					"pivot": [9.5, 15.41299, 3.06175],
 					"cubes": [
-						{"origin": [9.5, 14.41299, 0.56175], "size": [4, 2, 3], "uv": [36, 29]}
+						{"origin": [9.5, 14.41299, 0.56175], "size": [4, 2, 3], "inflate": 0.01, "uv": [36, 29]}
 					]
 				},
 				{
@@ -127,7 +127,7 @@
 					"parent": "arm_right",
 					"pivot": [-9.5, 15.41299, 3.06175],
 					"cubes": [
-						{"origin": [-13.5, 14.41299, 0.56175], "size": [4, 2, 3], "uv": [50, 29], "mirror": true}
+						{"origin": [-13.5, 14.41299, 0.56175], "size": [4, 2, 3], "inflate": 0.01, "uv": [50, 29], "mirror": true}
 					]
 				},
 				{

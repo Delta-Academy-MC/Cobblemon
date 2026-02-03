@@ -147,6 +147,9 @@
     ]
   },
   "behaviour": {
+    "combat": {
+      "willDefendOwner": true
+    },
     "herd": {
       "maxSize": "3"
     },
@@ -154,9 +157,6 @@
       "swim": {
         "avoidsWater": true
       }
-    },
-    "combat": {
-      "willDefendOwner": true
     },
     "resting": {
       "drowsyChance": 0.0333,
@@ -416,6 +416,7 @@
         "fixed": false,
         "width": 0.8
       },
+      "riding": {},
       "drops": {
         "amount": 1,
         "entries": [

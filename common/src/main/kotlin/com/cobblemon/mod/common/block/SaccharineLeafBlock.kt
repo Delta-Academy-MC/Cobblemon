@@ -10,6 +10,7 @@ package com.cobblemon.mod.common.block
 
 import com.bedrockk.molang.runtime.value.DoubleValue
 import com.cobblemon.mod.common.entity.MoLangScriptingEntity
+import com.cobblemon.mod.common.util.isServerSide
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
 import net.minecraft.core.dispenser.DispenseItemBehavior
@@ -27,6 +28,8 @@ import net.minecraft.world.entity.player.Player
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.Items
+import net.minecraft.world.item.alchemy.PotionContents
+import net.minecraft.world.item.alchemy.Potions
 import net.minecraft.world.level.BlockGetter
 import net.minecraft.world.level.Level
 import net.minecraft.world.level.LevelAccessor
@@ -66,9 +69,16 @@ class SaccharineLeafBlock(settings: Properties) : LeavesBlock(settings) {
 
                 if (blockState.block is SaccharineLeafBlock) {
                     val currentAge = blockState.getValue(AGE)
-                    val newAge = when {
-                        item == Items.HONEY_BOTTLE && currentAge < MAX_AGE -> (currentAge + 2).coerceAtMost(MAX_AGE)
-                        item == Items.GLASS_BOTTLE && currentAge > MIN_AGE -> (currentAge - 2).coerceAtLeast(MIN_AGE)
+
+                    val waterBottle = PotionContents.createItemStack(Items.POTION, Potions.WATER).item
+
+                    val newAge = when (item) {
+                        Items.HONEY_BOTTLE if currentAge < MAX_AGE ->
+                            (currentAge + 2).coerceAtMost(MAX_AGE)
+
+                        waterBottle if currentAge > MIN_AGE ->
+                            (currentAge - 2).coerceAtLeast(MIN_AGE)
+
                         else -> currentAge
                     }
 
@@ -78,21 +88,23 @@ class SaccharineLeafBlock(settings: Properties) : LeavesBlock(settings) {
                         stack.shrink(1)
 
                         val dispenserEntity = source.blockEntity
-                        val outputItem = if (item == Items.HONEY_BOTTLE) Items.GLASS_BOTTLE else Items.HONEY_BOTTLE
+                        val outputItem = Items.GLASS_BOTTLE
                         val outputStack = ItemStack(outputItem)
                         var added = false
 
-                        for (i in 0 until dispenserEntity.containerSize) {
-                            val slotStack = dispenserEntity.getItem(i)
+                        if (dispenserEntity != null) {
+                            for (i in 0 until dispenserEntity.containerSize) {
+                                val slotStack = dispenserEntity.getItem(i)
 
-                            if (slotStack.isEmpty) {
-                                dispenserEntity.setItem(i, outputStack.copy())
-                                added = true
-                                break
-                            } else if (slotStack.`is`(outputItem) && slotStack.count < slotStack.maxStackSize) {
-                                slotStack.grow(1)
-                                added = true
-                                break
+                                if (slotStack.isEmpty) {
+                                    dispenserEntity.setItem(i, outputStack.copy())
+                                    added = true
+                                    break
+                                } else if (slotStack.`is`(outputItem) && slotStack.count < slotStack.maxStackSize) {
+                                    slotStack.grow(1)
+                                    added = true
+                                    break
+                                }
                             }
                         }
 
@@ -263,21 +275,36 @@ class SaccharineLeafBlock(settings: Properties) : LeavesBlock(settings) {
             val isGlassBottle = itemStack.`is`(Items.GLASS_BOTTLE)
             val isHoneyBottle = itemStack.`is`(Items.HONEY_BOTTLE)
 
-            if (isGlassBottle && !isAtMinAge(state)) {
+            if (isGlassBottle && isAtMaxAge(state)) {
+                if (level.isClientSide) return ItemInteractionResult.SUCCESS
                 // Decrement stack if not in creative mode
                 itemStack.consume(1, player)
 
-                // Give player honey bottle for now
-                player.addItem(Items.HONEY_BOTTLE.defaultInstance)
+                // Give player a honey bottle
+                if (stack.isEmpty) {
+                    // Replace the consumed empty bottle with a honey bottle
+                    player.setItemInHand(hand, ItemStack(Items.HONEY_BOTTLE));
+                } else {
+                    player.addItem(Items.HONEY_BOTTLE.defaultInstance)
+                }
 
                 level.playSound(null, pos, SoundEvents.BOTTLE_FILL, SoundSource.BLOCKS)
                 level.setBlock(pos, state.setValue(AGE, 0), UPDATE_CLIENTS)
                 level.gameEvent(null, GameEvent.BLOCK_CHANGE, pos)
                 return ItemInteractionResult.SUCCESS
             } else if (isHoneyBottle && !isAtMaxAge(state)) {
+                if (level.isClientSide) return ItemInteractionResult.SUCCESS
+
                 // Decrement stack if not in creative mode
-                itemStack.consume(1, player)
-                player.addItem(Items.GLASS_BOTTLE.defaultInstance)
+                if (!player.isCreative) {
+                    itemStack.consume(1, player)
+                    if (stack.isEmpty) {
+                        // Replace the consumed honey bottle with an empty bottle
+                        player.setItemInHand(hand, ItemStack(Items.GLASS_BOTTLE));
+                    } else {
+                        player.addItem(Items.GLASS_BOTTLE.defaultInstance)
+                    }
+                }
 
                 level.playSound(null, pos, SoundEvents.HONEY_BLOCK_PLACE, SoundSource.BLOCKS)
                 level.setBlock(pos, state.setValue(AGE, 2), UPDATE_CLIENTS)

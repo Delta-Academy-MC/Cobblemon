@@ -269,9 +269,6 @@ class OmniPathNavigation(val world: Level, val entity: Mob) : GroundPathNavigati
             // If we can fly and we're airborne, return the current Y position
             return vec.y
         }
-        if (world.getBlockState(blockPos).block == CobblemonBlocks.SACCHARINE_LEAVES && pather.canPathThroughSaccLeaves()) {
-            return vec.y + 0.5
-        }
         return if ((canFloat()) && blockGetter.getFluidState(blockPos).`is`(FluidTags.WATER)) vec.y + 0.5 else super.getGroundY(vec)
     }
 

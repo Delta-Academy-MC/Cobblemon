@@ -154,12 +154,12 @@ open class PlayerPartyStore(
 
                 // Metabolism for Fullness
                 if (pokemon.currentFullness > 0) {
-                    pokemon.tickMetabolism()
+                    pokemon.tickMetabolism(20)
                 }
 
                 // Interaction Cooldown
                 if (pokemon.interactionCooldowns.any()) {
-                    pokemon.tickInteractionCooldown()
+                    pokemon.tickInteractionCooldown(20)
                 }
 
                 pokemon.features.filterIsInstance<TickingSpeciesFeature>().forEach { it.onSecondPassed(player.serverLevel(), pokemon, null) }

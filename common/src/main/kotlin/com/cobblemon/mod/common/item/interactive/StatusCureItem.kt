@@ -14,7 +14,6 @@ import com.cobblemon.mod.common.api.battles.model.actor.BattleActor
 import com.cobblemon.mod.common.api.item.PokemonSelectingItem
 import com.cobblemon.mod.common.api.pokemon.status.Status
 import com.cobblemon.mod.common.battles.pokemon.BattlePokemon
-import com.cobblemon.mod.common.item.CobblemonItem
 import com.cobblemon.mod.common.item.battle.BagItem
 import com.cobblemon.mod.common.pokemon.Pokemon
 import com.cobblemon.mod.common.util.giveOrDropItemStack
@@ -24,7 +23,9 @@ import net.minecraft.world.item.Items
 import net.minecraft.server.level.ServerPlayer
 import net.minecraft.world.InteractionHand
 import net.minecraft.world.InteractionResultHolder
+import net.minecraft.world.item.ItemNameBlockItem
 import net.minecraft.world.level.Level
+import net.minecraft.world.level.block.Block
 
 /**
  * An item that cures statuses. Based on the [status] parameter it can be either specific [Status]es or all statuses (none specified).
@@ -32,7 +33,7 @@ import net.minecraft.world.level.Level
  * @author Hiroku
  * @since June 30th, 2023
  */
-class StatusCureItem(val itemName: String, vararg val status: Status) : CobblemonItem(Properties()), PokemonSelectingItem {
+class StatusCureItem(val itemName: String, vararg val status: Status, block: Block) : ItemNameBlockItem(block, Properties()), PokemonSelectingItem {
     override val bagItem = object : BagItem {
         override val itemName = this@StatusCureItem.itemName
         override val returnItem = Items.AIR

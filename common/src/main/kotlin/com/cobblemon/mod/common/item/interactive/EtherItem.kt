@@ -14,7 +14,6 @@ import com.cobblemon.mod.common.api.battles.model.actor.BattleActor
 import com.cobblemon.mod.common.api.item.PokemonAndMoveSelectingItem
 import com.cobblemon.mod.common.api.moves.Move
 import com.cobblemon.mod.common.battles.pokemon.BattlePokemon
-import com.cobblemon.mod.common.item.CobblemonItem
 import com.cobblemon.mod.common.item.battle.BagItem
 import com.cobblemon.mod.common.pokemon.Pokemon
 import com.cobblemon.mod.common.util.giveOrDropItemStack
@@ -26,8 +25,10 @@ import net.minecraft.server.level.ServerPlayer
 import net.minecraft.server.level.ServerLevel
 import net.minecraft.world.InteractionHand
 import net.minecraft.world.InteractionResultHolder
+import net.minecraft.world.item.ItemNameBlockItem
 import net.minecraft.world.item.Rarity
 import net.minecraft.world.level.Level
+import net.minecraft.world.level.block.Block
 
 /**
  * Item for recovering PP for a specific move in a Pokémon's move list. Opens a move selection GUI.
@@ -35,9 +36,7 @@ import net.minecraft.world.level.Level
  * @author Hiroku
  * @since June 30th, 2023
  */
-class EtherItem(
-    val max: Boolean
-) : CobblemonItem(Properties().apply {
+class EtherItem(val max: Boolean, block: Block) : ItemNameBlockItem(block, Properties().apply {
     if (max) rarity(Rarity.UNCOMMON)
 }), PokemonAndMoveSelectingItem {
     override val bagItem = object : BagItem {

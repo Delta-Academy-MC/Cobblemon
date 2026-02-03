@@ -25,7 +25,8 @@ import com.cobblemon.mod.common.util.asArrayValue
 data class FormeChangeEvent(
     override val battle: PokemonBattle,
     val pokemon: BattlePokemon,
-    val formeName: String
+    val formeName: String,
+    val pnx: String
 ) : BattleEvent {
     val context = mutableMapOf(
         "battle" to battle.struct,
@@ -33,6 +34,7 @@ data class FormeChangeEvent(
         "npcs" to battle.actors.filter { it.type == ActorType.NPC }.asArrayValue { it.struct },
         "wild_pokemon" to battle.actors.filter { it.type == ActorType.WILD }.asArrayValue { it.struct },
         "pokemon" to pokemon.struct,
-        "forme" to StringValue(formeName)
+        "forme" to StringValue(formeName),
+        "pnx" to StringValue(pnx)
     )
 }

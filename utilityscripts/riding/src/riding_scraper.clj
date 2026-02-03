@@ -223,13 +223,19 @@
          (:body)
          (csv/read-csv))))
 
+(defn normalize-sound-json [v]
+      (cond
+        (vector? v) v
+        (map? v)    [v]
+        :else       []))
+
 (defn get-sound-mappings []
   (let [data (->> (client/get "https://docs.google.com/spreadsheets/u/1/d/1YhQlnH6m-tlkVbopIg5KLV8BFaaDCgZNkx3dIAy5PZ0/export?format=csv&id=1YhQlnH6m-tlkVbopIg5KLV8BFaaDCgZNkx3dIAy5PZ0&gid=513653624")
                   (:body)
                   (csv/read-csv)
                   (rest)
                   (into {}))]
-    (update-vals data #(read-str % :key-fn keyword))))
+    (update-vals data #(-> % (read-str :key-fn keyword) normalize-sound-json))))
 
 (def sound-headers
   [:generation :dex-no :species
@@ -246,10 +252,12 @@
        (map #(assoc % :form (or (:form %) "Normal")))))
 
 (defn condense-sound-type [sound-data sound-mappings riding-type]
-  (let [keys (map #(concat-keyword riding-type (str "riding-sound-" %)) [1 2 3 4 5])
-        values (vec (filter not-empty (map #(get sound-data %) keys)))
-        json (map #(get sound-mappings %) values)]
-    (vec json)))
+      (->> (map #(concat-keyword riding-type (str "riding-sound-" %)) [1 2 3 4 5])
+           (map #(get sound-data %))
+           (filter not-empty)
+           (mapcat #(get sound-mappings %))
+           vec))
+
 
 (defn sound-data->json [sound-mappings sound-data riding-type]
   (->> (map #(assoc % :sound-json (condense-sound-type % sound-mappings riding-type)) sound-data)
@@ -560,7 +568,7 @@
 (defn generate-seat-data
   "Generates per-pose seat data for a species (and optional form)"
   [species-data]
-  (let [species (.getByName PokemonSpecies/INSTANCE (sanitize-species-name (:species species-data)))
+  (let [species (PokemonSpecies/getByName (sanitize-species-name (:species species-data)))
         form (.getFormByName species (sanitize-species-name (or (:form species-data) "Normal")))
         seat-data (map (fn [x] {(.name x) (render-pokemon species form x)}) (remove ignored-poses (PoseType/getEntries)))
         non-nil-seat-data (filter #(val (first %)) seat-data)]

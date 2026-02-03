@@ -24,6 +24,7 @@ import com.cobblemon.mod.common.pokemon.Pokemon
 import com.cobblemon.mod.common.util.cobblemonResource
 import com.cobblemon.mod.common.util.lang
 import com.cobblemon.mod.common.util.math.fromEulerXYZDegrees
+import com.cobblemon.mod.common.util.toAssetPath
 import net.minecraft.client.gui.GuiGraphics
 import net.minecraft.network.chat.Component
 import net.minecraft.resources.ResourceLocation
@@ -107,7 +108,7 @@ class PartySlotWidget(
                 )
             }
 
-            val ballIcon = cobblemonResource("textures/gui/ball/" + slotPokemon.caughtBall.name.path + ".png")
+            val ballIcon = slotPokemon.caughtBall.name.toAssetPath("textures/gui/ball/", ".png")
             val ballHeight = 22
             blitk(
                 matrixStack = matrices,

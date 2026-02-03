@@ -1,0 +1,7 @@
+{
+  "parent": "cobblemon:block/plaque_hanging",
+  "textures": {
+        "texture": "cobblemon:block/plaques/cyan_plaque",
+        "particle": "cobblemon:block/plaques/cyan_plaque"
+  }
+}

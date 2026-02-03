@@ -41,10 +41,6 @@ interface CompositeRidingStrategy<T : CompositeSettings> {
         toState: RidingBehaviourState,
         toSettings: RidingBehaviourSettings
     ) {
-        if (vehicle.level().isClientSide) {
-            val fromSettings = if (settings.defaultBehaviour == toSettings) settings.alternateBehaviour else settings.defaultBehaviour
-
-        }
         toState.stamina.set(fromState.stamina.get())
         toState.rideVelocity.set(fromState.rideVelocity.get())
         fromState.reset()

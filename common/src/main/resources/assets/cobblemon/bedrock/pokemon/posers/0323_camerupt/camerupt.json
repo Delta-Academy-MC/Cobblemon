@@ -59,7 +59,6 @@
     },
     "standing": {
       "poseTypes": ["STAND", "NONE", "PORTRAIT", "PROFILE"],
-      "isBattle": false,
       "condition": "!q.in_air",
       "animations": [
         "q.look('head')",

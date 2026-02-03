@@ -1,0 +1,7 @@
+{
+  "parent": "cobblemon:block/dire_hit_3",
+  "textures": {
+        "texture": "cobblemon:block/decorative/x_speed",
+        "particle": "cobblemon:block/decorative/x_speed"
+  }
+}

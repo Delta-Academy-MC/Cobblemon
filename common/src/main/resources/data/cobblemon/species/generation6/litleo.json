@@ -1,4 +1,5 @@
 {
+  "implemented": true,
   "nationalPokedexNumber": 667,
   "name": "Litleo",
   "primaryType": "fire",
@@ -42,10 +43,10 @@
   "catchRate": 220,
   "eggCycles": 20,
   "baseFriendship": 50,
-  "baseScale": 1,
+  "baseScale": 0.6,
   "hitbox": {
     "width": 1,
-    "height": 1,
+    "height": 1.3,
     "fixed": false
   },
   "behaviour": {

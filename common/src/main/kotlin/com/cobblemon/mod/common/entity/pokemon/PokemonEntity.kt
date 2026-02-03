@@ -594,6 +594,11 @@ open class PokemonEntity(
             ifRidingAvailable { _, _, state -> pokemon.rideStamina = state.stamina.get() }
             ridingController?.context?.state?.reset()
             ridingAnimationData.clear()
+
+            // reset riding orientation
+            if (this is OrientationControllable) {
+                this.orientationController.reset()
+            }
         }
     }
 
@@ -1273,14 +1278,13 @@ open class PokemonEntity(
             }
         }
 
-        if (hand == InteractionHand.MAIN_HAND && player is ServerPlayer) {
-            if (player.isShiftKeyDown) {
+        if (hand == InteractionHand.MAIN_HAND) {
+            if (player.isShiftKeyDown && player is ServerPlayer) {
                 showInteractionWheel(player, itemStack)
                 return InteractionResult.sidedSuccess(level().isClientSide)
             }
-            else if (pokemon.getOwnerPlayer() == player) {
-                // TODO #105
-                if (this.attemptItemInteraction(player, player.getItemInHand(hand))) return InteractionResult.SUCCESS
+            else if (this.ownerUUID == player.uuid && this.attemptItemInteraction(player, player.getItemInHand(hand))) {
+                return InteractionResult.sidedSuccess(level().isClientSide)
             }
         }
 
@@ -1347,7 +1351,7 @@ open class PokemonEntity(
     }
 
     override fun shouldBeSaved(): Boolean {
-        if (ownerUUID == null && !pokemon.isNPCOwned() && (Cobblemon.config.savePokemonToWorld || isPersistenceRequired || this.pokemon.canDropHeldItem)) {
+        if (ownerUUID == null && !pokemon.isNPCOwned() && (Cobblemon.config.savePokemonToWorld || isPersistenceRequired)) {
             CobblemonEvents.POKEMON_ENTITY_SAVE_TO_WORLD.postThen(PokemonEntitySaveToWorldEvent(this)) {
                 return true
             }
@@ -1458,16 +1462,22 @@ open class PokemonEntity(
             return bagItemLike.handleInteraction(player, battlePokemon, stack)
         }
 
-        if (player !is ServerPlayer || this.isBusy) {
+        if (this.isBusy) {
             return false
         }
 
         val interaction = PokemonInteractions.findInteraction(this)
-
         if (interaction != null && !pokemon.isOnInteractionCooldown(interaction.grouping)) {
-            interaction.effects.forEach { it.applyEffect(this, player) }
-            pokemon.interactionCooldowns.put(interaction.grouping, runtime.resolveInt(interaction.cooldown))
+            if (player is ServerPlayer) {
+                interaction.effects.forEach { it.applyEffect(this, player) }
+                pokemon.interactionCooldowns.put(interaction.grouping, runtime.resolveInt(interaction.cooldown))
+            }
+
             return true
+        }
+
+        if (player !is ServerPlayer) {
+            return false
         }
 
         // Evolution item logic

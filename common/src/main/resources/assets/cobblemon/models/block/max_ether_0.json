@@ -1,0 +1,7 @@
+{
+  "parent": "cobblemon:block/ether_0",
+  "textures": {
+    "texture": "cobblemon:block/decorative/max_ether",
+    "particle": "cobblemon:block/decorative/max_ether"
+  }
+}

@@ -36,6 +36,11 @@ fun String.asIdentifierDefaultingNamespace(namespace: String = Cobblemon.MODID):
     return if (id.contains(":")) ResourceLocation.fromNamespaceAndPath(id.substringBefore(":"), id.substringAfter(":")) else ResourceLocation.fromNamespaceAndPath(namespace, id)
 }
 
+fun ResourceLocation.toAssetPath(prefix: String = "", suffix: String = ""): ResourceLocation {
+    return ResourceLocation.fromNamespaceAndPath(this.namespace, "$prefix$path$suffix")
+}
+
+
 /**
  * Attempts to parse an [ResourceLocation] from the [StringReader].
  * Unlike [ResourceLocation.fromCommandInput] this will default the namespace to the given [namespace] if non-present.

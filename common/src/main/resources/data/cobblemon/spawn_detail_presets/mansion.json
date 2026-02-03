@@ -1,7 +1,8 @@
 {
   "condition": {
 	"structures": [
-	  "minecraft:mansion"
+	  "minecraft:mansion",
+	  "minecraft:woodland_mansion"
     ],
 	"minY": 62,
 	"neededBaseBlocks": [

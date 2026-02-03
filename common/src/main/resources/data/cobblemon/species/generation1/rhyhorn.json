@@ -147,6 +147,12 @@
     ]
   },
   "behaviour": {
+    "combat": {
+      "willDefendOwner": true,
+      "willDefendSelf": true,
+      "willFlee": false
+    },
+    "fireImmune": true,
     "herd": {
       "maxSize": "9",
       "toleratedLeaders": [
@@ -165,16 +171,10 @@
         "walkSpeed": 0.2
       }
     },
-    "combat": {
-      "willDefendSelf": true,
-      "willDefendOwner": true,
-      "willFlee": false
-    },
     "resting": {
       "drowsyChance": 0.0333,
       "rouseChance": 0.0042
-    },
-    "fireImmune": true
+    }
   },
   "drops": {
     "amount": 2,

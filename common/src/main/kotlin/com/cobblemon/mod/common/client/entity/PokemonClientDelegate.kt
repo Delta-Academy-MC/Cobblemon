@@ -507,9 +507,7 @@ class PokemonClientDelegate : PosableState(), PokemonSideDelegate {
 
     override fun positionRider(passenger: Entity, positionUpdater: MoveFunction) {
         val locatorName = getSeatLocator(passenger)
-        val locator = this.locatorStates[locatorName]
-
-        if (locator == null) return
+        val locator = this.locatorStates[locatorName] ?: return
 
         val offset = locator.matrix.getTranslation(Vector3f())
             .sub(

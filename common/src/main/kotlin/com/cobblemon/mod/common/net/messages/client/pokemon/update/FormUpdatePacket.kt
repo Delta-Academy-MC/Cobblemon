@@ -29,8 +29,7 @@ class FormUpdatePacket(pokemon: () -> Pokemon?, form: FormData) : SingleUpdatePa
         val ID: ResourceLocation = cobblemonResource("packets/form-update")
         fun decode(buffer: RegistryFriendlyByteBuf): FormUpdatePacket {
             val pokemon = decodePokemon(buffer)
-            val form = FormData()
-            form.species = pokemon()!!.species
+            val form = FormData().also { it.initialize(pokemon()!!.species) }
             form.decode(buffer)
             return FormUpdatePacket(pokemon, form)
         }

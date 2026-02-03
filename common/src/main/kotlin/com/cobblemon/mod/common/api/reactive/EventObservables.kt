@@ -11,6 +11,7 @@ package com.cobblemon.mod.common.api.reactive
 import com.cobblemon.mod.common.api.events.Cancelable
 
 open class EventObservable<T> : SimpleObservable<T>() {
+    @JvmOverloads
     inline fun post(vararg events: T, then: (T) -> Unit = {}) {
         // Issuing generic-typed pass-throughs to varargs doesn't work
         // properly unless the source is a vararg as well, complicated story.

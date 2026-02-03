@@ -57,17 +57,26 @@
           {
             "muffleEnabled": true,
             "pitchExpr": "math.max(1.0 ,0.2 + math.pow(math.min(q.ride_velocity() / 1.5, 1.0),2))",
+            "playForNonPassengers": false,
+            "playForPassengers": true,
+            "soundLocation": "cobblemon:ride.loop.wind.stereo",
+            "volumeExpr": "math.pow(math.min(q.ride_velocity() / 1.5, 1.0),2)"
+          },
+          {
+            "muffleEnabled": true,
+            "pitchExpr": "math.max(1.0 ,0.2 + math.pow(math.min(q.ride_velocity() / 1.5, 1.0),2))",
             "playForNonPassengers": true,
-            "soundLocation": "cobblemon:ride.loop.wind",
+            "playForPassengers": false,
+            "soundLocation": "cobblemon:ride.loop.wind.mono",
             "volumeExpr": "math.pow(math.min(q.ride_velocity() / 1.5, 1.0),2)"
           }
         ],
         "stats": {
-          "ACCELERATION": "20-35",
-          "JUMP": "25-50",
-          "SKILL": "15-30",
-          "SPEED": "10-17",
-          "STAMINA": "15-35"
+          "ACCELERATION": "10-20",
+          "JUMP": "60-100",
+          "SKILL": "15-25",
+          "SPEED": "5-15",
+          "STAMINA": "40-80"
         }
       }
     },
@@ -81,7 +90,7 @@
         "poseOffsets": [
           {
             "offset": {
-              "x": 2.9055437e-18,
+              "x": 2.9055437E-18,
               "y": -3.171875,
               "z": 0.53125
             },
@@ -101,7 +110,7 @@
           },
           {
             "offset": {
-              "x": 2.9055437e-18,
+              "x": 2.9055437E-18,
               "y": -3.171875,
               "z": 0.53125
             },
@@ -121,7 +130,7 @@
           },
           {
             "offset": {
-              "x": 2.9055437e-18,
+              "x": 2.9055437E-18,
               "y": -3.171875,
               "z": 0.53125
             },
@@ -141,7 +150,7 @@
           },
           {
             "offset": {
-              "x": 2.9055437e-18,
+              "x": 2.9055437E-18,
               "y": -3.171875,
               "z": 0.53125
             },
@@ -154,6 +163,9 @@
     ]
   },
   "behaviour": {
+    "combat": {
+      "willDefendOwner": true
+    },
     "herd": {
       "maxSize": "7",
       "toleratedLeaders": [
@@ -176,15 +188,12 @@
     },
     "resting": {
       "canSleep": true,
+      "drowsyChance": 0.0033,
       "light": "0-4",
+      "rouseChance": 0.0042,
       "times": [
         "day"
-      ],
-      "drowsyChance": 0.0033,
-      "rouseChance": 0.0042
-    },
-    "combat": {
-      "willDefendOwner": true
+      ]
     }
   },
   "drops": {

@@ -18,7 +18,7 @@ import java.util.UUID
 import net.minecraft.network.chat.MutableComponent
 import net.minecraft.network.chat.Component
 
-class MultiPokemonBattleActor(
+open class MultiPokemonBattleActor(
     pokemonList: List<BattlePokemon>,
     artificialDecider: BattleAI = RandomBattleAI(),
     uuid: UUID = UUID.randomUUID()

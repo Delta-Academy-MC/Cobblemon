@@ -36,7 +36,6 @@
     },
     "standing": {
       "poseTypes": ["STAND", "NONE", "PORTRAIT", "PROFILE"],
-      "isBattle": false,
       "isTouchingWater": false,
       "animations": [
         "q.look('head_ai')",

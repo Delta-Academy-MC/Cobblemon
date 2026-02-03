@@ -5,18 +5,17 @@
   "profileTranslation": [0, 0.84, 0],
   "rootBone": "toxicroak",
   "animations": {
-    "cry": "q.bedrock_stateful('toxicroak', 'cry')"
+    "recoil": "q.bedrock_stateful('toxicroak', 'recoil')",
+    "faint": "q.bedrock_primary('toxicroak', 'faint')",
+    "physical": "q.bedrock_primary('toxicroak', 'physical', q.curve('symmetrical_wide'))",
+    "special": "q.bedrock_primary('toxicroak', 'special', q.curve('symmetrical_wide'))",
+    "status": "q.bedrock_primary('toxicroak', 'status', q.curve('symmetrical_wide'))"
   },
   "poses": {
     "standing": {
-      "poseTypes": [
-        "STAND",
-        "NONE",
-        "PORTRAIT",
-        "PROFILE",
-        "FLOAT"
-      ],
+      "poseTypes": ["STAND", "FLOAT", "NONE", "PORTRAIT", "PROFILE", "FLOAT"],
       "isBattle": false,
+      "condition": "q.has_entity ? !q.in_air : 1.0",
       "animations": [
         "q.look('head', 0.3, 0.3)",
         "q.look('throat_sack', 0.3, 0.3)",
@@ -29,9 +28,7 @@
       ]
     },
     "battle-standing": {
-      "poseTypes": [
-        "STAND"
-      ],
+      "poseTypes": ["STAND", "FLOAT"],
       "isBattle": true,
       "animations": [
         "q.look('head', 0.3, 0.3)",
@@ -40,27 +37,49 @@
         "q.look('torso3', 0.5, 0.5)",
         "q.bedrock('toxicroak', 'battle_idle')"
       ],
+      "namedAnimations": {
+        "cry": "q.bedrock_primary('toxicroak', 'battle_cry', q.curve('symmetrical_wide'))"
+      },
       "quirks": [
         "q.bedrock_quirk('toxicroak', 'blink')"
       ]
     },
     "walking": {
-      "poseTypes": [
-        "WALK",
-        "SWIM"
-      ],
+      "poseTypes": ["WALK", "SWIM"],
+      "condition": "!q.is_sprinting",
       "animations": [
         "q.look('head', 0.3, 0.3)",
         "q.look('throat_sack', 0.3, 0.3)",
         "q.look('neck', 0.2, 0.2)",
         "q.look('torso3', 0.5, 0.5)",
-        "q.bedrock('toxicroak', 'ground_idle')",
-        "q.biped_walk(0.45, 0.66, 'leg_left', 'leg_right')",
-        "q.bimanual_swing(0.45, 1, 'shoulder_left', 'shoulder_right')"
+        "q.bedrock('toxicroak', 'ground_walk')"
       ],
       "quirks": [
         "q.bedrock_quirk('toxicroak', 'blink')"
       ]
+    },
+    "running": {
+      "poseTypes": ["WALK", "SWIM"],
+      "condition": "q.is_sprinting",
+      "animations": [
+        "q.look('head', 0.3, 0.3)",
+        "q.look('throat_sack', 0.3, 0.3)",
+        "q.look('neck', 0.2, 0.2)",
+        "q.look('torso3', 0.5, 0.5)",
+        "q.bedrock('toxicroak', 'ground_run')"
+      ],
+      "quirks": [
+        "q.bedrock_quirk('toxicroak', 'blink')"
+      ]
+    },
+    "sleep": {
+      "poseTypes": ["SLEEP"],
+      "animations": [
+        "q.bedrock('toxicroak', 'sleep')"
+      ],
+      "namedAnimations": {
+        "cry": "q.bedrock_stateful('dummy', 'cry')"
+      }
     }
   }
 }

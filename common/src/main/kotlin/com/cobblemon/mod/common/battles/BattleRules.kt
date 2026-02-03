@@ -12,6 +12,7 @@ object BattleRules {
     const val OBTAINABLE = "Obtainable"
     const val PAST = "+Past"
     const val UNOBTAINABLE = "+Unobtainable"
+    const val BAG_CLAUSE = "Bag Clause"
     const val TEAM_PREVIEW = "Team Preview"
     const val ENDLESS_BATTLE_CLAUSE = "Endless Battle Clause"
     const val CANCEL_MOD = "Cancel Mod"

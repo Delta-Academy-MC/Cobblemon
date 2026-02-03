@@ -15,16 +15,14 @@ import net.minecraft.client.Minecraft
 
 object ClientboundUpdateRidingStateHandler : ClientNetworkPacketHandler<ClientboundUpdateRidingStatePacket> {
     override fun handle(packet: ClientboundUpdateRidingStatePacket, client: Minecraft) {
-        client.executeIfPossible {
-            val player = client.player ?: return@executeIfPossible
-            val entity = player.level().getEntity(packet.entity) ?: return@executeIfPossible
-            if (entity !is PokemonEntity) return@executeIfPossible
-            if (entity.controllingPassenger == player) return@executeIfPossible
-            val buffer = packet.data ?: return@executeIfPossible
-            if (entity.ridingController?.context?.settings?.key != packet.behaviour) {
-                entity.ridingController?.changeBehaviour(packet.behaviour)
-            }
-            entity.ridingController?.context?.state?.decode(buffer)
+        val player = client.player ?: return
+        val entity = player.level().getEntity(packet.entity) ?: return
+        if (entity !is PokemonEntity) return
+        if (entity.controllingPassenger == player) return
+        val buffer = packet.data ?: return
+        if (entity.ridingController?.context?.settings?.key != packet.behaviour) {
+            entity.ridingController?.changeBehaviour(packet.behaviour)
         }
+        entity.ridingController?.context?.state?.decode(buffer)
     }
 }

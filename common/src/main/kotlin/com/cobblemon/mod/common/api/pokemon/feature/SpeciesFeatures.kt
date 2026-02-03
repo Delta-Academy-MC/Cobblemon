@@ -102,6 +102,12 @@ object SpeciesFeatures : JsonDataRegistry<SpeciesFeatureProvider<*>> {
 
     @JvmStatic
     fun register(name: String, provider: SpeciesFeatureProvider<*>) = register(name, provider, isCoded = true)
+
+    @JvmStatic
+    fun registerType(key: String, clazz: Class<out SpeciesFeatureProvider<*>>) {
+        types[key] = clazz
+    }
+
     private fun registerFromAssets(identifier: ResourceLocation, provider: SpeciesFeatureProvider<*>) = register(identifier.path, provider, isCoded = false)
 
     @JvmStatic

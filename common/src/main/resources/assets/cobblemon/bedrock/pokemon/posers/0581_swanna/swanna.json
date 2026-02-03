@@ -4,11 +4,12 @@
   "profileScale": 0.57,
   "profileTranslation": [0, 0.96, 0],
   "rootBone": "swanna",
-  "animations": {},
+  "animations": {
+    "cry": "q.bedrock_stateful('swanna', 'cry')"
+    },
   "poses": {
     "standing": {
       "poseTypes": ["STAND", "NONE", "PORTRAIT", "PROFILE"],
-      "isBattle": false,
       "animations": ["q.look('head')", "q.bedrock('swanna', 'ground_idle')"],
       "quirks": ["q.bedrock_quirk('swanna', 'blink')"],
       "transformedParts": [

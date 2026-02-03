@@ -57,8 +57,17 @@
           {
             "muffleEnabled": true,
             "pitchExpr": "math.max(1.0 ,0.2 + math.pow(math.min(q.ride_velocity() / 1.5, 1.0),2))",
+            "playForNonPassengers": false,
+            "playForPassengers": true,
+            "soundLocation": "cobblemon:ride.loop.wind.stereo",
+            "volumeExpr": "math.pow(math.min(q.ride_velocity() / 1.5, 1.0),2)"
+          },
+          {
+            "muffleEnabled": true,
+            "pitchExpr": "math.max(1.0 ,0.2 + math.pow(math.min(q.ride_velocity() / 1.5, 1.0),2))",
             "playForNonPassengers": true,
-            "soundLocation": "cobblemon:ride.loop.wind",
+            "playForPassengers": false,
+            "soundLocation": "cobblemon:ride.loop.wind.mono",
             "volumeExpr": "math.pow(math.min(q.ride_velocity() / 1.5, 1.0),2)"
           }
         ],
@@ -67,7 +76,7 @@
           "JUMP": "0-5",
           "SKILL": "55-85",
           "SPEED": "35-50",
-          "STAMINA": "20-45"
+          "STAMINA": "35-55"
         }
       },
       "LAND": {
@@ -75,7 +84,7 @@
         "rideSounds": [],
         "stats": {
           "ACCELERATION": "55-70",
-          "JUMP": "20-30",
+          "JUMP": "35-50",
           "SKILL": "40-65",
           "SPEED": "15-30",
           "STAMINA": "35-50"
@@ -165,6 +174,11 @@
     ]
   },
   "behaviour": {
+    "combat": {
+      "willDefendOwner": true,
+      "willDefendSelf": true,
+      "willFlee": false
+    },
     "moving": {
       "fly": {
         "canFly": true
@@ -174,16 +188,11 @@
       }
     },
     "resting": {
+      "drowsyChance": 0.0021,
+      "rouseChance": 0.0042,
       "times": [
         "167-11833,13702-22299"
-      ],
-      "drowsyChance": 0.0021,
-      "rouseChance": 0.0042
-    },
-    "combat": {
-      "willDefendSelf": true,
-      "willDefendOwner": true,
-      "willFlee": false
+      ]
     }
   },
   "drops": {
@@ -366,22 +375,22 @@
       },
       "baseExperienceYield": 210,
       "behaviour": {
-        "resting": {
-          "times": [
-            "167-11833,13702-22299"
-          ],
-          "drowsyChance": 0.0021,
-          "rouseChance": 0.0042
+        "combat": {
+          "willDefendOwner": true,
+          "willDefendSelf": true,
+          "willFlee": false
         },
         "moving": {
           "swim": {
             "avoidsWater": true
           }
         },
-        "combat": {
-          "willDefendSelf": true,
-          "willDefendOwner": true,
-          "willFlee": false
+        "resting": {
+          "drowsyChance": 0.0021,
+          "rouseChance": 0.0042,
+          "times": [
+            "167-11833,13702-22299"
+          ]
         }
       },
       "evolutions": [],

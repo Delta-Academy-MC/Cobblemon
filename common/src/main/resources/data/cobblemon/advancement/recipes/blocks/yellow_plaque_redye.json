@@ -1,0 +1,49 @@
+{
+    "parent": "cobblemon:recipes/root",
+    "criteria": {
+        "has_plaque": {
+            "conditions": {
+                "items": [
+                    {
+                        "items": [
+                            "cobblemon:white_plaque",
+                            "cobblemon:light_gray_plaque",
+                            "cobblemon:gray_plaque",
+                            "cobblemon:black_plaque",
+                            "cobblemon:brown_plaque",
+                            "cobblemon:red_plaque",
+                            "cobblemon:orange_plaque",
+                            "cobblemon:yellow_plaque",
+                            "cobblemon:lime_plaque",
+                            "cobblemon:green_plaque",
+                            "cobblemon:cyan_plaque",
+                            "cobblemon:light_blue_plaque",
+                            "cobblemon:blue_plaque",
+                            "cobblemon:purple_plaque",
+                            "cobblemon:magenta_plaque",
+                            "cobblemon:pink_plaque"
+                        ]
+                    }
+                ]
+            },
+            "trigger": "minecraft:inventory_changed"
+        },
+        "has_the_recipe": {
+            "conditions": {
+                "recipe": "cobblemon:yellow_plaque_redye"
+            },
+            "trigger": "minecraft:recipe_unlocked"
+        }
+    },
+    "requirements": [
+        [
+            "has_plaque",
+            "has_the_recipe"
+        ]
+    ],
+    "rewards": {
+        "recipes": [
+            "cobblemon:yellow_plaque_redye"
+        ]
+    }
+}

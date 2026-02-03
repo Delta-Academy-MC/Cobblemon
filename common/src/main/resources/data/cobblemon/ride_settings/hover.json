@@ -3,8 +3,8 @@
   "canJump": "true",
   "stamReplenishTimeSeconds": "2.0",
   "speedExpr": "q.get_ride_stats('SPEED', 'AIR', 20.0, 1.0)",
-  "accelerationExpr": "q.get_ride_stats('ACCELERATION', 'AIR', 2.0, 8.0)",
-  "staminaExpr": "q.get_ride_stats('STAMINA', 'AIR', 30.0, 2.0)",
-  "jumpExpr": "q.get_ride_stats('JUMP', 'AIR', 16.0, 2.0)",
+  "accelerationExpr": "q.get_ride_stats('ACCELERATION', 'AIR', 1.0, 6.0)",
+  "staminaExpr": "q.get_ride_stats('STAMINA', 'AIR', 30.0, 0.0)",
+  "jumpExpr": "q.get_ride_stats('JUMP', 'AIR', 32.0, 2.0)",
   "handlingExpr": "q.get_ride_stats('SKILL', 'AIR', 270.0, 45.0)"
 }

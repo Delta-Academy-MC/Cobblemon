@@ -80,7 +80,9 @@ open class ChoiceSpeciesFeatureProvider(
 
     internal constructor(): this(emptyList())
 
-    override fun get(pokemon: Pokemon) = pokemon.getFeature<StringSpeciesFeature>(keys.first())
+    override fun get(pokemon: Pokemon): StringSpeciesFeature? {
+        return pokemon.features.filterIsInstance<StringSpeciesFeature>().find { it.name in keys }
+    }
 
     override fun invoke(pokemon: Pokemon): StringSpeciesFeature? {
         val existing = get(pokemon)
@@ -101,15 +103,15 @@ open class ChoiceSpeciesFeatureProvider(
     }
 
     override fun invoke(nbt: CompoundTag): StringSpeciesFeature? {
-        return if (nbt.contains(keys.first())) {
-            StringSpeciesFeature(keys.first(), "").also { it.loadFromNBT(nbt) }
-        } else null
+        val key = keys.find { nbt.contains(it) }
+        if (key == null) return null
+        return StringSpeciesFeature(key, "").also { it.loadFromNBT(nbt) }
     }
 
     override fun invoke(json: JsonObject): StringSpeciesFeature? {
-        return if (json.has(keys.first())) {
-            StringSpeciesFeature(keys.first(), "").also { it.loadFromJSON(json) }
-        } else null
+        val key = keys.find { json.has(it) }
+        if (key == null) return null
+        return StringSpeciesFeature(key, "").also { it.loadFromJSON(json) }
     }
 
     override fun fromString(value: String?): StringSpeciesFeature? {
@@ -131,7 +133,7 @@ open class ChoiceSpeciesFeatureProvider(
 
     override fun provide(properties: PokemonProperties): Set<String> {
         return if (isAspect) {
-            val feature = properties.customProperties.filterIsInstance<StringSpeciesFeature>().find { it.name == keys.first() }
+            val feature = properties.customProperties.filterIsInstance<StringSpeciesFeature>().find { it.name in keys }
             if (feature != null) {
                 setOf(getAspect(feature))
             } else {

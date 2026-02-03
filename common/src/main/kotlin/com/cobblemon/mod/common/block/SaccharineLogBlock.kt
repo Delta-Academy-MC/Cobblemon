@@ -25,6 +25,7 @@ import net.minecraft.world.entity.player.Player
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.Items
 import net.minecraft.world.level.Level
+import net.minecraft.world.level.block.DispenserBlock
 import net.minecraft.world.level.block.HorizontalDirectionalBlock
 import net.minecraft.world.level.block.RotatedPillarBlock
 import net.minecraft.world.level.block.state.BlockState
@@ -37,7 +38,7 @@ class SaccharineLogBlock(properties: Properties) : RotatedPillarBlock(properties
         fun createBehavior(): DispenseItemBehavior {
             return DispenseItemBehavior { source, stack ->
                 val level = source.level
-                val facing = source.state.getValue(HorizontalDirectionalBlock.FACING)
+                val facing = source.state.getValue(DispenserBlock.FACING)
                 val pos = source.pos.relative(facing)
                 val blockState = level.getBlockState(pos)
 
@@ -50,7 +51,13 @@ class SaccharineLogBlock(properties: Properties) : RotatedPillarBlock(properties
             }
         }
 
-        fun changeLogTypeDispenser(level: ServerLevel, pos: BlockPos, newState: BlockState, stack: ItemStack, source: BlockSource) {
+        fun changeLogTypeDispenser(
+            level: ServerLevel,
+            pos: BlockPos,
+            newState: BlockState,
+            stack: ItemStack,
+            source: BlockSource
+        ) {
             level.setBlock(pos, newState, 3)
             level.gameEvent(null, GameEvent.BLOCK_CHANGE, pos)
 
@@ -75,11 +82,23 @@ class SaccharineLogBlock(properties: Properties) : RotatedPillarBlock(properties
             }
 
             if (!added) {
-                Containers.dropItemStack(level, source.pos.x.toDouble(), source.pos.y.toDouble(), source.pos.z.toDouble(), glassBottle)
+                Containers.dropItemStack(
+                    level,
+                    source.pos.x.toDouble(),
+                    source.pos.y.toDouble(),
+                    source.pos.z.toDouble(),
+                    glassBottle
+                )
             }
         }
 
-        fun changeLogType(level: Level, pos: BlockPos, newState: BlockState, player: Player? = null, itemStack: ItemStack? = null) {
+        fun changeLogType(
+            level: Level,
+            pos: BlockPos,
+            newState: BlockState,
+            player: Player? = null,
+            itemStack: ItemStack? = null
+        ) {
             level.setBlock(pos, newState, 3)
             level.gameEvent(null, GameEvent.BLOCK_CHANGE, pos)
 
@@ -93,7 +112,15 @@ class SaccharineLogBlock(properties: Properties) : RotatedPillarBlock(properties
         }
     }
 
-    override fun useItemOn(stack: ItemStack, state: BlockState, level: Level, pos: BlockPos, player: Player, hand: InteractionHand, hitResult: BlockHitResult): ItemInteractionResult {
+    override fun useItemOn(
+        stack: ItemStack,
+        state: BlockState,
+        level: Level,
+        pos: BlockPos,
+        player: Player,
+        hand: InteractionHand,
+        hitResult: BlockHitResult
+    ): ItemInteractionResult {
         val axis = state.getValue(AXIS)
         val itemStack = player.getItemInHand(hand)
         if (!level.isClientSide && itemStack.`is`(Items.HONEY_BOTTLE) && axis == Direction.Axis.Y) {

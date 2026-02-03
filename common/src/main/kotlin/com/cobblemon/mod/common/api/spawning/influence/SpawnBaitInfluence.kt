@@ -26,7 +26,7 @@ import net.minecraft.world.entity.Entity
 /**
  * A [SpawningInfluence] that applies some number of SpawnBait effects.
  *
- * @author Hiroku, Plastered_Crab
+ * @author Hiroku, Plastered_Crab, ppVon
  * @since March 18th, 2025
  */
 open class SpawnBaitInfluence(val effects: List<SpawnBait.Effect>, val onUsed: (time: Int, entity: PokemonEntity?) -> Unit = { _, _ -> }) : SpawningInfluence {
@@ -50,78 +50,84 @@ open class SpawnBaitInfluence(val effects: List<SpawnBait.Effect>, val onUsed: (
         }
     }
 
-    // EV related bait effects
+    // EV, Type, and Egg Group related bait effects
     override fun affectWeight(detail: SpawnDetail, spawnablePosition: SpawnablePosition, weight: Float): Float {
         val merged = SpawnBaitUtils.mergeEffects(effects)
 
+        val hasRelevantEffects =
+            merged.any { it.type == Effects.EV } ||
+            merged.any { it.type == Effects.TYPING } ||
+            merged.any { it.type == Effects.EGG_GROUP }
+
+        if (!hasRelevantEffects) {
+            return super.affectWeight(detail, spawnablePosition, weight)
+        }
+
+        val pokemonDetail = detail as? PokemonSpawnDetail
+            ?: return super.affectWeight(detail, spawnablePosition, weight)
+
+        val detailSpecies = pokemonDetail.pokemon.species
+            ?.let { PokemonSpecies.getByName(it) }
+            ?: return super.affectWeight(detail, spawnablePosition, weight)
+
+        val formData = detailSpecies.getForm(pokemonDetail.pokemon.aspects)
+
+        var newWeight = weight
+        var used = false
+
         // if bait exists and any effects are related to EV yields
-        if (merged.any { it.type == Effects.EV }){
-            if (detail is PokemonSpawnDetail) {
-                val detailSpecies = detail.pokemon.species?.let { PokemonSpecies.getByName(it) }
-                val baitEVStat = effects.firstOrNull { it.type == Effects.EV }?.subcategory?.path?.let { Stats.getStat(it) }
+        if (merged.any { it.type == Effects.EV }) {
+            val evEffect = effects.firstOrNull { it.type == Effects.EV }
+            val baitEVStat = evEffect?.subcategory?.path?.let { Stats.getStat(it) }
 
-                if (detailSpecies != null && baitEVStat != null) {
-                    val evYieldValue = detailSpecies.evYield[baitEVStat]?.toFloat() ?: 0f
-                    return when {
-                        evYieldValue > 0 -> {
-                            markUsed()
-                            super.affectWeight(detail, spawnablePosition, weight)
-                        }
-                        else -> {
-                            markUsed()
-                            super.affectWeight(detail, spawnablePosition, 0f)
-                        }
-                    }
+            if (baitEVStat != null) {
+                val evYieldValue = formData.evYield[baitEVStat]?.toFloat() ?: 0f
+                used = true
+
+                if (evYieldValue <= 0f) {
+                    newWeight = 0f
+                } else {
+                    LOGGER.debug("Boosted weight value");
                 }
             }
         }
+
         // if bait exists and any effects are related to Typing
-        if (merged.any { it.type == Effects.TYPING }){
-            if (detail is PokemonSpawnDetail) {
-                val detailSpecies = detail.pokemon.species?.let { PokemonSpecies.getByName(it) }
-                val baitEffect = effects.firstOrNull { it.type == Effects.TYPING }
-                val baitTypingEffect = baitEffect?.subcategory?.path?.let { ElementalTypes.get(it) }
+        if (newWeight > 0f && merged.any { it.type == Effects.TYPING }) {
+            val baitEffect = effects.firstOrNull { it.type == Effects.TYPING }
+            val baitTypingEffect = baitEffect?.subcategory?.path?.let { ElementalTypes.get(it) }
 
-                if (detailSpecies != null && baitTypingEffect != null) {
-                    val isMatchingType = detailSpecies.types.contains(baitTypingEffect)
-                    return when {
-                        isMatchingType -> {
-                            markUsed()
-                            super.affectWeight(detail, spawnablePosition, weight * baitEffect.value.toFloat())
-                        }
-                        else -> super.affectWeight(detail, spawnablePosition, weight)
-                    }
+            if (baitEffect != null && baitTypingEffect != null) {
+                val isMatchingType = formData.types.contains(baitTypingEffect)
+                used = true
+
+                if (isMatchingType) {
+                    newWeight *= baitEffect.value.toFloat()
                 }
             }
         }
+
         // if bait exists and any effects are related to Egg Groups
-        if (merged.any { it.type == Effects.EGG_GROUP }) {
-            if (detail is PokemonSpawnDetail) {
-                val detailSpecies = detail.pokemon.species?.let { PokemonSpecies.getByName(it) }
+        if (newWeight > 0f && merged.any { it.type == Effects.EGG_GROUP }) {
+            val eggGroupEffects = effects.filter { it.type == Effects.EGG_GROUP }
 
-                if (detailSpecies != null) {
-                    // Collect all the egg group effects
-                    val eggGroupEffects = effects.filter { it.type == Effects.EGG_GROUP }
-
-                    // Check if any of the egg group effects match the species' egg groups
-                    val matchingEffect = eggGroupEffects.firstOrNull { effect ->
-                        val effectEggGroupKey = effect.subcategory?.path ?: return@firstOrNull false
-                        val eggGroup = EggGroup.fromIdentifier(effectEggGroupKey)
-                        if (eggGroup == null) {
-                            LOGGER.warn("Unknown egg group identifier: $effectEggGroupKey")
-                            return@firstOrNull false
-                        }
-                        detailSpecies.eggGroups.contains(eggGroup)
-                    }
-
-                    if (matchingEffect != null) {
-                        markUsed()
-                        val multiplier = matchingEffect.value
-                        return super.affectWeight(detail, spawnablePosition, (weight * multiplier).toFloat())
-                    }
+            val matchingEffect = eggGroupEffects.firstOrNull { effect ->
+                val key = effect.subcategory?.path ?: return@firstOrNull false
+                val eggGroup = EggGroup.fromIdentifier(key)
+                if (eggGroup == null) {
+                    LOGGER.warn("Unknown egg group identifier: $key")
+                    return@firstOrNull false
                 }
+                formData.eggGroups.contains(eggGroup)
+            }
+
+            if (matchingEffect != null) {
+                used = true
+                newWeight *= matchingEffect.value.toFloat()
             }
         }
-        return super.affectWeight(detail, spawnablePosition, weight)
+
+        if (used) markUsed()
+        return super.affectWeight(detail, spawnablePosition, newWeight)
     }
 }

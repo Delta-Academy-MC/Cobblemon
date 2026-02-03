@@ -147,6 +147,12 @@
     ]
   },
   "behaviour": {
+    "combat": {
+      "willDefendOwner": true,
+      "willDefendSelf": true,
+      "willFlee": false
+    },
+    "fireImmune": true,
     "herd": {
       "maxSize": "5",
       "toleratedLeaders": [
@@ -157,26 +163,20 @@
       ]
     },
     "moving": {
-      "walk": {
-        "walkSpeed": 0.3
-      },
       "swim": {
         "avoidsWater": true,
         "canSwimInLava": true
+      },
+      "walk": {
+        "walkSpeed": 0.3
       }
     },
     "resting": {
       "canSleep": true,
-      "light": "0-4",
       "drowsyChance": 0.0333,
+      "light": "0-4",
       "rouseChance": 0.0042
-    },
-    "combat": {
-      "willDefendSelf": true,
-      "willDefendOwner": true,
-      "willFlee": false
-    },
-    "fireImmune": true
+    }
   },
   "drops": {
     "amount": 1,
@@ -368,6 +368,11 @@
         "width": 1.3
       },
       "behaviour": {
+        "combat": {
+          "willDefendOwner": true,
+          "willFlee": false
+        },
+        "fireImmune": true,
         "herd": {
           "maxSize": "5",
           "toleratedLeaders": [
@@ -377,26 +382,21 @@
             }
           ]
         },
-        "resting": {
-          "depth": "comatose",
-          "drowsyChance": 0.0333,
-          "rouseChance": 0.0042
-        },
         "moving": {
-          "walk": {
-            "canWalk": false
-          },
+          "canLook": false,
           "swim": {
             "avoidsWater": true,
             "canSwimInWater": false
           },
-          "canLook": false
+          "walk": {
+            "canWalk": false
+          }
         },
-        "combat": {
-          "willDefendOwner": true,
-          "willFlee": false
-        },
-        "fireImmune": true
+        "resting": {
+          "depth": "comatose",
+          "drowsyChance": 0.0333,
+          "rouseChance": 0.0042
+        }
       },
       "moves": [
         "1:tackle",
@@ -549,6 +549,11 @@
         "h:zenmode"
       ],
       "behaviour": {
+        "combat": {
+          "willDefendOwner": true,
+          "willDefendSelf": true,
+          "willFlee": false
+        },
         "herd": {
           "maxSize": "5",
           "toleratedLeaders": [
@@ -562,11 +567,6 @@
           "swim": {
             "avoidsWater": true
           }
-        },
-        "combat": {
-          "willDefendSelf": true,
-          "willDefendOwner": true,
-          "willFlee": false
         },
         "resting": {
           "drowsyChance": 0.0333,
@@ -745,6 +745,12 @@
       },
       "baseExperienceYield": 189,
       "behaviour": {
+        "combat": {
+          "willDefendOwner": true,
+          "willDefendSelf": true,
+          "willFlee": false
+        },
+        "fireImmune": true,
         "herd": {
           "maxSize": "5",
           "toleratedLeaders": [
@@ -755,27 +761,21 @@
           ]
         },
         "moving": {
+          "fly": {
+            "canFly": true
+          },
           "swim": {
             "avoidsWater": true,
             "canSwimInLava": true
           },
           "walk": {
             "canWalk": false
-          },
-          "fly": {
-            "canFly": true
           }
-        },
-        "combat": {
-          "willDefendSelf": true,
-          "willDefendOwner": true,
-          "willFlee": false
         },
         "resting": {
           "drowsyChance": 0.0333,
           "rouseChance": 0.0042
-        },
-        "fireImmune": true
+        }
       },
       "drops": {
         "amount": 2,

@@ -7,7 +7,7 @@
   "mouseInputMult": "q.get_ride_stats('SKILL', 'AIR', 1.2, 0.8)",
   "speedExpr": "q.get_ride_stats('SPEED', 'AIR', 20.0, 4.0)",
   "accelerationExpr": "q.get_ride_stats('ACCELERATION', 'AIR', 2.0, 8.0)",
-  "staminaExpr": "q.get_ride_stats('STAMINA', 'AIR', 40.0, 10.0)",
+  "staminaExpr": "q.get_ride_stats('STAMINA', 'AIR', 40.0, 0.0)",
   "stamDrainHorzMod": "1.5",
   "stamDrainPercRateGlide": "0.25",
   "stamDrainPerRateDive": "0.25",

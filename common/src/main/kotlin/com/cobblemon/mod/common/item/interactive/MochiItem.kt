@@ -25,9 +25,7 @@ class MochiItem(stat: Stats): EVIncreaseItem(stat, 4) {
         }
 
         pokemon.feedPokemon(1)
-
-        stack.consume(1, player)
-
+        
         return super.applyToPokemon(player, stack, pokemon)
     }
 }

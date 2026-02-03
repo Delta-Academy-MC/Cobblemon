@@ -31,29 +31,27 @@ abstract class SpawnExtraDataEntityPacket<T: NetworkPacket<T>, E : Entity>(var v
     abstract fun checkType(entity: Entity): Boolean
 
     fun spawnAndApply(client: Minecraft) {
-        client.execute {
-            val player = client.player ?: return@execute
-            val world = player.level() as? ClientLevel ?: return@execute
-            // This is a copy pasta of ClientPlayNetworkHandler#onEntitySpawn
-            // This exists due to us needing to do everything it does except spawn the entity in the world.
-            // We invoke applyData then we add the entity to the world.
-            PacketUtils.ensureRunningOnSameThread(this.vanillaSpawnPacket, player.connection, client)
-            val entityType = this.vanillaSpawnPacket.type
-            val entity = entityType.create(world) ?: return@execute
-            entity.recreateFromPacket(this.vanillaSpawnPacket)
-            entity.deltaMovement = Vec3(
-                this.vanillaSpawnPacket.xa,
-                this.vanillaSpawnPacket.ya,
-                this.vanillaSpawnPacket.za
-            )
-            // Cobblemon start
-            if (this.checkType(entity)) {
-                this.applyData(entity as E, world)
-            }
-            // Cobblemon end
-            world.addEntity(entity)
-            (player.connection as ClientPlayNetworkHandlerInvoker).callPlaySpawnSound(entity)
+        val player = client.player ?: return
+        val world = player.level() as? ClientLevel ?: return
+        // This is a copy pasta of ClientPlayNetworkHandler#onEntitySpawn
+        // This exists due to us needing to do everything it does except spawn the entity in the world.
+        // We invoke applyData then we add the entity to the world.
+        PacketUtils.ensureRunningOnSameThread(this.vanillaSpawnPacket, player.connection, client)
+        val entityType = this.vanillaSpawnPacket.type
+        val entity = entityType.create(world) ?: return
+        entity.recreateFromPacket(this.vanillaSpawnPacket)
+        entity.deltaMovement = Vec3(
+            this.vanillaSpawnPacket.xa,
+            this.vanillaSpawnPacket.ya,
+            this.vanillaSpawnPacket.za
+        )
+        // Cobblemon start
+        if (this.checkType(entity)) {
+            this.applyData(entity as E, world)
         }
+        // Cobblemon end
+        world.addEntity(entity)
+        (player.connection as ClientPlayNetworkHandlerInvoker).callPlaySpawnSound(entity)
     }
 
     companion object {

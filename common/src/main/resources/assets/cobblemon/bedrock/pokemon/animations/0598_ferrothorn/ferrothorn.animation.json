@@ -830,7 +830,7 @@
 			}
 		},
 		"animation.ferrothorn.blink": {
-			"animation_length": 0.16667,
+			"animation_length": 0.1667,
 			"bones": {
 				"pupil_open_left": {
 					"position": {
@@ -944,6 +944,79 @@
 			"sound_effects": {
 				"0.0": {
 					"effect": "pokemon.ferrothorn.cry"
+				}
+			}
+		},
+		"animation.ferrothorn.shock": {
+			"loop": true,
+			"bones": {
+				"pupil_open_left": {
+					"scale": [0.8, 0.4, 1]
+				},
+				"pupil_open_right": {
+					"scale": [0.8, 0.4, 1]
+				}
+			}
+		},
+		"animation.ferrothorn.angry": {
+			"loop": true,
+			"bones": {
+				"eye_expression_left": {
+					"position": [-0.3, 0.2, -0.1],
+					"scale": [0.6, 0.6, 1]
+				},
+				"eye_expression_right": {
+					"position": [0.3, 0.2, -0.1],
+					"scale": [0.6, 0.6, 1]
+				}
+			}
+		},
+		"animation.ferrothorn.sad": {
+			"loop": true,
+			"bones": {
+				"eye_expression_left": {
+					"position": [0.3, 0.25, -0.1],
+					"scale": [0.5, 0.5, 1]
+				},
+				"eye_expression_right": {
+					"position": [-0.3, 0.25, -0.1],
+					"scale": [0.5, 0.5, 1]
+				}
+			}
+		},
+		"animation.ferrothorn.happy": {
+			"loop": true,
+			"bones": {
+				"pupil_open_left": {
+					"position": [0, 0, 0.1]
+				},
+				"pupil_happy_left": {
+					"position": [0, 0, -0.2]
+				},
+				"pupil_open_right": {
+					"position": [0, 0, 0.1]
+				},
+				"pupil_happy_right": {
+					"position": [0, 0, -0.2]
+				}
+			}
+		},
+		"animation.ferrothorn.hurt": {
+			"loop": true,
+			"bones": {
+				"pupil_open_left": {
+					"position": [0, 0, 0.1]
+				},
+				"pupil_closed_left": {
+					"rotation": [0, 0, -25],
+					"position": [0, 0.25, -0.1]
+				},
+				"pupil_open_right": {
+					"position": [0, 0, 0.1]
+				},
+				"pupil_closed_right": {
+					"rotation": [0, 0, 25],
+					"position": [0, 0.25, -0.1]
 				}
 			}
 		}

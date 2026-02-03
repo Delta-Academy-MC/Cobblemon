@@ -1,17 +1,5 @@
 # Changelog
-## [1.7.1 (November 29th, 2025)](#1-7-1)
-
-### Additions
-- Added trades for Saccharine Saplings, Hearty Grains, Chipped Pot, and Masterpiece Teacup to the Wandering Trader.
-- Added brewing recipe for Throat Spray.
-- Added vanilla sprinting's field of view change to Pokémon land mounts.
-- Added a customizable keybind for the riding freelook button.
-- Added double tap to sprint on land mounts.
-
-### Changes
-- Made Jet pitch turning 1.5x faster across all Pokémon.
-- Party Pokémon now attack only mobs that are attacking their owner, instead of randomly targeting unrelated mobs and getting themselves hurt.
-- Reduced the cost of the Vivichoke Seed trade with the Wandering Trader.
+## [1.7.3 (January 31st, 2026)](#1-7-3)
 
 ### Fixes
 - Fixed game crashing when removing national pokedex using datapacks
@@ -144,8 +132,13 @@
 - Fixed recipes that use concrete not working on NeoForge.
 - Fixed Boltund's model.
 - Fixed Cyclizar's textures.
+- Fixed mounted Pokémon not playing sounds.
+- Fixed players failing to join servers randomly.
+- Fixed some Pokémon having no stamina for flying.
+- Fixed `/pctake` not respecting the actual size of the PC.
 
 ### Developer
+- Poké Ball GUI textures now respect the ball's namespace, enabling proper texture loading for custom balls from other mods.
 
 - Pokemon now have a fireImmune attribute in their behaviour that can be set to true to ignore all fire damage (lava, magma blocks, etc.)
   `JSON
@@ -313,16 +306,13 @@
   - `q.file.clear(<path>)` Clears the given file from the cache.
 - Using `q.run_script` will now allow additional arguments which will be put into `c.arg_1`, `c.arg_2`, etc.
 ### Molang & Datapacks
-- Removed automatic generation of PC wallpaper screen glow if no asset is provided; it is now optional.
-  - This is because there's no practical way to do this without blowing up things like *VulkanMod*.
-
-### Particles
+- Added a `chance` requirement type for Pokémon interactions.
 
 ### Localization
 - Updated translations for:
   - French
-  - Japanese
+  - Canadian French
   - Korean
-  - Brazilian Portuguese
+  - Portuguese
   - Simplified Chinese
-  - Traditional Chinese
+  - Spanish

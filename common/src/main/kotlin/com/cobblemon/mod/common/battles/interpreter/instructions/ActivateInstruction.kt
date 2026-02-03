@@ -114,7 +114,14 @@ class ActivateInstruction(val instructionSet: InstructionSet, val message: Battl
                 }
                 "maxguard", "protect" -> battleLang("activate.protect", pokemonName)
                 "shadowforce", "hyperspacefury", "hyperspacehole" -> battleLang("activate.phantomforce", pokemonName)
-                else -> battleLang("activate.${effect.id}", pokemonName, sourceName, extraEffect)
+                else -> {
+                    val msgVariant = message.optionalArgument("msg")
+                    if (msgVariant != null) {
+                        battleLang("activate.${effect.id}.$msgVariant", pokemonName, sourceName, extraEffect)
+                    } else {
+                        battleLang("activate.${effect.id}", pokemonName, sourceName, extraEffect)
+                    }
+                }
             }
             battle.broadcastChatMessage(lang)
             //We check holds here so the chat msg + particle effect happen more concurrently, instead of sequentially

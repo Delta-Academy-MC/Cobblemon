@@ -88,7 +88,6 @@ abstract class OneToOneFileStoreAdapter<S>(
                         result
                     }
                     else {
-                        storeClass.getConstructor(UUID::class.java).newInstance(uuid)
                         var result = storeClass.getConstructor(UUID::class.java).newInstance(uuid)
                         save(storeClass, uuid, serialize(result, registryAccess))
                         oldFile.delete()

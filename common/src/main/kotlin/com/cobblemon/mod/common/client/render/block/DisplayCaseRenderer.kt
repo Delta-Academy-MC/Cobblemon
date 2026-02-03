@@ -160,6 +160,7 @@ class DisplayCaseRenderer(ctx: BlockEntityRendererProvider.Context) : BlockEntit
             stack.item is BedItem -> PositioningType.BED
             stack.item is BannerItem -> PositioningType.BANNER
             stack.`is`(CobblemonItemTags.POKE_BALLS) -> PositioningType.POKE_BALL
+            stack.`is`(CobblemonItemTags.PLAQUES) -> PositioningType.ITEM_MODEL
             stack.item is PokedexItem -> PositioningType.POKEDEX
             stack.item == CobblemonItems.RELIC_COIN_POUCH -> PositioningType.COIN_POUCH
             stack.item == CobblemonItems.PASTURE -> PositioningType.PASTURE

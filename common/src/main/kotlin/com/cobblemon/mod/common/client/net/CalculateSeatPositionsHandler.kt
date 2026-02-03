@@ -23,7 +23,7 @@ import net.minecraft.world.phys.Vec3
 
 object CalculateSeatPositionsHandler : ClientNetworkPacketHandler<CalculateSeatPositionsPacket> {
     private const val FORMAT = "%.2f"
-    private const val SEAT_PREFIX = "seat"
+    private const val SEAT_PREFIX = "seat_"
     private const val SIMULATION_PERIOD_TICKS = 15 * 20F
 
     class SeatRanges(

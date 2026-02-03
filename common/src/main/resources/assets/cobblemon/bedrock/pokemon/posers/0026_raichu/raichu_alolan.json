@@ -38,6 +38,7 @@
     "portrait": {
       "poseTypes": ["PROFILE"],
       "animations": [
+        "q.look('head_ai', 1, 1, 10, -30, 17.5, -17.5)",
         "q.bedrock('raichu_alolan', 'ground_idle_sit')"
       ],
       "quirks": ["q.bedrock_quirk('raichu_alolan', 'blink')"]

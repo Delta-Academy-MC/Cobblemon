@@ -142,19 +142,15 @@ class IntSpeciesFeatureProvider : SynchronizedSpeciesFeatureProvider<IntSpeciesF
     }
 
     override fun invoke(nbt: CompoundTag): IntSpeciesFeature? {
-        return if (nbt.contains(keys.first())) {
-            IntSpeciesFeature(keys.first(), nbt.getInt(keys.first()))
-        } else {
-            null
-        }
+        val key = keys.find { nbt.contains(it) }
+        if (key == null) return null
+        return IntSpeciesFeature(keys.first(), nbt.getInt(key));
     }
 
     override fun invoke(json: JsonObject): IntSpeciesFeature? {
-        return if (json.has(keys.first())) {
-            IntSpeciesFeature(keys.first(), json.get(keys.first()).asInt)
-        } else {
-            null
-        }
+        val key = keys.find { json.has(it) }
+        if (key == null) return null
+        return IntSpeciesFeature(keys.first(), json.get(key).asInt)
     }
 
     override fun get(pokemon: Pokemon) = pokemon.features.filterIsInstance<IntSpeciesFeature>().find { it.name in keys }

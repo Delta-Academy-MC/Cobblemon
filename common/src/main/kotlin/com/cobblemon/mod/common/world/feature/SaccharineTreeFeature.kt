@@ -10,13 +10,14 @@ package com.cobblemon.mod.common.world.feature
 
 import com.cobblemon.mod.common.Cobblemon
 import com.cobblemon.mod.common.CobblemonBlocks
-import com.cobblemon.mod.common.api.pokemon.PokemonProperties
 import com.cobblemon.mod.common.api.tags.CobblemonBiomeTags
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
 import net.minecraft.core.Direction.UP
+import net.minecraft.nbt.CompoundTag
 import net.minecraft.tags.BlockTags
 import net.minecraft.util.RandomSource
+import net.minecraft.world.item.component.CustomData
 import net.minecraft.world.level.WorldGenLevel
 import net.minecraft.world.level.block.Block.UPDATE_ALL
 import net.minecraft.world.level.block.Block.UPDATE_CLIENTS
@@ -227,12 +228,20 @@ class SaccharineTreeFeature : Feature<BlockStateConfiguration>(BlockStateConfigu
                     val i: Int = 2 + randomSource.nextInt(2)
                     for (j in 0..<i) {
                         if (isCombee > 0) {
-                            beehiveBlockEntity!!.storeBee(BeehiveBlockEntity.Occupant.create(randomSource.nextInt(599)))
+                            beehiveBlockEntity?.storeBee(BeehiveBlockEntity.Occupant.create(randomSource.nextInt(599)))
                         } else {
+                            // We want to create a Pokemon entity here and turn it into a compound tag to store in the hive.
+                            // But creating a Pokemon entity during world generation can cause issues.
+                            // So instead we create custom compound tag that is a placeholder for an incomplete Pokemon.
+                            // This is caught and handled by BeeOccupantMixin.java, which turns it into a complete entity.
                             val properties = "${POKEMON_ARGS} lvl=${LEVEL_RANGE.random()}"
-                            val pokemon = PokemonProperties.parse(properties)
-                            val entity = pokemon.createEntity(worldGenLevel.level)
-                            beehiveBlockEntity!!.addOccupant(entity)
+                            val compoundTag = CompoundTag()
+                            compoundTag.putString("id", POKEMON_PLACEHOLD_ID)
+                            compoundTag.putString("pokemonProperties", properties)
+                            val occupant = BeehiveBlockEntity.Occupant(
+                                CustomData.of(compoundTag), randomSource.nextInt(599), 600
+                            )
+                            beehiveBlockEntity?.storeBee(occupant)
                         }
                     }
                 })
@@ -351,5 +360,6 @@ class SaccharineTreeFeature : Feature<BlockStateConfiguration>(BlockStateConfigu
     companion object {
         val POKEMON_ARGS = "combee"
         val LEVEL_RANGE = 5..15
+        val POKEMON_PLACEHOLD_ID = "cobblemon_pokemon_entity_placeholder"
     }
 }

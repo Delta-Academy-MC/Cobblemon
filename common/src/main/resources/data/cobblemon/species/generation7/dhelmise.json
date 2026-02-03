@@ -65,8 +65,35 @@
       },
       "LIQUID": {
         "key": "cobblemon:liquid/submarine",
+        "rideSounds": [
+          {
+            "muffleEnabled": true,
+            "pitchExpr": "math.max(1.0 ,0.2 + math.pow(math.min(q.ride_velocity() / 1.5, 1.0),2))",
+            "playForNonPassengers": false,
+            "playForPassengers": true,
+            "soundLocation": "cobblemon:ride.loop.water_sufrace.stereo",
+            "volumeExpr": "math.pow(math.min(q.ride_velocity() / 1.5, 1.0),2)"
+          },
+          {
+            "muffleEnabled": true,
+            "pitchExpr": "math.max(1.0 ,0.2 + math.pow(math.min(q.ride_velocity() / 1.5, 1.0),2))",
+            "playForNonPassengers": true,
+            "playForPassengers": false,
+            "soundLocation": "cobblemon:ride.loop.water_surface.mono",
+            "submerged": false,
+            "volumeExpr": "math.pow(math.min(q.ride_velocity() / 1.5, 1.0),2)"
+          },
+          {
+            "muffleEnabled": true,
+            "pitchExpr": "math.max(1.0 ,0.2 + math.pow(math.min(q.ride_velocity() / 1.5, 1.0),2))",
+            "playForNonPassengers": false,
+            "playForPassengers": true,
+            "soundLocation": "cobblemon:ride.loop.underwater.stereo",
+            "submerged": true,
+            "volumeExpr": "math.pow(math.min(q.ride_velocity() / 1.5, 1.0),2)"
+          }
+        ],
         "hitboxBreachPercentage": 0.75,
-        "rideSounds": [],
         "stats": {
           "ACCELERATION": "50-80",
           "JUMP": "50-80",
@@ -159,7 +186,15 @@
     ]
   },
   "behaviour": {
+    "combat": {
+      "willDefendOwner": true,
+      "willDefendSelf": true,
+      "willFlee": false
+    },
     "moving": {
+      "fly": {
+        "canFly": true
+      },
       "swim": {
         "canBreatheUnderwater": true,
         "swimSpeed": 0.2
@@ -167,24 +202,16 @@
       "walk": {
         "avoidsLand": true,
         "canWalk": false
-      },
-      "fly": {
-        "canFly": true
       }
     },
     "resting": {
       "canSleep": true,
+      "drowsyChance": 0.0014,
       "light": "0-4",
+      "rouseChance": 0.0042,
       "times": [
         "any"
-      ],
-      "drowsyChance": 0.0014,
-      "rouseChance": 0.0042
-    },
-    "combat": {
-      "willDefendSelf": true,
-      "willDefendOwner": true,
-      "willFlee": false
+      ]
     }
   },
   "drops": {

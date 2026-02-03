@@ -44,11 +44,7 @@ abstract class SpawnAction<R>(
 
         spawnablePosition.applyInfluences { it.affectAction(this) }
         val result = run()
-        if (result != null) {
-            future.complete(result)
-        } else {
-            future.completeExceptionally(Exception("Nothing was spawned."))
-        }
+        future.complete(result)
 
         return result
     }

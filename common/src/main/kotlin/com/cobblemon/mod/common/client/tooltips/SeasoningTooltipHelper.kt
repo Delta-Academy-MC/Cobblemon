@@ -206,7 +206,7 @@ fun generateAdditionalRideBoostsTooltip(stack: ItemStack): MutableList<Component
     val resultLines = mutableListOf<Component>()
     resultLines.add(rideBoostSeasoningHeader)
 
-    for ((stat, value) in boosts) {
+    for ((stat, value) in boosts.toSortedMap()) {
         val statName = stat.displayName.also { it.style = it.style.withColor(stat.flavour.colour) }
         val valueText = if (value < 0) {
             Component.literal("$value").red()

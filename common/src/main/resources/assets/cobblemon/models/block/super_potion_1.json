@@ -1,0 +1,7 @@
+{
+  "parent": "cobblemon:block/potion_1",
+  "textures": {
+    "texture": "cobblemon:block/decorative/super_potion",
+    "particle": "cobblemon:block/decorative/super_potion"
+  }
+}

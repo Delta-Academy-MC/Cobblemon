@@ -20,11 +20,12 @@ class BerryRegistrySyncPacket(berries: Collection<Berry>) : DataRegistrySyncPack
     }
 
     override val id = ID
+
     override fun encodeEntry(buffer: RegistryFriendlyByteBuf, entry: Berry) {
         entry.encode(buffer)
     }
 
-    override fun decodeEntry(buffer: RegistryFriendlyByteBuf): Berry? = Berry.decode(buffer)
+    override fun decodeEntry(buffer: RegistryFriendlyByteBuf): Berry = Berry.decode(buffer)
 
     override fun synchronizeDecoded(entries: Collection<Berry>) {
         Berries.reload(entries.associateBy { it.identifier })

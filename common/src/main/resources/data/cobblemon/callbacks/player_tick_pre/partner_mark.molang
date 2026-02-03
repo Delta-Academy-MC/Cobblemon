@@ -1,0 +1,41 @@
+t.ticks_between_checks = 20 * 10;
+math.mod(q.player.world.game_time, t.ticks_between_checks) != 0 ? {
+    return 0;
+};
+
+t.steps_required = 10000;
+t.friendship_required = 200;
+
+t.total_blocks =
+    q.player.get_custom_stat('minecraft:walk_one_cm') +
+    q.player.get_custom_stat('minecraft:crouch_one_cm') +
+    q.player.get_custom_stat('minecraft:sprint_one_cm') +
+    q.player.get_custom_stat('minecraft:walk_on_water_one_cm') +
+    q.player.get_custom_stat('minecraft:fall_one_cm') +
+    q.player.get_custom_stat('minecraft:climb_one_cm') +
+    q.player.get_custom_stat('minecraft:fly_one_cm') +
+    q.player.get_custom_stat('minecraft:walk_under_water_one_cm') +
+    q.player.get_custom_stat('minecraft:minecart_one_cm') +
+    q.player.get_custom_stat('minecraft:boat_one_cm') +
+    q.player.get_custom_stat('minecraft:pig_one_cm') +
+    q.player.get_custom_stat('minecraft:horse_one_cm') +
+    q.player.get_custom_stat('minecraft:aviate_one_cm') +
+    q.player.get_custom_stat('minecraft:swim_one_cm') +
+    q.player.get_custom_stat('minecraft:strider_one_cm') +
+    q.player.get_custom_stat('cobblemon:riding_land') +
+    q.player.get_custom_stat('cobblemon:riding_air') +
+    q.player.get_custom_stat('cobblemon:riding_liquid');
+
+t.total_blocks = t.total_blocks / 100.0;
+t.player_data = q.player.data();
+
+math.floor(t.total_blocks / t.steps_required) > math.floor(t.player_data.last_partner_mark_check / t.steps_required) ? {
+    t.party = q.player.party;
+    for_each(t.pokemon, t.party.pokemon, {
+        t.pokemon.friendship >= t.friendship_required ? {
+            t.pokemon.add_marks_with_chance('cobblemon:mark_partner');
+        };
+    });
+};
+
+t.player_data.last_partner_mark_check = t.total_blocks;

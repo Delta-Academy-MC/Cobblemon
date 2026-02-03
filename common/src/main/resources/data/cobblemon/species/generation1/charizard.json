@@ -57,15 +57,33 @@
           {
             "muffleEnabled": true,
             "pitchExpr": "math.max(1.0 ,0.2 + math.pow(math.min(q.ride_velocity() / 1.5, 1.0),2))",
-            "playForNonPassengers": true,
-            "soundLocation": "cobblemon:ride.loop.wind",
+            "playForNonPassengers": false,
+            "playForPassengers": true,
+            "soundLocation": "cobblemon:ride.loop.wind.stereo",
             "volumeExpr": "math.pow(math.min(q.ride_velocity() / 1.5, 1.0),2)"
           },
           {
             "muffleEnabled": true,
             "pitchExpr": "math.max(1.0 ,0.2 + math.pow(math.min(q.ride_velocity() / 1.5, 1.0),2))",
             "playForNonPassengers": true,
-            "soundLocation": "cobblemon:ride.loop.leather",
+            "playForPassengers": false,
+            "soundLocation": "cobblemon:ride.loop.wind.mono",
+            "volumeExpr": "math.pow(math.min(q.ride_velocity() / 1.5, 1.0),2)"
+          },
+          {
+            "muffleEnabled": true,
+            "pitchExpr": "math.max(1.0 ,0.2 + math.pow(math.min(q.ride_velocity() / 1.5, 1.0),2))",
+            "playForNonPassengers": false,
+            "playForPassengers": true,
+            "soundLocation": "cobblemon:ride.loop.leather.stereo",
+            "volumeExpr": "math.pow(math.min(q.ride_velocity() / 1.5, 1.0),2)"
+          },
+          {
+            "muffleEnabled": true,
+            "pitchExpr": "math.max(1.0 ,0.2 + math.pow(math.min(q.ride_velocity() / 1.5, 1.0),2))",
+            "playForNonPassengers": true,
+            "playForPassengers": false,
+            "soundLocation": "cobblemon:ride.loop.leather.mono",
             "volumeExpr": "math.pow(math.min(q.ride_velocity() / 1.5, 1.0),2)"
           }
         ],
@@ -74,7 +92,7 @@
           "JUMP": "30-65",
           "SKILL": "55-85",
           "SPEED": "30-65",
-          "STAMINA": "30-65"
+          "STAMINA": "45-75"
         }
       },
       "LAND": {
@@ -177,6 +195,7 @@
       "willDefendSelf": true,
       "willFlee": false
     },
+    "fireImmune": true,
     "herd": {
       "maxSize": "5"
     },
@@ -185,9 +204,9 @@
         "canFly": true
       },
       "swim": {
-        "swimSpeed": 0.1,
         "avoidsWater": true,
-        "canSwimInLava": true
+        "canSwimInLava": true,
+        "swimSpeed": 0.1
       },
       "walk": {
         "walkSpeed": 0.147
@@ -195,11 +214,10 @@
     },
     "resting": {
       "canSleep": true,
-      "light": "0-4",
       "drowsyChance": 0.0333,
+      "light": "0-4",
       "rouseChance": 0.0042
-    },
-    "fireImmune": true
+    }
   },
   "drops": {
     "amount": 4,
@@ -489,28 +507,28 @@
         }
       },
       "behaviour": {
+        "combat": {
+          "willDefendOwner": true,
+          "willDefendSelf": true,
+          "willFlee": false
+        },
+        "fireImmune": true,
         "herd": {
           "maxSize": "6"
         },
         "moving": {
+          "fly": {
+            "canFly": true
+          },
           "swim": {
             "avoidsWater": true,
             "canSwimInLava": true
-          },
-          "fly": {
-            "canFly": true
           }
-        },
-        "combat": {
-          "willDefendSelf": true,
-          "willDefendOwner": true,
-          "willFlee": false
         },
         "resting": {
           "drowsyChance": 0.0333,
           "rouseChance": 0.0042
-        },
-        "fireImmune": true
+        }
       },
       "evolutions": [],
       "battleOnly": true,
@@ -610,28 +628,28 @@
         }
       },
       "behaviour": {
+        "combat": {
+          "willDefendOwner": true,
+          "willDefendSelf": true,
+          "willFlee": false
+        },
+        "fireImmune": true,
         "herd": {
           "maxSize": "6"
         },
         "moving": {
+          "fly": {
+            "canFly": true
+          },
           "swim": {
             "avoidsWater": true,
             "canSwimInLava": true
-          },
-          "fly": {
-            "canFly": true
           }
-        },
-        "combat": {
-          "willDefendSelf": true,
-          "willDefendOwner": true,
-          "willFlee": false
         },
         "resting": {
           "drowsyChance": 0.0333,
           "rouseChance": 0.0042
-        },
-        "fireImmune": true
+        }
       },
       "evolutions": [],
       "battleOnly": true,

@@ -43,17 +43,17 @@ class WinInstruction(val message: BattleMessage): InterpreterInstruction {
         val losersText = losers.map { it.getName() }.reduce { acc, next -> acc + " & " + next }
         val wasCaught = battle.showdownMessages.any { "capture" in it }
 
-        battle.dispatch {
-            // If the battle was a PvW battle, we need to set the killer of the wild Pokémon to the player
-            if (battle.isPvW) {
-                val nonPlayerActor = battle.actors.first { it.type == ActorType.WILD }
-                val wildPokemon: BattlePokemon = nonPlayerActor.pokemonList.first()
+        // If the battle was a PvW battle, we need to set the killer of the wild Pokémon to the player
+        if (battle.isPvW) {
+            val nonPlayerActor = battle.actors.first { it.type == ActorType.WILD }
+            val wildPokemon: BattlePokemon = nonPlayerActor.pokemonList.first()
 
-                if (!wasCaught && losers.any { it.uuid == wildPokemon.uuid }) {
-                    wildPokemon.effectedPokemon.entity?.killer = (battle.actors.firstOrNull { it.type == ActorType.PLAYER } as? PlayerBattleActor)?.entity
-                }
+            if (!wasCaught && losers.any { it.uuid == wildPokemon.uuid }) {
+                wildPokemon.effectedPokemon.entity?.killer = (battle.actors.firstOrNull { it.type == ActorType.PLAYER } as? PlayerBattleActor)?.entity
             }
+        }
 
+        battle.dispatch {
             // broadcast victory / defeat
             if (!wasCaught) {
                 val blackedOut = battle.isPvW && losers.any { it is PlayerBattleActor }

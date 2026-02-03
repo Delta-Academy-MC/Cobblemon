@@ -1,0 +1,47 @@
+{
+  "portraitScale": 1.84,
+  "portraitTranslation": [-0.52, 0.88, 0],
+  "profileScale": 0.65,
+  "profileTranslation": [-0.05, 0.75, 0],
+  "rootBone": "throh",
+  "animations": {
+    "cry": "q.bedrock_stateful('throh', 'cry')"
+  },
+  "poses": {
+    "standing": {
+      "poseTypes": ["STAND", "FLOAT", "NONE", "PORTRAIT", "PROFILE"],
+      "isBattle": false,
+      "animations": [
+        "q.look('head', 1, 1, 22.5, -22.5, 25, -25)",
+        "q.bedrock('throh', 'ground_idle')"
+      ],
+      "quirks": [
+        "q.bedrock_quirk('throh', 'blink')"
+      ]
+    },
+    "battle-standing": {
+      "poseTypes": ["STAND"],
+      "isBattle": true,
+      "animations": [
+        "q.look('head', 1, 1, 22.5, -22.5, 25, -25)",
+        "q.bedrock('throh', 'battle_idle')"
+      ],
+      "quirks": [
+        "q.bedrock_quirk('throh', 'blink')"
+      ]
+    },
+    "walk": {
+      "poseTypes": ["WALK"],
+      "isBattle": false,
+      "animations": [
+        "q.look('head', 1, 1, 22.5, -22.5, 25, -25)",
+        "q.bedrock('throh', 'ground_idle')",
+        "q.biped_walk(0.66, 1.4, 'leg_left', 'leg_right')",
+        "q.bimanual_swing(0.66, 1.4, 'arm_left', 'arm_right')"
+      ],
+      "quirks": [
+        "q.bedrock_quirk('throh', 'blink')"
+      ]
+    }
+  }
+}

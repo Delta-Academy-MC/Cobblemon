@@ -17,7 +17,7 @@ import com.cobblemon.mod.common.util.battleLang
 import java.util.UUID
 import net.minecraft.network.chat.MutableComponent
 
-class TrainerBattleActor(
+open class TrainerBattleActor(
     val trainerName: String,
     uuid: UUID,
     pokemonList: List<BattlePokemon>,

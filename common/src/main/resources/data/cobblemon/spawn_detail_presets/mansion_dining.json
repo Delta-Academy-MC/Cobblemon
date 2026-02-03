@@ -1,10 +1,8 @@
 {
   "condition": {
 	"structures": [
-	  "minecraft:woodland_mansion/1x1_b2",
-	  "minecraft:woodland_mansion/1x2_c1",
-	  "minecraft:woodland_mansion/2x2_b1",
-	  "minecraft:woodland_mansion/2x2_b2"
+	  "minecraft:mansion",
+	  "minecraft:woodland_mansion"
     ],
 	"minY": 62,
 	"neededBaseBlocks": [
@@ -16,9 +14,7 @@
 	  "#minecraft:wool_carpets"
 	],
 	"neededNearbyBlocks": [
-	  "minecraft:light_grey_carpet",
-	  "minecraft:magenta_carpet",
-	  "minecraft:white_carpet"
+	  "#cobblemon:mansion_dining_blocks"
 	]
   }
 }

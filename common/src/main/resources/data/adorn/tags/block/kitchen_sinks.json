@@ -1,6 +1,1 @@
-{
-  "replace": false,
-  "values": [
-    { "id": "adorn:cobblemon/apricorn_kitchen_sink", "required": false }
-  ]
-}
+{"replace":false,"values":[{"id":"adorn:cobblemon/apricorn_kitchen_sink","required":false}, {"id":"adorn:cobblemon/saccharine_kitchen_sink","required":false}]}

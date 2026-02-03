@@ -132,7 +132,9 @@ class FlagSpeciesFeatureProvider : SynchronizedSpeciesFeatureProvider<FlagSpecie
 
     constructor(vararg keys: String) : this(keys.toList())
 
-    override fun get(pokemon: Pokemon) = pokemon.getFeature<FlagSpeciesFeature>(keys.first())
+    override fun get(pokemon: Pokemon): FlagSpeciesFeature? {
+        return pokemon.features.filterIsInstance<FlagSpeciesFeature>().find { it.name in keys }
+    }
 
     override fun invoke(pokemon: Pokemon): FlagSpeciesFeature? {
         return get(pokemon)
@@ -144,15 +146,15 @@ class FlagSpeciesFeatureProvider : SynchronizedSpeciesFeatureProvider<FlagSpecie
     }
 
     override fun invoke(nbt: CompoundTag): FlagSpeciesFeature? {
-        return if (nbt.contains(keys.first())) {
-            FlagSpeciesFeature(keys.first(), false).also { it.loadFromNBT(nbt) }
-        } else null
+        val key = keys.find { nbt.contains(it) }
+        if (key == null) return null
+        return FlagSpeciesFeature(key, false).also { it.loadFromNBT(nbt) }
     }
 
     override fun invoke(json: JsonObject): FlagSpeciesFeature? {
-        return if (json.has(keys.first())) {
-            FlagSpeciesFeature(keys.first(), false).also { it.loadFromJSON(json) }
-        } else null
+        val key = keys.find { json.has(it) }
+        if (key == null) return null
+        return FlagSpeciesFeature(key, false).also { it.loadFromJSON(json) }
     }
 
     override fun fromString(value: String?): FlagSpeciesFeature? {
@@ -170,16 +172,26 @@ class FlagSpeciesFeatureProvider : SynchronizedSpeciesFeatureProvider<FlagSpecie
     }
 
     override fun provide(pokemon: Pokemon): Set<String> {
-        return if (isAspect && pokemon.getFeature<FlagSpeciesFeature>(keys.first())?.enabled == true) {
-            setOf(keys.first())
+        return if (isAspect) {
+            val feature = pokemon.features.filterIsInstance<FlagSpeciesFeature>().find { it.name in keys }
+            if (feature != null && feature.enabled) {
+                setOf(keys.first())
+            } else {
+                emptySet()
+            }
         } else {
             emptySet()
         }
     }
 
     override fun provide(properties: PokemonProperties): Set<String> {
-        return if (isAspect && properties.customProperties.filterIsInstance<FlagSpeciesFeature>().find { it.name == keys.first() }?.enabled == true) {
-            setOf(keys.first())
+        return if (isAspect) {
+            val feature = properties.customProperties.filterIsInstance<FlagSpeciesFeature>().find { it.name in keys }
+            if (feature != null && feature.enabled) {
+                setOf(keys.first())
+            } else {
+                emptySet()
+            }
         } else {
             emptySet()
         }

@@ -5,17 +5,17 @@
   "profileTranslation": [-0.03, 0.83, 0],
   "rootBone": "croagunk",
   "animations": {
-    "cry": "q.bedrock_stateful('croagunk', 'cry')"
+    "recoil": "q.bedrock_stateful('croagunk', 'recoil')",
+    "faint": "q.bedrock_primary('croagunk', 'faint')",
+    "physical": "q.bedrock_primary('croagunk', 'physical', q.curve('symmetrical_wide'))",
+    "special": "q.bedrock_primary('croagunk', 'special', q.curve('symmetrical_wide'))",
+    "status": "q.bedrock_primary('croagunk', 'status', q.curve('symmetrical_wide'))"
   },
   "poses": {
     "standing": {
-      "poseTypes": [
-        "STAND",
-        "NONE",
-        "PORTRAIT",
-        "PROFILE",
-        "FLOAT"
-      ],
+      "poseTypes": ["STAND", "FLOAT", "NONE", "PORTRAIT", "PROFILE"],
+      "isBattle": false,
+      "condition": "q.has_entity ? !q.in_air : 1.0",
       "animations": [
         "q.look('head', 1, 1, 70, -45, 0, 0)",
         "q.bedrock('croagunk', 'ground_idle')"
@@ -24,20 +24,50 @@
         "q.bedrock_quirk('croagunk', 'blink')"
       ]
     },
-    "walking": {
-      "poseTypes": [
-        "WALK",
-        "SWIM"
-      ],
+    "battle-standing": {
+      "poseTypes": ["STAND", "FLOAT"],
+      "isBattle": true,
       "animations": [
-        "q.look('head' )",
-        "q.bedrock('croagunk', 'ground_idle')",
-        "q.biped_walk(0.45, 0.66, 'leg_left1', 'leg_right1')",
-        "q.bimanual_swing(0.45, 1, 'arm_left', 'arm_right')"
+        "q.look('head', 1, 1, 70, -45, 0, 0)",
+        "q.bedrock('croagunk', 'battle_idle')"
+      ],
+      "namedAnimations": {
+        "cry": "q.bedrock_primary('croagunk', 'battle_cry', q.curve('symmetrical_wide'))"
+      },
+      "quirks": [
+        "q.bedrock_quirk('croagunk', 'blink')"
+      ]
+    },
+    "walking": {
+      "poseTypes": ["WALK", "SWIM"],
+      "condition": "!q.is_sprinting",
+      "animations": [
+        "q.look('head', 1, 1, 70, -45, 0, 0)",
+        "q.bedrock('croagunk', 'ground_walk')"
       ],
       "quirks": [
         "q.bedrock_quirk('croagunk', 'blink')"
       ]
+    },
+    "running": {
+      "poseTypes": ["WALK", "SWIM"],
+      "condition": "q.is_sprinting",
+      "animations": [
+        "q.look('head', 1, 1, 70, -45, 0, 0)",
+        "q.bedrock('croagunk', 'ground_run')"
+      ],
+      "quirks": [
+        "q.bedrock_quirk('croagunk', 'blink')"
+      ]
+    },
+    "sleep": {
+      "poseTypes": ["SLEEP"],
+      "animations": [
+        "q.bedrock('croagunk', 'sleep')"
+      ],
+      "namedAnimations": {
+        "cry": "q.bedrock_stateful('dummy', 'cry')"
+      }
     }
   }
 }

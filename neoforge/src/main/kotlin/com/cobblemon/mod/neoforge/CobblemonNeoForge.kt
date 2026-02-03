@@ -16,14 +16,8 @@ import com.cobblemon.mod.common.CobblemonRecipeCategories.COOKING_POT_MISC
 import com.cobblemon.mod.common.CobblemonRecipeCategories.COOKING_POT_SEARCH
 import com.cobblemon.mod.common.advancement.CobblemonCriteria
 import com.cobblemon.mod.common.advancement.predicate.CobblemonEntitySubPredicates
-import com.cobblemon.mod.common.api.net.serializers.IdentifierDataSerializer
-import com.cobblemon.mod.common.api.net.serializers.NPCPlayerTextureSerializer
-import com.cobblemon.mod.common.api.net.serializers.PlatformTypeDataSerializer
-import com.cobblemon.mod.common.api.net.serializers.PoseTypeDataSerializer
-import com.cobblemon.mod.common.api.net.serializers.RideBoostsDataSerializer
-import com.cobblemon.mod.common.api.net.serializers.StringSetDataSerializer
-import com.cobblemon.mod.common.api.net.serializers.UUIDSetDataSerializer
-import com.cobblemon.mod.common.api.net.serializers.Vec3DataSerializer
+import com.cobblemon.mod.common.CobblemonMobEffects
+import com.cobblemon.mod.common.api.net.serializers.*
 import com.cobblemon.mod.common.item.group.CobblemonItemGroups
 import com.cobblemon.mod.common.loot.LootInjector
 import com.cobblemon.mod.common.particle.CobblemonParticles
@@ -42,13 +36,9 @@ import com.cobblemon.mod.neoforge.net.CobblemonNeoForgeNetworkManager
 import com.cobblemon.mod.neoforge.permission.ForgePermissionValidator
 import com.cobblemon.mod.neoforge.worldgen.CobblemonBiomeModifiers
 import com.mojang.brigadier.arguments.ArgumentType
-import java.util.Optional
-import java.util.UUID
 import net.minecraft.commands.synchronization.ArgumentTypeInfo
 import net.minecraft.commands.synchronization.ArgumentTypeInfos
-import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.core.registries.Registries
-import net.minecraft.network.chat.Component
 import net.minecraft.resources.ResourceKey
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.server.MinecraftServer
@@ -63,6 +53,7 @@ import net.minecraft.server.packs.repository.Pack
 import net.minecraft.server.packs.repository.Pack.Position
 import net.minecraft.server.packs.repository.PackSource
 import net.minecraft.server.packs.resources.PreparableReloadListener
+import net.minecraft.stats.Stats
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.CreativeModeTab
 import net.minecraft.world.item.CreativeModeTab.TabVisibility
@@ -83,12 +74,7 @@ import net.neoforged.neoforge.client.event.RegisterRecipeBookCategoriesEvent
 import net.neoforged.neoforge.common.ItemAbilities
 import net.neoforged.neoforge.common.NeoForge
 import net.neoforged.neoforge.common.NeoForgeMod
-import net.neoforged.neoforge.event.AddPackFindersEvent
-import net.neoforged.neoforge.event.AddReloadListenerEvent
-import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent
-import net.neoforged.neoforge.event.LootTableLoadEvent
-import net.neoforged.neoforge.event.OnDatapackSyncEvent
-import net.neoforged.neoforge.event.RegisterCommandsEvent
+import net.neoforged.neoforge.event.*
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent
 import net.neoforged.neoforge.event.entity.player.PlayerEvent
 import net.neoforged.neoforge.event.entity.player.PlayerWakeUpEvent
@@ -101,6 +87,7 @@ import net.neoforged.neoforge.registries.NeoForgeRegistries
 import net.neoforged.neoforge.registries.RegisterEvent
 import net.neoforged.neoforge.server.ServerLifecycleHooks
 import thedarkcolour.kotlinforforge.neoforge.forge.MOD_BUS
+import java.util.*
 import kotlin.reflect.KClass
 
 @Mod(Cobblemon.MODID)
@@ -228,8 +215,10 @@ class CobblemonNeoForge : CobblemonImplementation {
 
         event.register(Registries.CUSTOM_STAT) { registry ->
             Cobblemon.statistics.registerStats()
-            Cobblemon.statistics.stats.forEach { (key, value) ->
-                registry.register(value, ResourceLocation.fromNamespaceAndPath("cobblemon", key))
+            Cobblemon.statistics.stats.forEach { entry ->
+                val cobblemonStat = entry.value
+                registry.register(cobblemonStat.resourceLocation, cobblemonStat.resourceLocation)
+                Stats.CUSTOM.get(cobblemonStat.resourceLocation, cobblemonStat.formatter)
             }
         }
     }
@@ -471,6 +460,16 @@ class CobblemonNeoForge : CobblemonImplementation {
         // you can easily update this by running the game, putting a breakpoint anywhere that gets triggered in world and then run that in the debugger
         // ComposterBlock.COMPOSTABLES.entries.filter { it.key.toString().contains("cobblemon") }.sortedBy { it.key.toString() }.map { "\"${it.key}\": {\"chance\": ${it.value}}"}.joinToString(",")
         // returns one single json setup that you can paste in the compostables.json values block and done
+    }
+
+    override fun registerMobEffects() {
+        MOD_BUS.addListener<RegisterEvent> { event ->
+            event.register(CobblemonMobEffects.resourceKey) { helper ->
+                CobblemonMobEffects.register { identifier, effect ->
+                    helper.register(identifier, effect)
+                }
+            }
+        }
     }
 
     private fun onVillagerTradesRegistry(e: VillagerTradesEvent) {

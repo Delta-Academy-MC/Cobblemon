@@ -1,0 +1,62 @@
+{
+  "portraitScale": 1.8,
+  "portraitTranslation": [-0.15,-0.74,0],
+  "profileScale": 0.66,
+  "profileTranslation": [0,0.58,0],
+  "rootBone": "ferroseed",
+  "animations": {
+  },
+  "poses": {
+    "battle-standing": {
+      "poseTypes": [
+        "STAND"
+      ],
+      "isBattle": true,
+      "animations": [
+        "q.look('head')",
+        "q.bedrock('ferroseed', 'battle_idle')"
+      ],
+      "quirks": [
+        "q.bedrock_quirk('ferroseed', 'blink')"
+      ]
+    },
+    "standing": {
+      "poseTypes": [
+        "STAND",
+        "FLOAT",
+        "NONE",
+        "PORTRAIT",
+        "PROFILE"
+      ],
+      "isBattle": false,
+      "animations": [
+        "q.look('head')",
+        "q.bedrock('ferroseed', 'ground_idle')"
+      ],
+      "quirks": [
+        "q.bedrock_quirk('ferroseed', 'blink')"
+      ]
+    },
+    "walking": {
+      "poseTypes": [
+        "WALK",
+        "SWIM"
+      ],
+      "animations": [
+        "q.look('head')",
+        "q.bedrock('ferroseed', 'ground_walk')"
+      ],
+      "quirks": [
+        "q.bedrock_quirk('ferroseed', 'blink')"
+      ]
+    },
+    "sleep": {
+      "poseTypes": [
+        "SLEEP"
+      ],
+      "animations": [
+        "q.bedrock('ferroseed', 'sleep')"
+      ]
+    }
+  }
+}

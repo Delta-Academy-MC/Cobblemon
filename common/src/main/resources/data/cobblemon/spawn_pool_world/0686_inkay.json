@@ -4,7 +4,7 @@
     "neededUninstalledMods": [],
     "spawns": [
         {
-            "id": "inkay-6",
+            "id": "inkay-7",
             "pokemon": "inkay",
             "type": "pokemon",
             "spawnablePositionType": "fishing",
@@ -26,7 +26,7 @@
             }
         },
         {
-            "id": "inkay-7",
+            "id": "inkay-8",
             "pokemon": "inkay",
             "type": "pokemon",
             "spawnablePositionType": "fishing",
@@ -54,7 +54,7 @@
             }
         },
         {
-            "id": "inkay-8",
+            "id": "inkay-9",
             "pokemon": "inkay",
             "type": "pokemon",
             "spawnablePositionType": "fishing",
@@ -78,7 +78,7 @@
             }
         },
         {
-            "id": "inkay-9",
+            "id": "inkay-10",
             "pokemon": "inkay",
             "type": "pokemon",
             "spawnablePositionType": "fishing",
@@ -120,21 +120,36 @@
             "level": "4-29",
             "weight": 1.68,
             "condition": {
+                "canSeeSky": false,
                 "minSkyLight": 8,
                 "maxSkyLight": 15,
                 "biomes": [
                     "#cobblemon:is_coast",
                     "#cobblemon:is_ocean"
                 ]
-            },
-            "anticondition": {
-                "biomes": [
-                    "#cobblemon:is_beach"
-                ]
             }
         },
         {
             "id": "inkay-2",
+            "pokemon": "inkay",
+            "presets": [
+                "wild"
+            ],
+            "type": "pokemon",
+            "spawnablePositionType": "grounded",
+            "bucket": "uncommon",
+            "level": "4-29",
+            "weight": 1.68,
+            "condition": {
+                "canSeeSky": true,
+                "biomes": [
+                    "#cobblemon:is_coast",
+                    "#cobblemon:is_ocean"
+                ]
+            }
+        },
+        {
+            "id": "inkay-3",
             "pokemon": "inkay",
             "presets": [
                 "natural",
@@ -152,7 +167,7 @@
             }
         },
         {
-            "id": "inkay-3",
+            "id": "inkay-4",
             "pokemon": "inkay",
             "presets": [
                 "water"
@@ -170,7 +185,7 @@
             }
         },
         {
-            "id": "inkay-4",
+            "id": "inkay-5",
             "pokemon": "inkay",
             "presets": [
                 "water"
@@ -190,7 +205,7 @@
             }
         },
         {
-            "id": "inkay-5",
+            "id": "inkay-6",
             "pokemon": "inkay",
             "presets": [
                 "water"
@@ -213,7 +228,7 @@
             }
         },
         {
-            "id": "inkay-10",
+            "id": "inkay-11",
             "pokemon": "inkay",
             "type": "pokemon",
             "spawnablePositionType": "fishing",
@@ -236,7 +251,7 @@
             }
         },
         {
-            "id": "inkay-11",
+            "id": "inkay-12",
             "pokemon": "inkay",
             "type": "pokemon",
             "spawnablePositionType": "fishing",

@@ -42,7 +42,7 @@
   "catchRate": 45,
   "eggCycles": 25,
   "baseFriendship": 50,
-  "baseScale": 1,
+  "baseScale": 0.8,
   "hitbox": {
     "width": 2,
     "height": 0.8,
@@ -72,6 +72,8 @@
       "willFlee": false
     },
     "resting": {
+	  "canSleep": true,
+      "light": "0-4",
       "drowsyChance": 0.0333,
       "rouseChance": 0.0042
     }

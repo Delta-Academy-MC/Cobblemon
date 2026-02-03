@@ -8,13 +8,22 @@
 
 package com.cobblemon.mod.common.pokemon.adapters
 
+import com.cobblemon.mod.common.api.interaction.InteractionEffect
+import com.cobblemon.mod.common.api.molang.ExpressionLike
+import com.cobblemon.mod.common.api.pokemon.PokemonProperties
 import com.cobblemon.mod.common.api.pokemon.adapters.RequirementAdapter
 import com.cobblemon.mod.common.api.pokemon.requirement.Requirement
+import com.cobblemon.mod.common.pokemon.evolution.adapters.LegacyItemConditionWrapperAdapter
 import com.cobblemon.mod.common.pokemon.requirements.*
+import com.cobblemon.mod.common.util.adapters.*
+import com.cobblemon.mod.common.util.readString
+import com.cobblemon.mod.common.util.writeString
 import com.google.common.collect.HashBiMap
-import com.google.gson.JsonDeserializationContext
-import com.google.gson.JsonElement
-import com.google.gson.JsonSerializationContext
+import com.google.gson.*
+import net.minecraft.advancements.critereon.ItemPredicate
+import net.minecraft.network.FriendlyByteBuf
+import net.minecraft.resources.ResourceLocation
+import net.minecraft.util.LowerCaseEnumTypeAdapterFactory
 import java.lang.reflect.Type
 import kotlin.reflect.KClass
 
@@ -58,6 +67,21 @@ object CobblemonRequirementAdapter : RequirementAdapter {
         this.registerType(PropertyRangeRequirement.ADAPTER_VARIANT, PropertyRangeRequirement::class)
         this.registerType(AdvancementRequirement.ADAPTER_VARIANT, AdvancementRequirement::class)
         this.registerType(OwnerHoldsItemRequirement.ADAPTER_VARIANT, OwnerHoldsItemRequirement::class)
+        this.registerType(ChanceRequirement.ADAPTER_VARIANT, ChanceRequirement::class)
+    }
+
+    val gson: Gson by lazy {
+        GsonBuilder()
+            .registerTypeAdapter(ResourceLocation::class.java, IdentifierAdapter)
+            .registerTypeAdapter(PokemonProperties::class.java, pokemonPropertiesShortAdapter)
+            .registerTypeAdapter(ItemPredicate::class.java, LegacyItemConditionWrapperAdapter)
+            .registerTypeAdapter(Requirement::class.java, CobblemonRequirementAdapter)
+            .registerTypeAdapter(InteractionEffect::class.java, InteractionEffectAdapter)
+            .registerTypeAdapter(ExpressionLike::class.java, ExpressionLikeAdapter)
+            .registerTypeAdapter(IntRange::class.java, IntRangeAdapter)
+            .registerTypeAdapterFactory(LowerCaseEnumTypeAdapterFactory())
+            .setPrettyPrinting()
+            .create()
     }
 
     override fun <T : Requirement> registerType(id: String, type: KClass<T>) {
@@ -66,15 +90,40 @@ object CobblemonRequirementAdapter : RequirementAdapter {
 
     override fun deserialize(json: JsonElement, typeOfT: Type, context: JsonDeserializationContext): Requirement {
         val variant = json.asJsonObject.get(VARIANT).asString.lowercase()
-        val type = this.types[variant] ?: throw IllegalArgumentException("Cannot resolve evolution requirement type for variant $variant")
+        val type = getRequirementType(variant)
         return context.deserialize(json, type.java)
     }
 
-    override fun serialize(src: Requirement, typeOfSrc: Type, context: JsonSerializationContext): JsonElement {
-        val json = context.serialize(src, src::class.java).asJsonObject
-        val variant = this.types.inverse()[src::class] ?: throw IllegalArgumentException("Cannot resolve evolution requirement for type ${src::class.qualifiedName}")
+    override fun serialize(requirement: Requirement, typeOfSrc: Type, context: JsonSerializationContext): JsonElement {
+        val json = context.serialize(requirement, requirement::class.java).asJsonObject
+        val variant = getVariant(requirement)
         json.addProperty(VARIANT, variant)
         return json
     }
 
+    fun encode(requirement: Requirement, buffer: FriendlyByteBuf) {
+        buffer.writeString(gson.toJson(requirement, Requirement::class.java))
+    }
+
+    fun decode(buffer: FriendlyByteBuf): Requirement {
+        return gson.fromJson(buffer.readString(), Requirement::class.java)
+    }
+
+    private fun getVariant(requirement: Requirement): String {
+        val variant = this.types.inverse()[requirement::class]
+        if (variant == null) {
+            throw IllegalArgumentException("Cannot resolve evolution requirement for type ${requirement::class.qualifiedName}")
+        }
+
+        return variant
+    }
+
+    private fun getRequirementType(variant: String): KClass<out Requirement> {
+        val requirementType = this.types[variant]
+        if (requirementType == null) {
+            throw IllegalArgumentException("Cannot resolve evolution requirement type for variant $variant")
+        }
+
+        return requirementType
+    }
 }

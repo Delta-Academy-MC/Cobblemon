@@ -12,6 +12,7 @@ import com.cobblemon.mod.common.entity.npc.NPCEntity
 import com.cobblemon.mod.common.pokemon.Pokemon
 import net.minecraft.server.level.ServerPlayer
 import net.minecraft.world.entity.LivingEntity
+import net.minecraft.world.entity.player.Player
 
 /**
  * A [Requirement] that expects a [LivingEntity] to be attached to the [Pokemon].
@@ -26,7 +27,7 @@ interface OwnerQueryRequirement : Requirement {
     override fun check(pokemon: Pokemon): Boolean {
         val owner = pokemon.getOwnerEntity() ?: return false
         return when (owner) {
-            is ServerPlayer -> {
+            is Player -> {
                 this.checkPlayer(pokemon, owner)
             }
             is NPCEntity -> {
@@ -37,13 +38,13 @@ interface OwnerQueryRequirement : Requirement {
     }
 
     /**
-     * Checks if the given [Pokemon] & [ServerPlayer] satisfies the requirement.
+     * Checks if the given [Pokemon] & [Player] satisfies the requirement.
      *
      * @param pokemon The [Pokemon] being queried.
-     * @param owner The [ServerPlayer] that owns this [Pokemon].
+     * @param owner The [Player] that owns this [Pokemon].
      * @return If the requirement was satisfied.
      */
-    fun checkPlayer(pokemon: Pokemon, owner: ServerPlayer): Boolean
+    fun checkPlayer(pokemon: Pokemon, owner: Player): Boolean
 
     /**
      * Checks if the given [Pokemon] & [NPCEntity] satisfies the requirement.

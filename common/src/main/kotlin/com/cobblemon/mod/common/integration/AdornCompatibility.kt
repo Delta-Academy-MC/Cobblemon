@@ -14,7 +14,7 @@ import juuxel.adorn.block.variant.CompatBlockVariantSet
 
 class AdornCompatibility : CompatBlockVariantSet() {
     override fun getWoodVariants(): List<BlockVariant?>? {
-        return this.createVariants({ BlockVariant.Wood(it) }, "apricorn")
+        return this.createVariants({ BlockVariant.Wood(it) }, "apricorn", "saccharine")
     }
 
     override fun getModId(): String? {

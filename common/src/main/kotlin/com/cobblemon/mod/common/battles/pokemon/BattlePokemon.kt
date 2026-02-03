@@ -46,9 +46,17 @@ import java.util.function.Function
 open class BattlePokemon(
     val originalPokemon: Pokemon,
     val effectedPokemon: Pokemon = originalPokemon,
-    val postBattleEntityOperation: (PokemonEntity) -> Unit = {}
+    var postBattlePokemonOperations: MutableList<(BattlePokemon) -> Unit> = mutableListOf(),
+    var postBattleEntityOperations: MutableList<(PokemonEntity) -> Unit> = mutableListOf()
 ) {
     lateinit var actor: BattleActor
+
+    constructor(originalPokemon: Pokemon, effectedPokemon: Pokemon, postBattleEntityOperation: (PokemonEntity) -> Unit) : this(
+        originalPokemon = originalPokemon,
+        effectedPokemon = effectedPokemon,
+        postBattlePokemonOperations = mutableListOf<(BattlePokemon) -> Unit>(),
+        postBattleEntityOperations = mutableListOf(postBattleEntityOperation)
+    )
 
     companion object {
         fun safeCopyOf(pokemon: Pokemon): BattlePokemon {

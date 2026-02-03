@@ -62,6 +62,11 @@ class SocketShowdownService(val host: String = "localhost", val port: Int = 1846
         send(battle.battleId, messages)
     }
 
+    override fun endBattle(battle: PokemonBattle) {
+        writer.write(">endbattle ${battle.battleId}\n")
+        acknowledge { Cobblemon.LOGGER.error("Failed to end battle ${battle.battleId}!") }
+    }
+
     override fun send(battleId: UUID, messages: Array<String>) {
         for (message in messages) {
             writer.write("$battleId~$message\n")

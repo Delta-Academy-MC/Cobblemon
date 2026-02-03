@@ -304,4 +304,35 @@ object ShowdownInterpreter {
         } ?:
         MissingContext()
     }
+
+    /**
+     * Registers a new update instruction parser.
+     * @param id The ID of the instruction to register.
+     * @param callback The callback function to create the instruction.
+     */
+    @JvmStatic
+    fun registerUpdateInstructionParser(id: String, callback: (PokemonBattle, InstructionSet, BattleMessage, Iterator<BattleMessage>) -> InterpreterInstruction) {
+        updateInstructionParser[id] = callback
+    }
+
+    /**
+     * Registers a new split instruction parser.
+     * @param id The ID of the instruction to register.
+     * @param callback The callback function to create the instruction.
+     */
+    @JvmStatic
+    fun registerSplitInstructionParser(id: String, callback: (PokemonBattle, BattleActor, InstructionSet, BattleMessage, BattleMessage, Iterator<BattleMessage>) -> InterpreterInstruction) {
+        splitInstructionParser[id] = callback
+    }
+
+    /**
+     * Registers a new side instruction parser.
+     * @param id The ID of the instruction to register.
+     * @param callback The callback function to create the instruction.
+     */
+    @JvmStatic
+    fun registerSideInstructionParser(id: String, callback: (PokemonBattle, BattleActor, InstructionSet, BattleMessage) -> InterpreterInstruction) {
+        sideInstructionParser[id] = callback
+    }
+
 }

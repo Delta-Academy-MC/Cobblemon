@@ -32,8 +32,7 @@
         "q.bedrock('togekiss', 'battle_idle')"
       ],
       "quirks": [
-        "q.bedrock_quirk('togekiss', 'blink')",
-        "q.bedrock_primary_quirk('togekiss', 'air_quirk', 20, 40, 1, q.curve('symmetrical'))"
+        "q.bedrock_quirk('togekiss', 'blink')"
       ],
       "namedAnimations": {
         "cry": "q.bedrock_primary('togekiss', 'battle_cry', q.curve('symmetrical_wide'))",

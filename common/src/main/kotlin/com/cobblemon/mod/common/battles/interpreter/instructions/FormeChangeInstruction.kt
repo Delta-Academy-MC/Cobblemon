@@ -39,7 +39,7 @@ class FormeChangeInstruction(val message: BattleMessage): InterpreterInstruction
 
         battle.dispatchWaiting {
             battle.minorBattleActions[battlePokemon.uuid] = message
-            CobblemonEvents.FORME_CHANGE.post(FormeChangeEvent(battle, battlePokemon, formName))
+            CobblemonEvents.FORME_CHANGE.post(FormeChangeEvent(battle, battlePokemon, formName, pnx))
 
             if (formName.equals(battlePokemon.effectedPokemon.species.name, true)) {
                 battlePokemon.sendUpdate()

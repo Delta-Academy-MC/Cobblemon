@@ -57,6 +57,6 @@ How to run:
     3. Run this new configuration
     4. A new window on the right-hand side should open, where you can evaluate code.
 
-8. Go into a superflat singleplayer world, go to [0, -60, 0]
+8. Go into a superflat singleplayer world, go to [0, -60, 0] (make sure Pokémon are in your field of view)
 9. Copy script and paste it into the REPL console
 10. Wait a couple seconds, then reload your species directory.

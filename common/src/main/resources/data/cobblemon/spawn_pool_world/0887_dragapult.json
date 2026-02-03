@@ -21,6 +21,7 @@
                 }
             },
             "condition": {
+                "canSeeSky": false,
                 "minSkyLight": 8,
                 "maxSkyLight": 15,
                 "biomes": [
@@ -36,6 +37,33 @@
         },
         {
             "id": "dragapult-2",
+            "pokemon": "dragapult",
+            "type": "pokemon",
+            "spawnablePositionType": "grounded",
+            "bucket": "ultra-rare",
+            "level": "60-65",
+            "weight": 0.24,
+            "weightMultiplier": {
+                "multiplier": 5.0,
+                "condition": {
+                    "timeRange": "dusk"
+                }
+            },
+            "condition": {
+                "canSeeSky": true,
+                "biomes": [
+                    "#cobblemon:is_coast",
+                    "#cobblemon:is_ocean"
+                ]
+            },
+            "anticondition": {
+                "biomes": [
+                    "#cobblemon:is_freezing"
+                ]
+            }
+        },
+        {
+            "id": "dragapult-3",
             "pokemon": "dragapult",
             "presets": [
                 "water"
@@ -61,7 +89,7 @@
             }
         },
         {
-            "id": "dragapult-3",
+            "id": "dragapult-4",
             "pokemon": "dragapult",
             "type": "pokemon",
             "spawnablePositionType": "fishing",
@@ -88,7 +116,7 @@
             }
         },
         {
-            "id": "dragapult-4",
+            "id": "dragapult-5",
             "pokemon": "dragapult",
             "type": "pokemon",
             "spawnablePositionType": "fishing",

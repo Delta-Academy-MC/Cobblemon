@@ -1,0 +1,14 @@
+{
+  "ingredient": "cobblemon:moomoo_milk",
+  "colour": "white",
+  "mobEffects": [
+    {
+      "effect": "cobblemon:cleanse_all",
+      "duration": 1,
+      "amplifier": 0,
+      "ambient": false,
+      "visible": true,
+      "showIcon": true
+    }
+  ]
+}

@@ -12,6 +12,7 @@ import com.cobblemon.mod.common.*
 import com.cobblemon.mod.common.advancement.CobblemonCriteria
 import com.cobblemon.mod.common.advancement.predicate.CobblemonEntitySubPredicates
 import com.cobblemon.mod.common.api.events.CobblemonEvents
+import com.cobblemon.mod.common.CobblemonMobEffects
 import com.cobblemon.mod.common.api.net.serializers.*
 import com.cobblemon.mod.common.api.storage.player.PlayerInstancedDataStoreTypes
 import com.cobblemon.mod.common.item.gimmicks.MegaBraceletItem
@@ -79,6 +80,7 @@ import net.minecraft.server.level.ServerPlayer
 import net.minecraft.server.packs.PackType
 import net.minecraft.server.packs.resources.PreparableReloadListener
 import net.minecraft.server.packs.resources.ResourceManager
+import net.minecraft.stats.Stats
 import net.minecraft.tags.TagKey
 import net.minecraft.util.profiling.ProfilerFiller
 import net.minecraft.world.InteractionResult
@@ -103,8 +105,10 @@ object CobblemonFabric : CobblemonImplementation {
         Cobblemon.preInitialize(this)
 
         Cobblemon.statistics.registerStats()
-        Cobblemon.statistics.stats.forEach {
-            Registry.register(BuiltInRegistries.CUSTOM_STAT, it.value, it.value)
+        Cobblemon.statistics.stats.forEach { entry ->
+            val cobblemonStat = entry.value
+            Registry.register(BuiltInRegistries.CUSTOM_STAT, cobblemonStat.resourceLocation, cobblemonStat.resourceLocation)
+            Stats.CUSTOM.get(cobblemonStat.resourceLocation, cobblemonStat.formatter)
         }
 
         Cobblemon.initialize()
@@ -427,6 +431,12 @@ object CobblemonFabric : CobblemonImplementation {
 
     override fun registerCompostable(item: ItemLike, chance: Float) {
         CompostingChanceRegistry.INSTANCE.add(item, chance)
+    }
+
+    override fun registerMobEffects() {
+        CobblemonMobEffects.register { identifier, effect ->
+            Registry.register(CobblemonMobEffects.registry, identifier, effect)
+        }
     }
 
     private class CobblemonReloadListener(private val identifier: ResourceLocation, private val reloader: PreparableReloadListener, private val dependencies: Collection<ResourceLocation>) : IdentifiableResourceReloadListener {

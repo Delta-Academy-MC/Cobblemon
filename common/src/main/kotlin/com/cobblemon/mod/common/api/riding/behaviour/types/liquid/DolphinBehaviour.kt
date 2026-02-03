@@ -100,7 +100,7 @@ class DolphinBehaviour : RidingBehaviour<DolphinSettings, DolphinState> {
         driver: Player,
         input: Vec3
     ) {
-        if(vehicle.level().isClientSide) {
+        if (vehicle.level().isClientSide) {
             handleBoosting(state, vehicle)
             tickStamina(settings, state, vehicle)
         }
@@ -147,7 +147,7 @@ class DolphinBehaviour : RidingBehaviour<DolphinSettings, DolphinState> {
         val stamDrainRate = (1.0f / boostTime).toFloat()
 
         val newStam = if (state.boosting.get()) max(0.0f,stam - stamDrainRate)
-            else min(1.0f,stam + stamDrainRate)
+            else (stam + stamDrainRate).coerceIn(0F, 1F)
 
         state.stamina.set(newStam)
     }

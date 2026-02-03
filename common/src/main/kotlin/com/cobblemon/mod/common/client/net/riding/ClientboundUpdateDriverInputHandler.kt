@@ -15,15 +15,13 @@ import net.minecraft.client.player.RemotePlayer
 
 object ClientboundUpdateDriverInputHandler : ClientNetworkPacketHandler<ClientboundUpdateDriverInputPacket> {
     override fun handle(packet: ClientboundUpdateDriverInputPacket, client: Minecraft) {
-        client.executeIfPossible {
-            val level = client.level ?: return@executeIfPossible
-            val entity = level.getEntity(packet.entityId)
-            if (entity is RemotePlayer) {
-                entity.xxa = packet.driverInput.x
-                entity.zza = packet.driverInput.z
-                entity.jumping = packet.driverInput.y == 1.0f
-                entity.isShiftKeyDown = packet.driverInput.y == -1.0f
-            }
+        val level = client.level ?: return
+        val entity = level.getEntity(packet.entityId)
+        if (entity is RemotePlayer) {
+            entity.xxa = packet.driverInput.x
+            entity.zza = packet.driverInput.z
+            entity.jumping = packet.driverInput.y == 1.0f
+            entity.isShiftKeyDown = packet.driverInput.y == -1.0f
         }
     }
 }

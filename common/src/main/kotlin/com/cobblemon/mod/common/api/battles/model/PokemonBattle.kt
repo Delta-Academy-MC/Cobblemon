@@ -376,11 +376,15 @@ open class PokemonBattle(
             .forEach{it.pokemon.heal()}
         actors.forEach { actor ->
             actor.pokemonList.forEach { battlePokemon ->
+                battlePokemon.postBattlePokemonOperations.forEach { it(battlePokemon) }
+                battlePokemon.entity?.let { entity -> battlePokemon.postBattleEntityOperations.forEach { it(entity) } }
+
                 battlePokemon.clearBattleFeatures()
                 battlePokemon.entity?.let { entity ->
                     entity.terastallize(null)
                     battlePokemon.postBattleEntityOperation(entity)
                 }
+
                 if (battlePokemon.effectedPokemon.entity != null
                         && battlePokemon.effectedPokemon.entity?.beamMode == 0
                         && battlePokemon.effectedPokemon.entity?.platform != PlatformType.NONE) {
@@ -577,8 +581,8 @@ open class PokemonBattle(
     }
 
     fun stop() {
-        end()
         writeShowdownAction(">forcetie") // This will terminate the Showdown connection
+        end()
     }
 
     fun checkForInputDispatch() {

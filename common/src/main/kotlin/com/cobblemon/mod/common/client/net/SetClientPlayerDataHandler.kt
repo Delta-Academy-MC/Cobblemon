@@ -16,10 +16,8 @@ object SetClientPlayerDataHandler : ClientNetworkPacketHandler<SetClientPlayerDa
     override fun handle(packet: SetClientPlayerDataPacket, client: Minecraft) {
         if (packet.isIncremental) {
             packet.type.incrementalAfterDecodeAction.invoke(packet.playerData)
-        }
-        else {
+        } else {
             packet.type.afterDecodeAction.invoke(packet.playerData)
         }
-
     }
 }

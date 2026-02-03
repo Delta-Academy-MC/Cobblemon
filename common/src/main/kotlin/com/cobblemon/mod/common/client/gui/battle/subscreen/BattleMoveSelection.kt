@@ -96,9 +96,9 @@ class BattleMoveSelection(
 
     val backButton = BattleBackButton(x - 11F, Minecraft.getInstance().window.guiScaledHeight - 22F)
     val gimmickButtons = moveSet.getGimmicks().filter { it !in moveSet.pendingGimmickUsedThisTurn }.mapIndexed { index, gimmick ->
-        val initOff = BattleBackButton.Companion.WIDTH * 0.65F
-        val xOff = initOff + BattleGimmickButton.Companion.SPACING * index
-        BattleGimmickButton.Companion.create(gimmick, this, backButton.x + xOff, backButton.y)
+        val initOff = BattleBackButton.WIDTH * 0.65F
+        val xOff = initOff + BattleGimmickButton.SPACING * index
+        BattleGimmickButton.create(gimmick, this, backButton.x + xOff, backButton.y)
     }
 
     val shiftButton = BattleShiftButton(x + 22.5F, Minecraft.getInstance().window.guiScaledHeight - 22F)

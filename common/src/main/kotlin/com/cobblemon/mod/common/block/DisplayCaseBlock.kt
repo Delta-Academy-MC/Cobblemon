@@ -20,6 +20,7 @@ import net.minecraft.world.InteractionResult
 import net.minecraft.world.entity.player.Player
 import net.minecraft.world.item.BlockItem
 import net.minecraft.world.item.context.BlockPlaceContext
+import net.minecraft.world.level.BlockGetter
 import net.minecraft.world.level.Level
 import net.minecraft.world.level.LevelAccessor
 import net.minecraft.world.level.block.BaseEntityBlock
@@ -114,6 +115,8 @@ class DisplayCaseBlock(settings: Properties) : BaseEntityBlock(settings) {
     }
 
     override fun getRenderShape(state: BlockState) = RenderShape.MODEL
+
+    override fun getShadeBrightness(state: BlockState, level: BlockGetter, pos: BlockPos): Float = 0.75F
 
     override fun getAnalogOutputSignal(state: BlockState, world: Level, pos: BlockPos): Int {
         val stack = (world.getBlockEntity(pos) as DisplayCaseBlockEntity).getStack()

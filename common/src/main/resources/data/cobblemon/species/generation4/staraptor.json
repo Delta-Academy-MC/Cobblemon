@@ -56,24 +56,42 @@
           {
             "muffleEnabled": true,
             "pitchExpr": "math.max(1.0 ,0.2 + math.pow(math.min(q.ride_velocity() / 1.5, 1.0),2))",
-            "playForNonPassengers": true,
-            "soundLocation": "cobblemon:ride.loop.wind",
+            "playForNonPassengers": false,
+            "playForPassengers": true,
+            "soundLocation": "cobblemon:ride.loop.wind.stereo",
             "volumeExpr": "math.pow(math.min(q.ride_velocity() / 1.5, 1.0),2)"
           },
           {
             "muffleEnabled": true,
             "pitchExpr": "math.max(1.0 ,0.2 + math.pow(math.min(q.ride_velocity() / 1.5, 1.0),2))",
             "playForNonPassengers": true,
-            "soundLocation": "cobblemon:ride.loop.plumage",
+            "playForPassengers": false,
+            "soundLocation": "cobblemon:ride.loop.wind.mono",
+            "volumeExpr": "math.pow(math.min(q.ride_velocity() / 1.5, 1.0),2)"
+          },
+          {
+            "muffleEnabled": true,
+            "pitchExpr": "math.max(1.0 ,0.2 + math.pow(math.min(q.ride_velocity() / 1.5, 1.0),2))",
+            "playForNonPassengers": false,
+            "playForPassengers": true,
+            "soundLocation": "cobblemon:ride.loop.plumage.stereo",
+            "volumeExpr": "math.pow(math.min(q.ride_velocity() / 1.5, 1.0),2)"
+          },
+          {
+            "muffleEnabled": true,
+            "pitchExpr": "math.max(1.0 ,0.2 + math.pow(math.min(q.ride_velocity() / 1.5, 1.0),2))",
+            "playForNonPassengers": true,
+            "playForPassengers": false,
+            "soundLocation": "cobblemon:ride.loop.plumage.mono",
             "volumeExpr": "math.pow(math.min(q.ride_velocity() / 1.5, 1.0),2)"
           }
         ],
         "stats": {
           "ACCELERATION": "45-70",
-          "JUMP": "35-60",
-          "SKILL": "10-25",
+          "JUMP": "45-65",
+          "SKILL": "25-45",
           "SPEED": "35-55",
-          "STAMINA": "20-50"
+          "STAMINA": "45-70"
         }
       },
       "LAND": {
@@ -100,7 +118,7 @@
         "poseOffsets": [
           {
             "offset": {
-              "x": 0.0009571392,
+              "x": 9.571392E-4,
               "y": -1.234365,
               "z": 0.35967734
             },
@@ -140,7 +158,7 @@
           },
           {
             "offset": {
-              "x": 0.0009571392,
+              "x": 9.571392E-4,
               "y": -1.234365,
               "z": 0.35967734
             },
@@ -160,7 +178,7 @@
           },
           {
             "offset": {
-              "x": 0.0009571392,
+              "x": 9.571392E-4,
               "y": -1.234365,
               "z": 0.35967734
             },
@@ -173,24 +191,24 @@
     ]
   },
   "behaviour": {
+    "combat": {
+      "willDefendOwner": true,
+      "willDefendSelf": true,
+      "willFlee": false
+    },
     "herd": {
       "maxSize": "9"
     },
     "moving": {
-      "walk": {
-        "walkSpeed": 0.2
-      },
       "fly": {
         "canFly": true
       },
       "swim": {
         "avoidsWater": true
+      },
+      "walk": {
+        "walkSpeed": 0.2
       }
-    },
-    "combat": {
-      "willDefendSelf": true,
-      "willDefendOwner": true,
-      "willFlee": false
     },
     "resting": {
       "drowsyChance": 0.0333,
