@@ -377,12 +377,11 @@ open class PokemonBattle(
         actors.forEach { actor ->
             actor.pokemonList.forEach { battlePokemon ->
                 battlePokemon.postBattlePokemonOperations.forEach { it(battlePokemon) }
-                battlePokemon.entity?.let { entity -> battlePokemon.postBattleEntityOperations.forEach { it(entity) } }
 
                 battlePokemon.clearBattleFeatures()
                 battlePokemon.entity?.let { entity ->
                     entity.terastallize(null)
-                    battlePokemon.postBattleEntityOperation(entity)
+                    battlePokemon.postBattleEntityOperations.forEach { it(entity) }
                 }
 
                 if (battlePokemon.effectedPokemon.entity != null

@@ -18,5 +18,4 @@ object BattleRules {
     const val CANCEL_MOD = "Cancel Mod"
     const val SLEEP_CLAUSE = "Sleep Clause Mod"
     const val HP_PERCENTAGE_MOD = "HP Percentage Mod"
-    const val BAG_CLAUSE = "Bag Clause"
 }
