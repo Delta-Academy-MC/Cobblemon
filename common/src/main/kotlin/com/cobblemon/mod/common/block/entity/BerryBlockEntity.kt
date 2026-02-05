@@ -112,7 +112,7 @@ class BerryBlockEntity(pos: BlockPos, state: BlockState) : BlockEntity(Cobblemon
     fun setMulch(mulch: MulchVariant, world: Level, state: BlockState, pos: BlockPos) {
         this.mulchVariant = mulch
         this.mulchDuration = mulch.duration
-        refreshTimers(pos)
+        refreshTimers(pos, state)
         world.sendBlockUpdated(pos, state, state, Block.UPDATE_CLIENTS)
         this.setChanged()
     }
@@ -131,7 +131,7 @@ class BerryBlockEntity(pos: BlockPos, state: BlockState) : BlockEntity(Cobblemon
         val upperGrowthLimit = (if (curAge == 0) berry.growthTime.last else berry.refreshRate.last) * multiplier / 10
         val growthRange = lowerGrowthLimit..upperGrowthLimit
 
-        this.growthTimer = this.applyMulchModifier(pos, growthRange.random() * ticksPerMinute, true)
+        this.growthTimer = this.applyMulchModifier(pos, state, growthRange.random() * ticksPerMinute, true)
         val stagesLeft = if (curAge < 3) BerryBlock.MATURE_AGE - curAge else BerryBlock.FRUIT_AGE - curAge
         this.goToNextStageTimer(stagesLeft)
     }
@@ -152,9 +152,7 @@ class BerryBlockEntity(pos: BlockPos, state: BlockState) : BlockEntity(Cobblemon
      * @param timer Timer to be modified
      * @return The modified timer
      */
-    private fun applyMulchModifier(pos: BlockPos, timer: Int, decrementMulch: Boolean = false): Int {
-        val state = level?.getBlockState(pos) ?: return timer
-
+    private fun applyMulchModifier(pos: BlockPos, state: BlockState, timer: Int, decrementMulch: Boolean = false): Int {
         val curAge = state.getValue(BerryBlock.AGE)
         if (curAge == 5) {
             return timer
@@ -175,9 +173,9 @@ class BerryBlockEntity(pos: BlockPos, state: BlockState) : BlockEntity(Cobblemon
      * Used to refresh the timers when a new mulch is applied.
      * @param pos The position of the block
      */
-    fun refreshTimers(pos: BlockPos) {
-        this.growthTimer = this.applyMulchModifier(pos, growthTimer, false)
-        this.stageTimer = this.applyMulchModifier(pos, stageTimer, false)
+    fun refreshTimers(pos: BlockPos, state: BlockState) {
+        this.growthTimer = this.applyMulchModifier(pos, state, growthTimer, false)
+        this.stageTimer = this.applyMulchModifier(pos, state, stageTimer, false)
     }
 
     /**
