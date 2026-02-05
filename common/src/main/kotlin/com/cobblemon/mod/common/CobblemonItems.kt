@@ -1543,7 +1543,7 @@ object CobblemonItems : PlatformRegistry<Registry<Item>, ResourceKey<Registry<It
     @JvmField
     val GARCHOMPITE = megaStone("garchompite", "garchomp", "mega_evolution=mega")
     @JvmField
-    val GARDEVOIRITE = megaStone("gardevoirite", "gardevoire", "mega_evolution=mega")
+    val GARDEVOIRITE = megaStone("gardevoirite", "gardevoir", "mega_evolution=mega")
     @JvmField
     val GENGARITE = megaStone("gengarite", "gengar", "mega_evolution=mega")
     @JvmField
