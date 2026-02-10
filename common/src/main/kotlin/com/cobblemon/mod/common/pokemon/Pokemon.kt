@@ -15,7 +15,6 @@ import com.cobblemon.mod.common.CobblemonSounds
 import com.cobblemon.mod.common.api.abilities.Abilities
 import com.cobblemon.mod.common.api.abilities.Ability
 import com.cobblemon.mod.common.api.abilities.AbilityPool
-import com.cobblemon.mod.common.api.battles.model.PokemonBattle
 import com.cobblemon.mod.common.api.battles.model.actor.EntityBackedBattleActor
 import com.cobblemon.mod.common.api.data.ShowdownIdentifiable
 import com.cobblemon.mod.common.api.entity.PokemonSender
@@ -731,6 +730,74 @@ open class Pokemon : ShowdownIdentifiable {
             return entity
         }
         return null
+    }
+
+    fun sendOutBattle(
+        source: LivingEntity,
+        level: ServerLevel,
+        position: Vec3,
+        battleId: UUID,
+        doCry: Boolean = true,
+        illusion: IllusionEffect? = null,
+        mutation: (PokemonEntity) -> Unit = {},
+    ): PokemonEntity? {
+        return sendOut(level, position, illusion) {
+            val owner = getOwnerEntity()
+            if (owner is LivingEntity) {
+                owner.swing(InteractionHand.MAIN_HAND, true)
+                val spawnDirection: Vec3
+                var spawnYaw: Double
+                val battle = Cobblemon.battleRegistry.getBattle(battleId)
+                val activeBattlePokemon = battle?.activePokemon?.firstOrNull { activePokemon -> activePokemon.battlePokemon?.originalPokemon?.uuid == it.pokemon.uuid }
+                val opposingActiveBattlePokemon = (activeBattlePokemon?.getOppositeOpponent() as ActiveBattlePokemon?)
+                var opposingEntityPos = opposingActiveBattlePokemon?.battlePokemon?.entity?.position()
+                if (opposingEntityPos == null) {
+                    // Can't find the opposing pokemon, it probably doesn't exist yet. Try to calculate the opponent's sendout position
+                    val opposingEntityBattleActor = battle?.actors?.first { battleActor ->
+                        battleActor is EntityBackedBattleActor<*> && battleActor.entity != null && battleActor.entity?.uuid !== owner.uuid
+                    } as EntityBackedBattleActor<*>
+                    if (activeBattlePokemon != null) {
+                        opposingEntityPos = activeBattlePokemon.getSendOutPosition()
+                    }
+                    if (opposingEntityPos == null) {
+                        // Sendout calculation failed, fallback to using the opposing actor's position
+                        opposingEntityPos = opposingEntityBattleActor.initialPos
+                    }
+                }
+                spawnDirection = opposingEntityPos?.subtract(it.position()) ?: position.subtract(owner.position())
+                val battleYaw = (atan2(spawnDirection.z, spawnDirection.x) * 180.0 / PI) - 90.0
+                spawnYaw = battleYaw
+
+                // In some edge cases, I suspect we are producing NaN's here. This actually leads into a really big problem.
+                // Why? Because on tick, LivingEntity tries to bring rotations back within one loop around 0-360 using while loops.
+                // NaN resists arithmetic, so the while loops run forever and the server thread will hang trying to normalize
+                // this angle. Better to catch it here and correct it. Y'know. If this is actually the problem. I believe!
+                if (!spawnYaw.isFinite()) {
+                    spawnYaw = 0.0
+                }
+                it.entityData.set(PokemonEntity.SPAWN_DIRECTION, Mth.wrapDegrees(spawnYaw.toFloat()))
+            }
+            if (owner != null) {
+                level.playSoundServer(owner.position(), CobblemonSounds.POKE_BALL_THROW, volume = 0.6F)
+            }
+            it.ownerUUID = getOwnerUUID()
+            it.battleId = battleId
+
+            it.after(seconds = SEND_OUT_DURATION) {
+                CobblemonEvents.POKEMON_SENT_POST.post(PokemonSentEvent.Post(this, level, position, it))
+                if (doCry) {
+                    it.cry()
+                }
+
+                if (illusion != null) {
+                    if (illusion.mock.shiny == true) SpawnSnowstormEntityParticlePacket(cobblemonResource("shiny_ring"), it.id, listOf("shiny_particles", "middle")).sendToPlayersAround(it.x, it.y, it.z, 64.0, it.level().dimension())
+                } else {
+                    if (shiny) SpawnSnowstormEntityParticlePacket(cobblemonResource("shiny_ring"), it.id, listOf("shiny_particles", "middle")).sendToPlayersAround(it.x, it.y, it.z, 64.0, it.level().dimension())
+                }
+            }
+
+            mutation(it)
+        }
     }
 
     fun sendOutWithAnimation(
