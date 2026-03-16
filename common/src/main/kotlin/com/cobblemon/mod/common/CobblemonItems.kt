@@ -1801,6 +1801,16 @@ object CobblemonItems : PlatformRegistry<Registry<Item>, ResourceKey<Registry<It
     val RUINOUS_VESSEL = legendaryItem("ruinous_vessel", 2)
     @JvmField
     val ZERAORA_TUFT = legendaryItem("zeraora_tuft", 2)
+    @JvmField
+    val COSMIC_CORE = legendaryItem("cosmic_core", 2)
+    @JvmField
+    val COSMIC_FLUTE = legendaryItem("cosmic_flute", 2)
+    @JvmField
+    val ODD_SEA_EGG = legendaryItem("odd_sea_egg", 2)
+    @JvmField
+    val RKS_COMMUNICATOR = legendaryItem("rks_communicator", 2)
+    @JvmField
+    val SCROLL_OF_CHALLENGE = legendaryItem("scroll_of_challenge", 2)
 
     val COIN_ITEMS = mutableListOf<CoinItem>()
 
