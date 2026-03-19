@@ -402,6 +402,9 @@ class PokemonServerDelegate : PokemonSideDelegate {
     }
 
     fun doDeathDrops() {
+        if (entity.pokemon.isLegendary() || entity.pokemon.isMythical()) {
+            return
+        }
         if (entity.ownerUUID == null && entity.owner == null && entity.level().gameRules.getBoolean(CobblemonGameRules.DO_POKEMON_LOOT)) {
             val dropTable = (entity.drops ?: entity.pokemon.form.drops)
             val drops = dropTable.getDrops().toMutableList()

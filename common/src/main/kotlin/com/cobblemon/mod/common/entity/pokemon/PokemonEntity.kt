@@ -1822,6 +1822,9 @@ open class PokemonEntity(
     }
 
     override fun dropAllDeathLoot(world: ServerLevel, source: DamageSource) {
+        if (battleId != null) {
+            return
+        }
         if (pokemon.isWild()) {
             super.dropAllDeathLoot(world, source)
             delegate.drop(source)
