@@ -22,6 +22,7 @@ import com.cobblemon.mod.common.api.events.drops.LootDroppedEvent
 import com.cobblemon.mod.common.api.events.entity.*
 import com.cobblemon.mod.common.api.events.farming.ApricornHarvestEvent
 import com.cobblemon.mod.common.api.events.fishing.*
+import com.cobblemon.mod.common.api.events.interact.SelectPartyPokemon
 import com.cobblemon.mod.common.api.events.item.LeftoversCreatedEvent
 import com.cobblemon.mod.common.api.events.pokebag.PokeBagContainerValidCheckEvent
 import com.cobblemon.mod.common.api.events.pokebag.PokeBagOpenRequestEvent
@@ -431,4 +432,7 @@ object CobblemonEvents {
 
     @JvmField
     val SWAP_PC_PARTY_POKEMON = EventObservable<SwapPCPartyPokemon>()
+
+    @JvmField
+    val SELECT_PARTY_POKEMON = EventObservable<SelectPartyPokemon>()
 }

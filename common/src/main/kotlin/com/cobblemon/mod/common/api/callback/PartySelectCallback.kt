@@ -10,6 +10,8 @@ package com.cobblemon.mod.common.api.callback
 
 import com.cobblemon.mod.common.Cobblemon
 import com.cobblemon.mod.common.CobblemonNetwork.sendPacket
+import com.cobblemon.mod.common.api.events.CobblemonEvents
+import com.cobblemon.mod.common.api.events.interact.SelectPartyPokemon
 import com.cobblemon.mod.common.api.pokemon.PokemonProperties
 import com.cobblemon.mod.common.api.pokemon.PokemonPropertyExtractor
 import com.cobblemon.mod.common.battles.pokemon.BattlePokemon
@@ -100,6 +102,13 @@ object PartySelectCallbacks {
     fun handleCallback(player: ServerPlayer, uuid: UUID, index: Int) {
         val callback = callbacks[player.uuid] ?: return
         callbacks.remove(player.uuid)
+
+        val event = SelectPartyPokemon(player)
+        CobblemonEvents.SELECT_PARTY_POKEMON.emit(event)
+        if (event.isCanceled) {
+            return
+        }
+
         if (callback.uuid != uuid) {
             Cobblemon.LOGGER.warn("A party select callback ran but with a mismatching UUID from ${player.gameProfile.name}. Hacking attempts?")
         } else if (index >= callback.shownPokemon.size) {
