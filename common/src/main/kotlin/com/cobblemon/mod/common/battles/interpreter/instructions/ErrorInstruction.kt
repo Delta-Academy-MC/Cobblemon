@@ -8,6 +8,7 @@
 
 package com.cobblemon.mod.common.battles.interpreter.instructions
 
+import com.cobblemon.mod.common.Cobblemon
 import com.cobblemon.mod.common.api.battles.interpreter.BattleMessage
 import com.cobblemon.mod.common.api.battles.model.PokemonBattle
 import com.cobblemon.mod.common.api.battles.model.actor.BattleActor
@@ -31,8 +32,19 @@ class ErrorInstruction(val battleActor: BattleActor, val message: BattleMessage)
             //TODO: some lang stuff for the error messages (Whats the protocol for adding to other langs )
             //Also is it okay to ignore the team preview error for now? - You bet!
             val lang = when(message.rawMessage) {
-                "|error|[Unavailable choice] Can't switch: The active Pokémon is trapped" -> battleLang("error.pokemon_is_trapped").red()
-                "|error|[Invalid choice] Can't choose for Team Preview: You're not in a Team Preview phase" -> return@dispatchGo
+                "|error|[Unavailable choice] Can't switch: The active PokÃ©mon is trapped" -> battleLang("error.pokemon_is_trapped").red()
+                "|error|[Invalid choice] Can't choose for Team Preview: You're not in a Team Preview phase" -> {
+                    Cobblemon.LOGGER.error(
+                        "DEBUG unexpected team preview choice actor={} actorUuid={} showdownId={} request={} responses={} rawMessage={}",
+                        battleActor.getName().string,
+                        battleActor.uuid,
+                        runCatching { battleActor.showdownId }.getOrDefault("<uninitialized>"),
+                        battleActor.request,
+                        battleActor.responses,
+                        message.rawMessage
+                    )
+                    return@dispatchGo
+                }
                 "|error|[Invalid choice] Can't do anything: It's not your turn" -> return@dispatchGo
                 else -> battle.createUnimplemented(message)
             }

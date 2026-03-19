@@ -166,10 +166,14 @@ abstract class BattleActor(
 //            }
             index++
         }
+        val outboundCommand = ">$showdownId ${showdownMessages.joinToString()}"
+        battle.log(
+            "DEBUG outbound showdown choice actor=${getName().string} actorUuid=$uuid showdownId=$showdownId request=$request responses=$responses command=$outboundCommand"
+        )
         responses.clear()
         request = null
         expectingPassActions.clear()
-        battle.writeShowdownAction(">$showdownId ${showdownMessages.joinToString()}")
+        battle.writeShowdownAction(outboundCommand)
     }
 
     abstract fun getName(): MutableComponent

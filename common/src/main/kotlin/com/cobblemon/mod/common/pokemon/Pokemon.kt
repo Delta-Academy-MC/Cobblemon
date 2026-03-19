@@ -753,15 +753,16 @@ open class Pokemon : ShowdownIdentifiable {
                 var opposingEntityPos = opposingActiveBattlePokemon?.battlePokemon?.entity?.position()
                 if (opposingEntityPos == null) {
                     // Can't find the opposing pokemon, it probably doesn't exist yet. Try to calculate the opponent's sendout position
-                    val opposingEntityBattleActor = battle?.actors?.first { battleActor ->
-                        battleActor is EntityBackedBattleActor<*> && battleActor.entity != null && battleActor.entity?.uuid !== owner.uuid
-                    } as EntityBackedBattleActor<*>
+                    val opposingEntityBattleActor = battle?.actors
+                        ?.firstOrNull { battleActor ->
+                            battleActor is EntityBackedBattleActor<*> && battleActor.entity != null && battleActor.entity?.uuid != owner.uuid
+                        } as? EntityBackedBattleActor<*>
                     if (activeBattlePokemon != null) {
                         opposingEntityPos = activeBattlePokemon.getSendOutPosition()
                     }
                     if (opposingEntityPos == null) {
                         // Sendout calculation failed, fallback to using the opposing actor's position
-                        opposingEntityPos = opposingEntityBattleActor.initialPos
+                        opposingEntityPos = opposingEntityBattleActor?.initialPos
                     }
                 }
                 spawnDirection = opposingEntityPos?.subtract(it.position()) ?: position.subtract(owner.position())
@@ -838,15 +839,16 @@ open class Pokemon : ShowdownIdentifiable {
                         var opposingEntityPos = opposingActiveBattlePokemon?.battlePokemon?.entity?.position()
                         if (opposingEntityPos == null) {
                             // Can't find the opposing pokemon, it probably doesn't exist yet. Try to calculate the opponent's sendout position
-                            val opposingEntityBattleActor = battle?.actors?.first { battleActor ->
-                                battleActor is EntityBackedBattleActor<*> && battleActor.entity != null && battleActor.entity?.uuid !== owner.uuid
-                            } as EntityBackedBattleActor<*>
+                            val opposingEntityBattleActor = battle?.actors
+                                ?.firstOrNull { battleActor ->
+                                    battleActor is EntityBackedBattleActor<*> && battleActor.entity != null && battleActor.entity?.uuid != owner.uuid
+                                } as? EntityBackedBattleActor<*>
                             if (activeBattlePokemon != null) {
                                 opposingEntityPos = activeBattlePokemon.getSendOutPosition()
                             }
                             if (opposingEntityPos == null) {
                                 // Sendout calculation failed, fallback to using the opposing actor's position
-                                opposingEntityPos = opposingEntityBattleActor.initialPos
+                                opposingEntityPos = opposingEntityBattleActor?.initialPos
                             }
                         }
                         spawnDirection = opposingEntityPos?.subtract(it.position()) ?: position.subtract(owner.position())
