@@ -32,6 +32,8 @@ class ClearBoostInstruction(val message: BattleMessage): InterpreterInstruction 
             battle.broadcastChatMessage(lang)
             battlePokemon.contextManager.clear(BattleContext.Type.BOOST, BattleContext.Type.UNBOOST)
             battle.minorBattleActions[battlePokemon.uuid] = message
+            battlePokemon.boosts.clear()
+            battlePokemon.sendUpdate()
         }
     }
 }
