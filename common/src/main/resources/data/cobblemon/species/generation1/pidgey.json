@@ -69,16 +69,6 @@
     "combat": {
       "willDefendOwner": true
     },
-    "itemInteract": {
-      "desiredItems": [
-        {
-          "item": "#minecraft:chicken_food",
-          "pickupPriority": 1,
-          "fullnessValue": 1,
-          "onUseEffect": "q.entity.heal(1)"
-        }
-      ]
-    },
     "herd": {
       "maxSize": "9",
       "toleratedLeaders": [

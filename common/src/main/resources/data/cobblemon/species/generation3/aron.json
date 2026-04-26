@@ -56,16 +56,6 @@
         "canSwimInLava": true
       }
     },
-    "itemInteract": {
-      "desiredItems": [
-        {
-          "item": "minecraft:iron_ingot",
-          "pickupPriority": 1,
-          "fullnessValue": 1,
-          "onUseEffect": "q.entity.heal(1)"
-        }
-      ]
-    },
     "herd": {
       "maxSize": "4",
       "toleratedLeaders": [

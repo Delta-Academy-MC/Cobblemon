@@ -62,21 +62,6 @@
       "drowsyChance": 0.0021,
       "rouseChance": 0.0042
     },
-    "itemInteract": {
-      "desiredItems": [
-        {
-          "_comment": "Drop it",
-          "item": "minecraft:glass_bottle",
-          "pickupPriority": -1
-        },
-        {
-          "item": "minecraft:potion",
-          "pickupPriority": 1,
-          "returnItem": "minecraft:glass_bottle",
-          "fullnessValue": 10
-        }
-      ]
-    },
     "herd": {
       "maxSize": "2",
       "toleratedLeaders": [

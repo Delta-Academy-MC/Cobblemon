@@ -51,22 +51,6 @@
     "fixed": false
   },
   "behaviour": {
-    "itemInteract": {
-      "desiredItems": [
-        {
-          "item": "minecraft:amethyst_shard",
-          "pickupPriority": 1,
-          "fullnessValue": 2,
-          "onUseEffect": "q.entity.heal(2)"
-        },
-        {
-          "item": "minecraft:diamond",
-          "pickupPriority": 2,
-          "fullnessValue": 5,
-          "onUseEffect": "q.entity.heal(10)"
-        }
-      ]
-    },
     "resting": {
       "willSleepOnBed": true,
       "times": [
