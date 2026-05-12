@@ -479,7 +479,10 @@ open class Pokemon : ShowdownIdentifiable {
         get() = mintedNature ?: nature
 
     val moveSet = MoveSet().also {
-        it.changeFunction = { onChange(MoveSetUpdatePacket({ this }, it)) }
+        it.changeFunction = {
+            onChange(MoveSetUpdatePacket({ this }, it))
+            CobblemonEvents.MOVESET_CHANGED.emit(MovesetChangedEvent(this))
+        }
     }
 
     val experienceGroup: ExperienceGroup

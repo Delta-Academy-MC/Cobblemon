@@ -435,4 +435,7 @@ object CobblemonEvents {
 
     @JvmField
     val SELECT_PARTY_POKEMON = EventObservable<SelectPartyPokemon>()
+
+    @JvmField
+    val MOVESET_CHANGED = EventObservable<MovesetChangedEvent>()
 }
