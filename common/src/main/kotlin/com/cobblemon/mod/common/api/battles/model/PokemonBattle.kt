@@ -24,6 +24,7 @@ import com.cobblemon.mod.common.api.battles.model.actor.EntityBackedBattleActor
 import com.cobblemon.mod.common.api.battles.model.actor.FleeableBattleActor
 import com.cobblemon.mod.common.api.events.CobblemonEvents
 import com.cobblemon.mod.common.api.events.battles.BattleFledEvent
+import com.cobblemon.mod.common.api.events.battles.FleeEvent
 import com.cobblemon.mod.common.api.molang.MoLangFunctions.asMoLangValue
 import com.cobblemon.mod.common.api.net.NetworkPacket
 import com.cobblemon.mod.common.api.pokemon.stats.BattleEvSource
@@ -568,6 +569,10 @@ open class PokemonBattle(
             }
         if (wildPokemonOutOfRange) {
             // Heal Wild Pokemon
+            val event = FleeEvent(this)
+            CobblemonEvents.BATTLE_FLEEING.post(event)
+            if (event.isCanceled) return
+
             actors.filter { it.type == ActorType.WILD }
                 .filterIsInstance<EntityBackedBattleActor<*>>()
                 .mapNotNull { it.entity }

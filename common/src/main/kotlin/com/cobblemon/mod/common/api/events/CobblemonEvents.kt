@@ -158,6 +158,9 @@ object CobblemonEvents {
     val BATTLE_FLED = EventObservable<BattleFledEvent>()
 
     @JvmField
+    val BATTLE_FLEEING = EventObservable<FleeEvent>()
+
+    @JvmField
     val BATTLE_VICTORY = EventObservable<BattleVictoryEvent>()
 
     @JvmField
