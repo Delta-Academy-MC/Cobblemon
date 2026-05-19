@@ -1553,7 +1553,7 @@ object CobblemonItems : PlatformRegistry<Registry<Item>, ResourceKey<Registry<It
     @JvmField
     val CHARIZARDITE_Y = megaStone("charizarditey", "charizard", "mega_evolution=mega_y")
     @JvmField
-    val DIANCITE = megaStone("diancite", "diance", "mega_evolution=mega")
+    val DIANCITE = megaStone("diancite", "diancie", "mega_evolution=mega")
     @JvmField
     val GALLADITE = megaStone("galladite", "gallade", "mega_evolution=mega")
     @JvmField
