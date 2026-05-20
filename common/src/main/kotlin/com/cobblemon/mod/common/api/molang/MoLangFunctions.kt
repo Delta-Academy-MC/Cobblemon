@@ -898,6 +898,7 @@ object MoLangFunctions {
     val entityFunctions: MutableList<(Entity) -> HashMap<String, java.util.function.Function<MoParams, Any>>> = mutableListOf(
         { entity ->
             val map = hashMapOf<String, java.util.function.Function<MoParams, Any>>()
+            map.put("is_alive") { _ -> return@put if (entity.isAlive) DoubleValue.ONE else DoubleValue.ZERO }
             map.put("uuid") { _ -> StringValue(entity.uuid.toString()) }
             map.put("set_name") { params ->
                 val name = params.getString(0)
