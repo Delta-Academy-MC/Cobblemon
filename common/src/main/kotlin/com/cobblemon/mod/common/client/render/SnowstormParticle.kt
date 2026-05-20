@@ -85,6 +85,7 @@ class SnowstormParticle(
 
     var viewDirection = Vec3.ZERO
     var originPos = Vec3(storm.getX(), storm.getY(), storm.getZ())
+    var prevOriginPos = originPos
 
     fun getX() = x
     fun getY() = y
@@ -117,6 +118,7 @@ class SnowstormParticle(
         lifetime = (runtime.resolveDouble(storm.effect.particle.maxAge) * 20).toInt()
         storm.particles.add(this)
         gravity = 0F
+        prevOriginPos = originPos
         particleTextureSheet = if (invisible) NO_RENDER else PARTICLE_SHEET_TRANSLUCENT
         storm.effect.particle.creationEvents.forEach { it.trigger(storm, this) }
 //            when (storm.effect.particle.material) {
@@ -155,6 +157,9 @@ class SnowstormParticle(
         RenderSystem.setShaderColor(1F, 1F, 1F, 1F)
 
         val vec3d = camera.position
+        val interpOriginX = Mth.lerp(tickDelta.toDouble(), prevOriginPos.x, originPos.x)
+        val interpOriginY = Mth.lerp(tickDelta.toDouble(), prevOriginPos.y, originPos.y)
+        val interpOriginZ = Mth.lerp(tickDelta.toDouble(), prevOriginPos.z, originPos.z)
 
         val interpLocalX = Mth.lerp(tickDelta.toDouble(), prevLocalX, localX)
         val interpLocalY = Mth.lerp(tickDelta.toDouble(), prevLocalY, localY)
@@ -169,9 +174,13 @@ class SnowstormParticle(
             Vector3d(interpLocalX, interpLocalY, interpLocalZ)
         }
 
-        val f = (pos.x + originPos.x - vec3d.x()).toFloat()
-        val g = (pos.y + originPos.y - vec3d.y()).toFloat()
-        val h = (pos.z + originPos.z - vec3d.z()).toFloat()
+        val finalOriginX = if (storm.effect.space.localPosition) interpOriginX else originPos.x
+        val finalOriginY = if (storm.effect.space.localPosition) interpOriginY else originPos.y
+        val finalOriginZ = if (storm.effect.space.localPosition) interpOriginZ else originPos.z
+
+        val f = (pos.x + finalOriginX - vec3d.x()).toFloat()
+        val g = (pos.y + finalOriginY - vec3d.y()).toFloat()
+        val h = (pos.z + finalOriginZ - vec3d.z()).toFloat()
         val quaternion = storm.effect.particle.cameraMode.getRotation(
             matrixWrapper = matrixWrapper,
             prevAngle = oRoll,
@@ -240,6 +249,7 @@ class SnowstormParticle(
 
     override fun tick() {
         if (storm.effect.space.localPosition) {
+            prevOriginPos = originPos
             originPos = matrixWrapper.getOrigin()
         }
 
