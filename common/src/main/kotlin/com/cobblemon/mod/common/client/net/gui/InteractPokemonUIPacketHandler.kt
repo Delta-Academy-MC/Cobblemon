@@ -20,7 +20,8 @@ object InteractPokemonUIPacketHandler: ClientNetworkPacketHandler<InteractPokemo
             packet.canMountShoulder,
             packet.canGiveHeld,
             packet.canGiveCosmetic,
-            packet.canRide
+            packet.canRide,
+            packet.canTransform
         ))
     }
 }

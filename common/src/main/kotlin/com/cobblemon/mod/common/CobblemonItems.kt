@@ -1782,7 +1782,13 @@ object CobblemonItems : PlatformRegistry<Registry<Item>, ResourceKey<Registry<It
     @JvmField
     val TOXIC_RIBBON = legendaryItem("toxic_ribbon", 2)
     @JvmField
-    val TEAL_MASK = legendaryItem("teal_mask", 2)
+    val TEAL_MASK = maskItem("teal_mask")
+    @JvmField
+    val WELLSPRING_MASK = maskItem("wellspring_mask")
+    @JvmField
+    val HEARTHFLAME_MASK = maskItem("hearthflame_mask")
+    @JvmField
+    val CORNERSTONE_MASK = maskItem("cornerstone_mask")
     @JvmField
     val STELLAR_TERA_CORE = legendaryItem("stellar_tera_core", 2)
     @JvmField
@@ -1832,6 +1838,89 @@ object CobblemonItems : PlatformRegistry<Registry<Item>, ResourceKey<Registry<It
     @JvmField
     val HUGE_POKE_BAG = pokeBag("huge_poke_bag", 6, Rarity.EPIC)
 
+    val TRANSFORMATION_ITEMS = mutableListOf<Item>()
+
+    @JvmField
+    val DRACO_PLATE = heldItem("draco_plate")
+    @JvmField
+    val DREAD_PLATE = heldItem("dread_plate")
+    @JvmField
+    val EARTH_PLATE = heldItem("earth_plate")
+    @JvmField
+    val FIST_PLATE = heldItem("fist_plate")
+    @JvmField
+    val FLAME_PLATE = heldItem("flame_plate")
+    @JvmField
+    val ICICLE_PLATE = heldItem("icicle_plate")
+    @JvmField
+    val INSECT_PLATE = heldItem("insect_plate")
+    @JvmField
+    val IRON_PLATE = heldItem("iron_plate")
+    @JvmField
+    val MEADOW_PLATE = heldItem("meadow_plate")
+    @JvmField
+    val MIND_PLATE = heldItem("mind_plate")
+    @JvmField
+    val PIXIE_PLATE = heldItem("pixie_plate")
+    @JvmField
+    val SKY_PLATE = heldItem("sky_plate")
+    @JvmField
+    val SPLASH_PLATE = heldItem("splash_plate")
+    @JvmField
+    val SPOOKY_PLATE = heldItem("spooky_plate")
+    @JvmField
+    val STONE_PLATE = heldItem("stone_plate")
+    @JvmField
+    val TOXIC_PLATE = heldItem("toxic_plate")
+    @JvmField
+    val ZAP_PLATE = heldItem("zap_plate")
+    @JvmField
+    val BUG_MEMORY = heldItem("bug_memory")
+    @JvmField
+    val DARK_MEMORY = heldItem("dark_memory")
+    @JvmField
+    val DRAGON_MEMORY = heldItem("dragon_memory")
+    @JvmField
+    val ELECTRIC_MEMORY = heldItem("electric_memory")
+    @JvmField
+    val FAIRY_MEMORY = heldItem("fairy_memory")
+    @JvmField
+    val FIGHTING_MEMORY = heldItem("fighting_memory")
+    @JvmField
+    val FIRE_MEMORY = heldItem("fire_memory")
+    @JvmField
+    val FLYING_MEMORY = heldItem("flying_memory")
+    @JvmField
+    val GHOST_MEMORY = heldItem("ghost_memory")
+    @JvmField
+    val GRASS_MEMORY = heldItem("grass_memory")
+    @JvmField
+    val GROUND_MEMORY = heldItem("ground_memory")
+    @JvmField
+    val ICE_MEMORY = heldItem("ice_memory")
+    @JvmField
+    val POISON_MEMORY = heldItem("poison_memory")
+    @JvmField
+    val PSYCHIC_MEMORY = heldItem("psychic_memory")
+    @JvmField
+    val ROCK_MEMORY = heldItem("rock_memory")
+    @JvmField
+    val STEEL_MEMORY = heldItem("steel_memory")
+    @JvmField
+    val WATER_MEMORY = heldItem("water_memory")
+    @JvmField
+    val BURN_DRIVE = heldItem("burn_drive")
+    @JvmField
+    val CHILL_DRIVE = heldItem("chill_drive")
+    @JvmField
+    val DOUSE_DRIVE = heldItem("douse_drive")
+    @JvmField
+    val SHOCK_DRIVE = heldItem("shock_drive")
+    @JvmField
+    val PRISON_BOTTLE = transformationItem("prison_bottle")
+    @JvmField
+    val BOOSTER_ENERGY = transformationItem("booster_energy")
+
     private fun blockItem(name: String, block: Block, rarity: Rarity = Rarity.COMMON): BlockItem = this.create(name, BlockItem(block, Item.Properties().rarity(rarity)))
 
     private fun itemNameBlockItem(name: String, block: Block, rarity: Rarity = Rarity.COMMON): ItemNameBlockItem = this.create(name, ItemNameBlockItem(block, Item.Properties().rarity(rarity)))
@@ -1861,6 +1950,18 @@ object CobblemonItems : PlatformRegistry<Registry<Item>, ResourceKey<Registry<It
         val item = create(path, MegaStoneItem(evolvablePokemon, aspect))
         CobblemonHeldItemManager.registerRemap(item, path)
         MEGASTONES.add(item)
+        return item
+    }
+
+    fun maskItem(name: String): MaskItem {
+        val item = create(name, MaskItem())
+        LEGENDARY_ITEMS.add(item)
+        return item
+    }
+
+    fun transformationItem(name: String): Item {
+        val item = create(name, Item(Properties().stacksTo(1).rarity(Rarity.RARE)))
+        TRANSFORMATION_ITEMS.add(item)
         return item
     }
 

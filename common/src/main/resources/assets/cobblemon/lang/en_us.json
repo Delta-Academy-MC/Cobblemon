@@ -1243,6 +1243,7 @@
 
   "cobblemon.ui.interact.give.item": "Change held item",
   "cobblemon.ui.interact.give.cosmetic_item": "Change cosmetic item",
+  "cobblemon.ui.interact.give.transform_item": "Transform",
   "cobblemon.ui.interact.spectate": "Spectate",
   "cobblemon.ui.interact.trade": "Trade",
   "cobblemon.ui.interact.battle": "Battle",
@@ -9680,6 +9681,9 @@
   "item.cobblemon.toxic_headband": "Toxic Headband",
   "item.cobblemon.toxic_ribbon": "Toxic Ribbon",
   "item.cobblemon.teal_mask": "Teal Mask",
+  "item.cobblemon.wellspring_mask": "Wellspring Mask",
+  "item.cobblemon.hearthflame_mask": "Hearthflame Mask",
+  "item.cobblemon.cornerstone_mask": "Cornerstone Mask",
   "item.cobblemon.stellar_tera_core": "Stellar Tera Core",
   "item.cobblemon.psychic_orb": "Psychic Orb",
   "item.cobblemon.combat_orb": "Combat Orb",

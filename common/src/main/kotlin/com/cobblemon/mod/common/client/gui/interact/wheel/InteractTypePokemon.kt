@@ -12,5 +12,6 @@ enum class InteractTypePokemon {
     SHOULDER,
     HELD_ITEM,
     COSMETIC_ITEM,
+    TRANSFORM,
     RIDE;
 }

@@ -481,6 +481,8 @@ open class Pokemon : ShowdownIdentifiable {
     val moveSet = MoveSet().also {
         it.changeFunction = {
             onChange(MoveSetUpdatePacket({ this }, it))
+        }
+        it.eventFunction = {
             CobblemonEvents.MOVESET_CHANGED.emit(MovesetChangedEvent(this))
         }
     }

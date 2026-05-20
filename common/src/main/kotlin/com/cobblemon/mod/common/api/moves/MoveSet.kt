@@ -24,6 +24,7 @@ import kotlin.math.min
 
 class MoveSet : Iterable<Move> {
     var changeFunction: (MoveSet) -> Unit = {}
+    var eventFunction: (MoveSet) -> Unit = {}
     private var emit = true
 
     private val moves = arrayOfNulls<Move>(MOVE_COUNT)
@@ -151,6 +152,7 @@ class MoveSet : Iterable<Move> {
     }
 
     fun update() {
+        eventFunction(this)
         if (emit) {
             changeFunction(this)
         }
