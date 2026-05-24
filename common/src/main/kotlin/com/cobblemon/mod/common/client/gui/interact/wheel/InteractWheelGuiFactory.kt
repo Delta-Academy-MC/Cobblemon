@@ -26,7 +26,7 @@ import net.minecraft.client.Minecraft
 import net.minecraft.network.chat.Component
 import org.joml.Vector3f
 
-fun createPokemonInteractGui(pokemonID: UUID, canMountShoulder: Boolean, canGiveHeld: Boolean, canGiveCosmetic: Boolean, canRide: Boolean): InteractWheelGUI {
+fun createPokemonInteractGui(pokemonID: UUID, canMountShoulder: Boolean, canGiveHeld: Boolean, canGiveCosmetic: Boolean, canRide: Boolean, canTransform: Boolean): InteractWheelGUI {
     val mountShoulder = InteractWheelOption(
         iconResource = cobblemonResource("textures/gui/interact/interact_wheel_icon_shoulder.png"),
         tooltipText = "cobblemon.ui.interact.mount.shoulder",
@@ -73,11 +73,24 @@ fun createPokemonInteractGui(pokemonID: UUID, canMountShoulder: Boolean, canGive
         }
     )
 
+    val transform = InteractWheelOption(
+        iconResource = cobblemonResource("textures/gui/interact/interact_wheel_icon_transform_item.png"),
+        tooltipText = "cobblemon.ui.interact.give.transform_item",
+        enabled = canTransform,
+        onPress = {
+            if (canTransform) {
+                InteractPokemonPacket(pokemonID, InteractTypePokemon.TRANSFORM).sendToServer()
+                closeGUI()
+            }
+        }
+    )
+
     val options: Multimap<Orientation, InteractWheelOption> = ArrayListMultimap.create()
     options.put(Orientation.NORTH, giveHeldItem)
     options.put(Orientation.NORTHEAST, giveCosmeticItem)
     options.put(Orientation.WEST, ride)
     options.put(Orientation.NORTHWEST, mountShoulder)
+    options.put(Orientation.EAST, transform)
 
     CobblemonEvents.POKEMON_INTERACTION_GUI_CREATION.post(PokemonInteractionGUICreationEvent(
         pokemonID = pokemonID,
@@ -85,6 +98,7 @@ fun createPokemonInteractGui(pokemonID: UUID, canMountShoulder: Boolean, canGive
         giveHeld = canGiveHeld,
         giveCosmetic = canGiveCosmetic,
         canRide = canRide,
+        canTransform = canTransform,
         options = options
     ))
     return InteractWheelGUI(options, Component.translatable("cobblemon.ui.interact.pokemon"))

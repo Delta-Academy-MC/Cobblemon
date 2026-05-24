@@ -12,9 +12,7 @@
     "gen9",
     "legendary"
   ],
-  "aspects": [
-    "teal-mask"
-  ],
+  "aspects": [],
   "abilities": [
     "defiant",
     "h:defiant"
@@ -152,7 +150,7 @@
         "legendary"
       ],
       "aspects": [
-        "wellspring-mask"
+        "wellspring"
       ],
       "abilities": [
         "waterabsorb",
@@ -177,7 +175,7 @@
         "legendary"
       ],
       "aspects": [
-        "hearthflame-mask"
+        "hearthflame"
       ],
       "abilities": [
         "moldbreaker",
@@ -202,7 +200,7 @@
         "legendary"
       ],
       "aspects": [
-        "cornerstone-mask"
+        "cornerstone"
       ],
       "abilities": [
         "sturdy",
@@ -226,8 +224,7 @@
         "legendary"
       ],
       "aspects": [
-        "embody-aspect",
-        "teal-mask"
+        "embody-aspect"
       ],
       "abilities": [
         "embodyaspectteal",
@@ -254,7 +251,7 @@
       ],
       "aspects": [
         "embody-aspect",
-        "wellspring-mask"
+        "wellspring"
       ],
       "abilities": [
         "embodyaspectwellspring",
@@ -281,7 +278,7 @@
       ],
       "aspects": [
         "embody-aspect",
-        "hearthflame-mask"
+        "hearthflame"
       ],
       "abilities": [
         "embodyaspecthearthflame",
@@ -308,7 +305,7 @@
       ],
       "aspects": [
         "embody-aspect",
-        "cornerstone-mask"
+        "cornerstone"
       ],
       "abilities": [
         "embodyaspectcornerstone",

@@ -19,6 +19,7 @@ data class PokemonInteractionGUICreationEvent(
     val giveHeld: Boolean,
     val giveCosmetic: Boolean,
     val canRide: Boolean,
+    val canTransform: Boolean,
     val options: Multimap<Orientation, InteractWheelOption>
 ) {
     fun addFillingOption(option: InteractWheelOption) {

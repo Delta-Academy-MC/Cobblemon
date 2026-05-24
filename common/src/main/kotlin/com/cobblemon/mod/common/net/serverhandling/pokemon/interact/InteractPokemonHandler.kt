@@ -11,6 +11,7 @@ package com.cobblemon.mod.common.net.serverhandling.pokemon.interact
 import com.cobblemon.mod.common.api.net.ServerNetworkPacketHandler
 import com.cobblemon.mod.common.client.gui.interact.wheel.InteractTypePokemon
 import com.cobblemon.mod.common.entity.pokemon.PokemonEntity
+import com.cobblemon.mod.common.entity.pokemon.TransformationHandler
 import com.cobblemon.mod.common.net.messages.server.pokemon.interact.InteractPokemonPacket
 import com.cobblemon.mod.common.util.party
 import net.minecraft.server.MinecraftServer
@@ -33,6 +34,7 @@ object InteractPokemonHandler : ServerNetworkPacketHandler<InteractPokemonPacket
                 }
                 InteractTypePokemon.HELD_ITEM -> pokemonEntity.offerHeldItem(player, player.mainHandItem)
                 InteractTypePokemon.COSMETIC_ITEM -> pokemonEntity.offerCosmeticItem(player, player.mainHandItem)
+                InteractTypePokemon.TRANSFORM -> TransformationHandler.transform(pokemonEntity, player)
             }
         }
     }

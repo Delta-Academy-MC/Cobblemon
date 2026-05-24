@@ -11,4 +11,4 @@ package com.cobblemon.mod.common.item.gimmicks
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.Item.Properties
 
-class LegendaryItem(val durability: Int) : Item(Properties().stacksTo(1).durability(durability))
+open class LegendaryItem(val durability: Int) : Item(Properties().stacksTo(1).durability(durability))

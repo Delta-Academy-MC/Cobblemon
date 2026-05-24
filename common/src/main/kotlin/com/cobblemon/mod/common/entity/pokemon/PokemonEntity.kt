@@ -1300,6 +1300,7 @@ open class PokemonEntity(
             if (this.owner != player && this.passengers.isEmpty()) return@ifRidingAvailableSupply false;
             return@ifRidingAvailableSupply behaviour.isActive(settings, state, this);
         }
+        val canTransform = TransformationHandler.canTransform(this, player)
         if (pokemon.getOwnerPlayer() == player) {
             val cosmeticItemDefinition = CobblemonCosmeticItems.findValidCosmeticForPokemonAndItem(
                 player.level().registryAccess(),
@@ -1312,7 +1313,8 @@ open class PokemonEntity(
                 canSitOnShoulder() && pokemon in player.party(),
                 !(pokemon.heldItemNoCopy().isEmpty && itemStack.isEmpty),
                 (!pokemon.cosmeticItem.isEmpty && itemStack.isEmpty) || cosmeticItemDefinition != null,
-                canRide
+                canRide,
+                canTransform
             ).sendToPlayer(player)
         }
         else if (!pokemon.isWild() && canRide) {

@@ -658,6 +658,9 @@ object CobblemonItemGroups {
         CobblemonItems.LEGENDARY_ITEMS.forEach {
             entries.accept(it)
         }
+        CobblemonItems.TRANSFORMATION_ITEMS.forEach {
+            entries.accept(it)
+        }
     }
 
     private fun pokeBagItemEntries(displayContext: ItemDisplayParameters, entries: Output) {
@@ -768,6 +771,48 @@ object CobblemonItemGroups {
         entries.accept(CobblemonItems.WIDE_LENS)
         entries.accept(CobblemonItems.WISE_GLASSES)
         entries.accept(CobblemonItems.ZOOM_LENS)
+        entries.accept(CobblemonItems.BOOSTER_ENERGY)
+
+        entries.accept(CobblemonItems.DRACO_PLATE)
+        entries.accept(CobblemonItems.DREAD_PLATE)
+        entries.accept(CobblemonItems.EARTH_PLATE)
+        entries.accept(CobblemonItems.FIST_PLATE)
+        entries.accept(CobblemonItems.FLAME_PLATE)
+        entries.accept(CobblemonItems.ICICLE_PLATE)
+        entries.accept(CobblemonItems.INSECT_PLATE)
+        entries.accept(CobblemonItems.IRON_PLATE)
+        entries.accept(CobblemonItems.MEADOW_PLATE)
+        entries.accept(CobblemonItems.MIND_PLATE)
+        entries.accept(CobblemonItems.PIXIE_PLATE)
+        entries.accept(CobblemonItems.SKY_PLATE)
+        entries.accept(CobblemonItems.SPLASH_PLATE)
+        entries.accept(CobblemonItems.SPOOKY_PLATE)
+        entries.accept(CobblemonItems.STONE_PLATE)
+        entries.accept(CobblemonItems.TOXIC_PLATE)
+        entries.accept(CobblemonItems.ZAP_PLATE)
+
+        entries.accept(CobblemonItems.BUG_MEMORY)
+        entries.accept(CobblemonItems.DARK_MEMORY)
+        entries.accept(CobblemonItems.DRAGON_MEMORY)
+        entries.accept(CobblemonItems.ELECTRIC_MEMORY)
+        entries.accept(CobblemonItems.FAIRY_MEMORY)
+        entries.accept(CobblemonItems.FIGHTING_MEMORY)
+        entries.accept(CobblemonItems.FIRE_MEMORY)
+        entries.accept(CobblemonItems.FLYING_MEMORY)
+        entries.accept(CobblemonItems.GHOST_MEMORY)
+        entries.accept(CobblemonItems.GRASS_MEMORY)
+        entries.accept(CobblemonItems.GROUND_MEMORY)
+        entries.accept(CobblemonItems.ICE_MEMORY)
+        entries.accept(CobblemonItems.POISON_MEMORY)
+        entries.accept(CobblemonItems.PSYCHIC_MEMORY)
+        entries.accept(CobblemonItems.ROCK_MEMORY)
+        entries.accept(CobblemonItems.STEEL_MEMORY)
+        entries.accept(CobblemonItems.WATER_MEMORY)
+
+        entries.accept(CobblemonItems.BURN_DRIVE)
+        entries.accept(CobblemonItems.CHILL_DRIVE)
+        entries.accept(CobblemonItems.DOUSE_DRIVE)
+        entries.accept(CobblemonItems.SHOCK_DRIVE)
 
         entries.accept(CobblemonItems.MEDICINAL_LEEK)
         entries.accept(Items.BONE)

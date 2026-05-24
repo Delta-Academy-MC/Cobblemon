@@ -29,7 +29,8 @@ class InteractPokemonUIPacket(
     val canMountShoulder: Boolean,
     val canGiveHeld: Boolean,
     val canGiveCosmetic: Boolean,
-    val canRide: Boolean
+    val canRide: Boolean,
+    val canTransform: Boolean
 ): NetworkPacket<InteractPokemonUIPacket> {
 
     override val id = ID
@@ -40,12 +41,14 @@ class InteractPokemonUIPacket(
         buffer.writeBoolean(canGiveHeld)
         buffer.writeBoolean(canGiveCosmetic)
         buffer.writeBoolean(canRide)
+        buffer.writeBoolean(canTransform)
     }
 
     companion object {
         val ID = cobblemonResource("interact_pokemon_ui")
         fun decode(buffer: RegistryFriendlyByteBuf) = InteractPokemonUIPacket(
             buffer.readUUID(),
+            buffer.readBoolean(),
             buffer.readBoolean(),
             buffer.readBoolean(),
             buffer.readBoolean(),

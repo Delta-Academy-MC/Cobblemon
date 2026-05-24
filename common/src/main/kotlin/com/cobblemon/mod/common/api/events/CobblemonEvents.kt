@@ -441,4 +441,10 @@ object CobblemonEvents {
 
     @JvmField
     val MOVESET_CHANGED = EventObservable<MovesetChangedEvent>()
+
+    @JvmField
+    val TRANSFORMATION_PRE_EVENT = EventObservable<TransformationPreEvent>()
+
+    @JvmField
+    val TRANSFORMATION_VALIDATION_EVENT = EventObservable<TransformationValidationEvent>()
 }
