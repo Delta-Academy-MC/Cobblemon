@@ -120,7 +120,7 @@ class SnowstormParticle(
         lifetime = (runtime.resolveDouble(storm.effect.particle.maxAge) * 20).toInt()
         storm.particles.add(this)
         gravity = 0F
-        originPos = matrixWrapper.getOrigin()
+        originPos = storm.attachedMatrix.getOrigin()
         prevOriginPos = originPos
         particleTextureSheet = if (invisible) NO_RENDER else PARTICLE_SHEET_TRANSLUCENT
         storm.effect.particle.creationEvents.forEach { it.trigger(storm, this) }
@@ -168,16 +168,22 @@ class SnowstormParticle(
         val interpLocalY = Mth.lerp(tickDelta.toDouble(), prevLocalY, localY)
         val interpLocalZ = Mth.lerp(tickDelta.toDouble(), prevLocalZ, localZ)
 
-        val pos = if (storm.effect.space.localRotation) {
+        val pos = if (storm.effect.space.localPosition && storm.effect.space.localRotation) {
+            val vec = Vec3(interpLocalX, interpLocalY, interpLocalZ)
+            val rotated = storm.attachedMatrix.matrix.transformDirection(vec)
+            Vector3d(rotated.x, rotated.y, rotated.z)
+        } else if (storm.effect.space.localRotation) {
             val interpRotation = Mth.lerp(tickDelta.toDouble(), 0.0, currentRotation.angle)
             val vec = Vector3d(interpLocalX, interpLocalY, interpLocalZ)
             oldAxisRotation.transform(vec)
-            currentRotation.get(AxisAngle4d()).also { it.angle = interpRotation }.transform(vec)
+            val axisRotationInterp = AxisAngle4d()
+            currentRotation.get(axisRotationInterp).also { it.angle = interpRotation }.transform(vec)
+            vec
         } else {
             Vector3d(interpLocalX, interpLocalY, interpLocalZ)
         }
 
-        val currentOrigin = matrixWrapper.getOrigin()
+        val currentOrigin = if (storm.effect.space.localPosition) storm.attachedMatrix.getOrigin() else matrixWrapper.getOrigin()
         val finalOriginX = if (storm.effect.space.localPosition) currentOrigin.x else interpOriginX
         val finalOriginY = if (storm.effect.space.localPosition) currentOrigin.y else interpOriginY
         val finalOriginZ = if (storm.effect.space.localPosition) currentOrigin.z else interpOriginZ
@@ -254,10 +260,11 @@ class SnowstormParticle(
     override fun tick() {
         if (storm.effect.space.localPosition) {
             prevOriginPos = originPos
-            originPos = matrixWrapper.getOrigin()
+            originPos = storm.attachedMatrix.getOrigin()
         }
         else {
             prevOriginPos = originPos
+            originPos = matrixWrapper.getOrigin()
         }
 
         applyRandoms()
@@ -317,10 +324,8 @@ class SnowstormParticle(
 
         this.move(xd, yd, zd)
 
-        // update originPos if not in local space, since move() might have updated localX/Y/Z
-        if (!storm.effect.space.localPosition) {
-            originPos = matrixWrapper.getOrigin()
-        }
+        // update originPos since move() might have updated localX/Y/Z
+        originPos = if (storm.effect.space.localPosition) storm.attachedMatrix.getOrigin() else matrixWrapper.getOrigin()
 
         storm.effect.particle.timeline.check(storm, this, (age - 1) / 20.0, age / 20.0)
     }
