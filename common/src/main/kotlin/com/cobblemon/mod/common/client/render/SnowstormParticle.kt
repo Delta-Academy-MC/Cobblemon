@@ -14,7 +14,9 @@ import com.cobblemon.mod.common.Cobblemon
 import com.cobblemon.mod.common.ModAPI
 import com.cobblemon.mod.common.api.snowstorm.ParticleMaterial
 import com.cobblemon.mod.common.api.snowstorm.UVDetails
+import com.cobblemon.mod.common.client.MountedPokemonAnimationRenderController
 import com.cobblemon.mod.common.client.particle.ParticleStorm
+import com.cobblemon.mod.common.entity.pokemon.PokemonEntity
 import com.cobblemon.mod.common.util.math.geometry.transformDirection
 import com.cobblemon.mod.common.util.resolveBoolean
 import com.cobblemon.mod.common.util.resolveDouble
@@ -118,15 +120,10 @@ class SnowstormParticle(
         lifetime = (runtime.resolveDouble(storm.effect.particle.maxAge) * 20).toInt()
         storm.particles.add(this)
         gravity = 0F
+        originPos = matrixWrapper.getOrigin()
         prevOriginPos = originPos
         particleTextureSheet = if (invisible) NO_RENDER else PARTICLE_SHEET_TRANSLUCENT
         storm.effect.particle.creationEvents.forEach { it.trigger(storm, this) }
-//            when (storm.effect.particle.material) {
-//            ParticleMaterial.ALPHA -> ParticleMaterials.ALPHA
-//            ParticleMaterial.OPAQUE -> ParticleMaterials.OPAQUE
-//            ParticleMaterial.BLEND -> ParticleMaterials.BLEND
-//            ParticleMaterial.ADD -> ParticleMaterials.ADD
-//        }
     }
 
     override fun render(vertexConsumer: VertexConsumer, camera: Camera, tickDelta: Float) {
@@ -138,6 +135,12 @@ class SnowstormParticle(
            if (!Minecraft.getInstance().levelRenderer.cullingFrustum.isVisible(boundingBox)) {
                return
            }
+        }
+
+        storm.entity?.let {
+            if (it is PokemonEntity) {
+                MountedPokemonAnimationRenderController.setup(it, tickDelta)
+            }
         }
 
         applyRandoms()
@@ -174,9 +177,10 @@ class SnowstormParticle(
             Vector3d(interpLocalX, interpLocalY, interpLocalZ)
         }
 
-        val finalOriginX = if (storm.effect.space.localPosition) interpOriginX else originPos.x
-        val finalOriginY = if (storm.effect.space.localPosition) interpOriginY else originPos.y
-        val finalOriginZ = if (storm.effect.space.localPosition) interpOriginZ else originPos.z
+        val currentOrigin = matrixWrapper.getOrigin()
+        val finalOriginX = if (storm.effect.space.localPosition) currentOrigin.x else interpOriginX
+        val finalOriginY = if (storm.effect.space.localPosition) currentOrigin.y else interpOriginY
+        val finalOriginZ = if (storm.effect.space.localPosition) currentOrigin.z else interpOriginZ
 
         val f = (pos.x + finalOriginX - vec3d.x()).toFloat()
         val g = (pos.y + finalOriginY - vec3d.y()).toFloat()
@@ -252,6 +256,9 @@ class SnowstormParticle(
             prevOriginPos = originPos
             originPos = matrixWrapper.getOrigin()
         }
+        else {
+            prevOriginPos = originPos
+        }
 
         applyRandoms()
         setParticleAgeInRuntime()
@@ -309,6 +316,11 @@ class SnowstormParticle(
         age++
 
         this.move(xd, yd, zd)
+
+        // update originPos if not in local space, since move() might have updated localX/Y/Z
+        if (!storm.effect.space.localPosition) {
+            originPos = matrixWrapper.getOrigin()
+        }
 
         storm.effect.particle.timeline.check(storm, this, (age - 1) / 20.0, age / 20.0)
     }
