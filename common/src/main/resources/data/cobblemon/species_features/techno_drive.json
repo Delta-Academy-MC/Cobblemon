@@ -8,7 +8,8 @@
     "water",
     "electric",
     "fire",
-    "ice"
+    "ice",
+    "none"
   ],
   "isAspect": true,
   "aspectFormat": "{{choice}}-drive"

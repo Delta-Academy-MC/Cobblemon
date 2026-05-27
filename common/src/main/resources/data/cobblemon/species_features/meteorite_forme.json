@@ -11,5 +11,5 @@
     "speed"
   ],
   "isAspect": true,
-  "aspectFormat": "{{choice}}-forme"
+  "aspectFormat": "{{choice}}"
 }

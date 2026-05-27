@@ -11,7 +11,8 @@
     "fan",
     "mow",
     "radio",
-    "dowsing"
+    "dowsing",
+    "none"
   ],
   "isAspect": true,
   "aspectFormat": "{{choice}}-appliance"
