@@ -1,0 +1,17 @@
+{
+  "type": "cobblemon:cooking_pot_shapeless",
+  "category": "medicines",
+  "ingredients": [
+    {
+      "item": "cobblemon:courage_candy"
+    },
+    {
+      "item": "cobblemon:grepa_berry"
+    }
+  ],
+  "result": {
+    "id": "cobblemon:brittle_candy"
+  },
+  "seasoningTag": "cobblemon:empty",
+  "seasoningProcessors": []
+}

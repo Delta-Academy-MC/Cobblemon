@@ -1,0 +1,17 @@
+{
+  "type": "cobblemon:cooking_pot_shapeless",
+  "category": "medicines",
+  "ingredients": [
+    {
+      "item": "cobblemon:health_candy"
+    },
+    {
+      "item": "cobblemon:pomeg_berry"
+    }
+  ],
+  "result": {
+    "id": "cobblemon:sickly_candy"
+  },
+  "seasoningTag": "cobblemon:empty",
+  "seasoningProcessors": []
+}

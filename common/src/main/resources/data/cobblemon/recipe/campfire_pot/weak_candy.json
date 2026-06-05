@@ -1,0 +1,17 @@
+{
+  "type": "cobblemon:cooking_pot_shapeless",
+  "category": "medicines",
+  "ingredients": [
+    {
+      "item": "cobblemon:mighty_candy"
+    },
+    {
+      "item": "cobblemon:kelpsy_berry"
+    }
+  ],
+  "result": {
+    "id": "cobblemon:weak_candy"
+  },
+  "seasoningTag": "cobblemon:empty",
+  "seasoningProcessors": []
+}

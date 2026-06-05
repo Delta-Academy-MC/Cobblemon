@@ -1,0 +1,20 @@
+{
+    "type": "cobblemon:cooking_pot_shapeless",
+    "category": "medicines",
+    "ingredients": [
+        {
+            "item": "cobblemon:exp_candy_m"
+        },
+        {
+            "item": "cobblemon:exp_candy_m"
+        },
+        {
+            "item": "cobblemon:exp_candy_m"
+        }
+    ],
+    "result": {
+        "id": "cobblemon:exp_candy_l"
+    },
+    "seasoningTag": "cobblemon:empty",
+    "seasoningProcessors": []
+}

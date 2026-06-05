@@ -1,0 +1,17 @@
+{
+  "type": "cobblemon:cooking_pot_shapeless",
+  "category": "medicines",
+  "ingredients": [
+    {
+      "item": "cobblemon:quick_candy"
+    },
+    {
+      "item": "cobblemon:tamato_berry"
+    }
+  ],
+  "result": {
+    "id": "cobblemon:slow_candy"
+  },
+  "seasoningTag": "cobblemon:empty",
+  "seasoningProcessors": []
+}

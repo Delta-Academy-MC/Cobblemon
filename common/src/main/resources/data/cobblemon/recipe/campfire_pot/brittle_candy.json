@@ -1,0 +1,17 @@
+{
+  "type": "cobblemon:cooking_pot_shapeless",
+  "category": "medicines",
+  "ingredients": [
+    {
+      "item": "cobblemon:tough_candy"
+    },
+    {
+      "item": "cobblemon:qualot_berry"
+    }
+  ],
+  "result": {
+    "id": "cobblemon:brittle_candy"
+  },
+  "seasoningTag": "cobblemon:empty",
+  "seasoningProcessors": []
+}
