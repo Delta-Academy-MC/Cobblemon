@@ -48,6 +48,16 @@
                     "type": "minecraft:item",
                     "name": "cobblemon:vivichoke_seeds",
                     "weight": 10
+                },
+                {
+                    "type": "minecraft:item",
+                    "name": "academy:ha_fossil",
+                    "weight": 0.5
+                },
+                {
+                    "type": "minecraft:item",
+                    "name": "cobblemon:shiny_fossil",
+                    "weight": 0.03
                 }
             ],
             "rolls": 1.0
