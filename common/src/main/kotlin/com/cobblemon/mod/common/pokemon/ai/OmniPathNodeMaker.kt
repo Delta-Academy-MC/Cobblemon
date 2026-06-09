@@ -733,7 +733,7 @@ class OmniPathNodeMaker : NodeEvaluator() {
 
         val block = blockState.block
 
-        if (blockState.`is`(Blocks.CACTUS) || blockState.`is`(Blocks.SWEET_BERRY_BUSH)) {
+        if (blockState.`is`(Blocks.CACTUS) || blockState.`is`(Blocks.SWEET_BERRY_BUSH) || blockState.`is`(Blocks.END_PORTAL) || blockState.`is`(Blocks.END_GATEWAY)) {
             return PathType.DANGER_OTHER
         }
 
