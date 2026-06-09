@@ -13,6 +13,7 @@ import com.cobblemon.mod.common.entity.boat.CobblemonBoatEntity
 import com.cobblemon.mod.common.entity.boat.CobblemonChestBoatEntity
 import com.cobblemon.mod.common.entity.fishing.PokeRodFishingBobberEntity
 import com.cobblemon.mod.common.entity.generic.GenericBedrockEntity
+import com.cobblemon.mod.common.entity.hooparing.ThrownHoopaRing
 import com.cobblemon.mod.common.entity.npc.NPCEntity
 import com.cobblemon.mod.common.entity.pokeball.EmptyPokeBallEntity
 import com.cobblemon.mod.common.entity.pokemon.PokemonEntity
@@ -93,6 +94,14 @@ object CobblemonEntities : PlatformRegistry<Registry<EntityType<*>>, ResourceKey
     val NPC: EntityType<NPCEntity> = create(
         NPC_KEY.path,
         EntityType.Builder.of({ _, world -> NPCEntity(world) }, MobCategory.CREATURE).build("$NPC_KEY")
+    )
+
+    @JvmField
+    val HOOPA_RING_KEY = cobblemonResource("hoopa_ring")
+    @JvmField
+    val HOOPA_RING: EntityType<ThrownHoopaRing> = create(
+        HOOPA_RING_KEY.path,
+        EntityType.Builder.of({ _, world -> ThrownHoopaRing(world) }, MobCategory.MISC).build("$HOOPA_RING_KEY")
     )
 
     fun registerAttributes(consumer: (EntityType<out LivingEntity>, AttributeSupplier.Builder) -> Unit) {

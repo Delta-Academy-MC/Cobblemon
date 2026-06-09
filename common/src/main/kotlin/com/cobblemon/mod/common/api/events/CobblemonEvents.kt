@@ -447,4 +447,7 @@ object CobblemonEvents {
 
     @JvmField
     val TRANSFORMATION_VALIDATION_EVENT = EventObservable<TransformationValidationEvent>()
+
+    @JvmField
+    val HOOPA_RING_ACTIVATED = EventObservable<HoopaRingActivateEvent>()
 }

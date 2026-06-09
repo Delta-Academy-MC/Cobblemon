@@ -661,6 +661,7 @@ object CobblemonItemGroups {
         CobblemonItems.TRANSFORMATION_ITEMS.forEach {
             entries.accept(it)
         }
+        entries.accept(CobblemonItems.HOOPA_RING)
     }
 
     private fun pokeBagItemEntries(displayContext: ItemDisplayParameters, entries: Output) {

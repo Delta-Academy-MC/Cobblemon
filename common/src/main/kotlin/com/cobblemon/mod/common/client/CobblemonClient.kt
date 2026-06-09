@@ -93,6 +93,7 @@ import net.minecraft.client.renderer.blockentity.HangingSignRenderer
 import net.minecraft.client.renderer.blockentity.SignRenderer
 import net.minecraft.client.renderer.entity.EntityRenderer
 import net.minecraft.client.renderer.entity.LivingEntityRenderer
+import net.minecraft.client.renderer.entity.ThrownItemRenderer
 import net.minecraft.client.resources.PlayerSkin
 import net.minecraft.server.packs.resources.ResourceManager
 import net.minecraft.world.InteractionHand
@@ -444,6 +445,8 @@ object CobblemonClient {
         this.implementation.registerEntityRenderer(CobblemonEntities.POKE_BOBBER) { ctx -> PokeBobberEntityRenderer(ctx) }
         LOGGER.info("Registering NPC renderer")
         this.implementation.registerEntityRenderer(CobblemonEntities.NPC, ::NPCRenderer)
+        LOGGER.info("Registering Hoopa Ring renderer")
+        this.implementation.registerEntityRenderer(CobblemonEntities.HOOPA_RING, ::ThrownItemRenderer)
     }
 
     private fun registerItemColors() {
