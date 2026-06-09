@@ -1920,6 +1920,8 @@ object CobblemonItems : PlatformRegistry<Registry<Item>, ResourceKey<Registry<It
     val PRISON_BOTTLE = transformationItem("prison_bottle")
     @JvmField
     val BOOSTER_ENERGY = heldItem("booster_energy")
+    @JvmField
+    val HOOPA_RING = create("hoopa_ring", HoopaRingItem(Properties().stacksTo(16).rarity(Rarity.RARE)))
 
     private fun blockItem(name: String, block: Block, rarity: Rarity = Rarity.COMMON): BlockItem = this.create(name, BlockItem(block, Item.Properties().rarity(rarity)))
 
@@ -1939,7 +1941,6 @@ object CobblemonItems : PlatformRegistry<Registry<Item>, ResourceKey<Registry<It
         pokeBalls.add(item)
         return item
     }
-
     fun teraShard(type: TeraType): TeraShardItem {
         val item = create("${type.name.lowercase()}_tera_shard", TeraShardItem(type))
         TERA_SHARDS.add(item)
