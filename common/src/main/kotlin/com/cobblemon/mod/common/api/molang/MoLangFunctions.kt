@@ -1169,6 +1169,8 @@ object MoLangFunctions {
     val livingEntityFunctions: MutableList<(LivingEntity) -> HashMap<String, java.util.function.Function<MoParams, Any>>> = mutableListOf<(LivingEntity) -> HashMap<String, java.util.function.Function<MoParams, Any>>>(
         { entity ->
             val map = hashMapOf<String, java.util.function.Function<MoParams, Any>>()
+            map.put("head_yaw") { _ -> DoubleValue(entity.yHeadRot) }
+            map.put("body_yaw") { _ -> DoubleValue(entity.yBodyRot) }
             map.put("is_player") { _ -> DoubleValue(entity is Player) }
             map.put("is_npc") { _ -> DoubleValue(entity is NPCEntity) }
             map.put("is_mob") { _ -> DoubleValue(entity is Mob) }
