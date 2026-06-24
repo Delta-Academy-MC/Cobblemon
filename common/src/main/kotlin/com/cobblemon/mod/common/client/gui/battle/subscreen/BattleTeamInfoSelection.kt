@@ -40,6 +40,7 @@ import com.cobblemon.mod.common.util.cobblemonResource
 import com.cobblemon.mod.common.util.lang
 import com.cobblemon.mod.common.util.math.fromEulerXYZDegrees
 import com.cobblemon.mod.common.client.gui.battle.BattleOverlay
+import com.cobblemon.mod.common.client.gui.battle.BattlePokemonInfoPanel
 import com.cobblemon.mod.common.client.gui.battle.BattleOverlay.Companion.PORTRAIT_DIAMETER
 import com.cobblemon.mod.common.client.gui.battle.BattleOverlay.Companion.questionMarkIcon
 import com.cobblemon.mod.common.client.gui.battle.preview.TeamPreviewWidget
@@ -410,7 +411,7 @@ class BattleTeamInfoSelection(
             dto.buffs.get(Stats.ATTACK)?.let {
                 drawScaledText(
                     context = context,
-                    text = getMultiplierText(it),
+                    text = BattlePokemonInfoPanel.getBoostText(Stats.ATTACK, it),
                     x = startX + 50,
                     y = startY + 31.5,
                     scale = BattleOverlay.Companion.SCALE,
@@ -432,7 +433,7 @@ class BattleTeamInfoSelection(
             dto.buffs.get(Stats.DEFENCE)?.let {
                 drawScaledText(
                     context = context,
-                    text = getMultiplierText(it),
+                    text = BattlePokemonInfoPanel.getBoostText(Stats.DEFENCE, it),
                     x = startX + 50,
                     y = startY + 39.5,
                     scale = BattleOverlay.Companion.SCALE,
@@ -454,7 +455,7 @@ class BattleTeamInfoSelection(
             dto.buffs.get(Stats.SPECIAL_ATTACK)?.let {
                 drawScaledText(
                     context = context,
-                    text = getMultiplierText(it),
+                    text = BattlePokemonInfoPanel.getBoostText(Stats.SPECIAL_ATTACK, it),
                     x = startX + 50,
                     y = startY + 47.5,
                     scale = BattleOverlay.Companion.SCALE,
@@ -476,7 +477,7 @@ class BattleTeamInfoSelection(
             dto.buffs.get(Stats.SPECIAL_DEFENCE)?.let {
                 drawScaledText(
                     context = context,
-                    text = getMultiplierText(it),
+                    text = BattlePokemonInfoPanel.getBoostText(Stats.SPECIAL_DEFENCE, it),
                     x = startX + 50,
                     y = startY + 55.5,
                     scale = BattleOverlay.Companion.SCALE,
@@ -498,7 +499,7 @@ class BattleTeamInfoSelection(
             dto.buffs.get(Stats.SPEED)?.let {
                 drawScaledText(
                     context = context,
-                    text = getMultiplierText(it),
+                    text = BattlePokemonInfoPanel.getBoostText(Stats.SPEED, it),
                     x = startX + 50,
                     y = startY + 63.5,
                     scale = BattleOverlay.Companion.SCALE,
@@ -520,7 +521,7 @@ class BattleTeamInfoSelection(
             dto.buffs.get(Stats.ACCURACY)?.let {
                 drawScaledText(
                     context = context,
-                    text = getMultiplierText(it),
+                    text = BattlePokemonInfoPanel.getBoostText(Stats.ACCURACY, it),
                     x = startX + 50,
                     y = startY + 71.5,
                     scale = BattleOverlay.Companion.SCALE,
@@ -542,7 +543,7 @@ class BattleTeamInfoSelection(
             dto?.buffs?.get(Stats.EVASION)?.let {
                 drawScaledText(
                     context = context,
-                    text = getMultiplierText(it),
+                    text = BattlePokemonInfoPanel.getBoostText(Stats.EVASION, it),
                     x = startX + 50,
                     y = startY + 79.5,
                     scale = BattleOverlay.Companion.SCALE,

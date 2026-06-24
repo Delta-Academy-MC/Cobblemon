@@ -29,6 +29,7 @@ import com.cobblemon.mod.common.client.battle.ClientBattle
 import com.cobblemon.mod.common.client.battle.ClientBattleActor
 import com.cobblemon.mod.common.client.battle.ClientBattleInformationRepository
 import com.cobblemon.mod.common.client.battle.ClientBattlePokemon
+import com.cobblemon.mod.common.net.messages.client.battle.BattlePokemonDTO
 import com.cobblemon.mod.common.client.gui.TypeIcon
 import com.cobblemon.mod.common.client.gui.battle.subscreen.BattleTeamInfoSelection
 import com.cobblemon.mod.common.client.gui.battle.widgets.BattleMessagePane
@@ -38,6 +39,7 @@ import com.cobblemon.mod.common.client.render.SpriteType
 import com.cobblemon.mod.common.client.render.drawScaledText
 import com.cobblemon.mod.common.client.render.drawScaledTextJustifiedRight
 import com.cobblemon.mod.common.client.render.getDepletableRedGreen
+import com.cobblemon.mod.common.client.render.models.blockbench.FloatingState
 import com.cobblemon.mod.common.client.render.models.blockbench.PosableState
 import com.cobblemon.mod.common.client.render.models.blockbench.repository.RenderContext
 import com.cobblemon.mod.common.client.render.models.blockbench.repository.VaryingModelRepository
@@ -123,6 +125,11 @@ class BattleOverlay : Gui(Minecraft.getInstance()), Schedulable {
         val battleInfoRole = cobblemonResource("textures/gui/battle/battle_info_role.png")
         val battleInfoRoleFlipped = cobblemonResource("textures/gui/battle/battle_info_role_flipped.png")
         val battleInfoUnderlay = cobblemonResource("textures/gui/battle/battle_info_underlay.png")
+        // Benched-team portrait column frames (same tile art the Info menu uses, scaled down).
+        val partyColumnTile = cobblemonResource("textures/gui/battle/pokemon_tile.png")
+        val partyColumnTileReversed = cobblemonResource("textures/gui/battle/pokemon_tile_reversed.png")
+        val partyColumnTileDisabled = cobblemonResource("textures/gui/battle/pokemon_tile_disabled.png")
+        val partyColumnTileDisabledReversed = cobblemonResource("textures/gui/battle/pokemon_tile_disabled_reversed.png")
         val caughtIndicator = cobblemonResource("textures/gui/battle/battle_owned_indicator.png")
 
         val partyPokeballIcon = cobblemonResource("textures/gui/battle/party_pokeball_icon.png")
@@ -152,6 +159,52 @@ class BattleOverlay : Gui(Minecraft.getInstance()), Schedulable {
     var lastKnownBattle: UUID? = null
     lateinit var messagePane: BattleMessagePane
     var hidePortraits = false
+
+    // Persistent per-Pokémon animation states for the benched-team portrait column (keyed by Pokémon
+    // UUID) so those portraits keep animating across frames. Cleared when no battle is active.
+    private val partyTileStates = mutableMapOf<UUID, FloatingState>()
+
+    // Drag state for the benched-team portrait column. Each actor's column can be dragged as one group
+    // to a custom offset; a click (press without drag) resets it back under the active Pokémon.
+    // columnHitboxes holds the last-rendered column bounds [x, y, w, h] per actor for click hit-testing.
+    private val columnOffsets = mutableMapOf<UUID, Pair<Float, Float>>()
+    private val columnHitboxes = mutableMapOf<UUID, FloatArray>()
+    private var draggedColumnActor: UUID? = null
+    private var dragStartMouseX = 0.0
+    private var dragStartMouseY = 0.0
+    private var dragStartOffsetX = 0f
+    private var dragStartOffsetY = 0f
+    private var columnDragMoved = false
+    private var lastColumnBattle: UUID? = null
+
+    // While the BattleGUI screen is open the on-field portrait columns (and their hover panels) are queued
+    // here during the HUD pass and re-drawn by the screen AFTER its own widgets, the switch menu's underlay
+    // gradient and the chat — all of which draw later and would otherwise render on top of the columns.
+    private val pendingColumns = mutableListOf<PendingColumn>()
+    private class PendingColumn(
+        val tileY: Float,
+        val portraitStartX: Float,
+        val portraitDiameter: Int,
+        val reversed: Boolean,
+        val actor: ClientBattleActor,
+        val partialTicks: Float,
+        val isCompact: Boolean
+    )
+
+    // The active Pokémon's hover panel is deferred alongside the columns (and drawn after them) so it lands
+    // in the same pass and on top of the benched portraits, instead of behind them.
+    private val pendingActivePanels = mutableListOf<PendingActivePanel>()
+    private class PendingActivePanel(
+        val x: Float,
+        val y: Float,
+        val reversed: Boolean,
+        val pokemon: ClientBattlePokemon,
+        val isCompact: Boolean
+    )
+
+    // In compact (doubles/triples) battles an actor owns multiple active tiles, so the benched column is
+    // emitted once per actor (not per tile). This tracks which actors already have one queued this frame.
+    private val columnDrawnActors = mutableSetOf<UUID>()
     override val schedulingTracker = SchedulingTracker()
 
     var mouseX: Int = 0
@@ -169,12 +222,30 @@ class BattleOverlay : Gui(Minecraft.getInstance()), Schedulable {
         if (battle == null) {
             mouseX = 0
             mouseY = 0
+            partyTileStates.clear()
+            columnOffsets.clear()
+            columnHitboxes.clear()
+            pendingColumns.clear()
+            pendingActivePanels.clear()
+            columnDrawnActors.clear()
+            draggedColumnActor = null
             return
         }
         if (battle.minimised) {
             mouseX = 0
             mouseY = 0
         }
+
+        // Reset the draggable team-portrait columns to their default positions whenever a new battle begins.
+        if (lastColumnBattle != battle.battleId) {
+            columnOffsets.clear()
+            draggedColumnActor = null
+            lastColumnBattle = battle.battleId
+        }
+        // Rebuilt fresh each frame; entries are queued below and drained by BattleGUI.renderDeferredColumns.
+        pendingColumns.clear()
+        pendingActivePanels.clear()
+        columnDrawnActors.clear()
 
         val hoverInfo = getHoverInformation(tickDelta)
 
@@ -378,9 +449,35 @@ class BattleOverlay : Gui(Minecraft.getInstance()), Schedulable {
 
     fun drawTile(context: GuiGraphics, tickDelta: Float, activeBattlePokemon: ActiveClientBattlePokemon, left: Boolean, rank: Int, dexState: PokedexEntryProgress, hasCommand: Boolean = false, isHovered: Boolean = false, isCompact: Boolean = false) {
         val mc = Minecraft.getInstance()
-
-        val battlePokemon = activeBattlePokemon.battlePokemon ?: return
         val battle = CobblemonClient.battle ?: return
+
+        val battlePokemon = activeBattlePokemon.battlePokemon
+        if (battlePokemon == null) {
+            // No active Pokémon in this slot (e.g. a forced switch after fainting). There's no tile to
+            // draw, but still show the benched-team column so the player can see their party while choosing
+            // a switch. Deduped per actor so a fainted slot in doubles doesn't suppress/double the column.
+            val actor = activeBattlePokemon.actor
+            val reversed = !left
+            if (!isCompact) {
+                val baseX = if (left) HORIZONTAL_INSET.toFloat()
+                    else (mc.window.guiScaledWidth - HORIZONTAL_INSET - TILE_WIDTH).toFloat()
+                val portraitStartX = baseX + if (!reversed) PORTRAIT_OFFSET_X.toFloat()
+                    else (TILE_WIDTH - PORTRAIT_DIAMETER - PORTRAIT_OFFSET_X).toFloat()
+                queueOrDrawColumn(context, VERTICAL_INSET.toFloat(), portraitStartX, PORTRAIT_DIAMETER, reversed, actor, tickDelta, isCompact)
+            } else if (actor.uuid !in columnDrawnActors) {
+                columnDrawnActors.add(actor.uuid)
+                val slotCount = battle.battleFormat.battleType.slotsPerActor
+                var baseX = HORIZONTAL_INSET + (slotCount - rank - 1) * HORIZONTAL_SPACING.toFloat()
+                if (!left) baseX = mc.window.guiScaledWidth - baseX - COMPACT_TILE_WIDTH
+                val portraitStartX = baseX + if (!reversed) COMPACT_PORTRAIT_OFFSET_X.toFloat()
+                    else (COMPACT_TILE_WIDTH - COMPACT_PORTRAIT_DIAMETER - COMPACT_PORTRAIT_OFFSET_X).toFloat()
+                val activePerSide = battle.battleFormat.battleType.pokemonPerSide
+                val stackBottomTileY = (VERTICAL_INSET + (activePerSide - 1) * COMPACT_VERTICAL_SPACING).toFloat()
+                queueOrDrawColumn(context, stackBottomTileY, portraitStartX, COMPACT_PORTRAIT_DIAMETER, reversed, actor, tickDelta, isCompact)
+            }
+            return
+        }
+
         val slotCount = battle.battleFormat.battleType.slotsPerActor
         val playerNumberOffset = (activeBattlePokemon.getActorShowdownId()[1].digitToInt() - 1) / 2 * 10
 
@@ -389,6 +486,9 @@ class BattleOverlay : Gui(Minecraft.getInstance()), Schedulable {
         if (!left) {
             x = mc.window.guiScaledWidth - x - if(isCompact) COMPACT_TILE_WIDTH else TILE_WIDTH
         }
+        // The active tile slides off/on screen as it faints or switches; the benched column should stay
+        // put, so capture the resting x before the slide animation and anchor the column to it.
+        val restX = x
         val invisibleX = if (left) {
             -(if(isCompact) COMPACT_TILE_WIDTH else TILE_WIDTH) - 1F
         } else {
@@ -408,6 +508,7 @@ class BattleOverlay : Gui(Minecraft.getInstance()), Schedulable {
         drawBattleTile(
             context = context,
             x = x,
+            columnX = restX,
             y = y.toFloat(),
             partialTicks = tickDelta,
             reversed = !left,
@@ -440,6 +541,7 @@ class BattleOverlay : Gui(Minecraft.getInstance()), Schedulable {
     fun drawBattleTile(
         context: GuiGraphics,
         x: Float,
+        columnX: Float,
         y: Float,
         partialTicks: Float,
         reversed: Boolean,
@@ -470,6 +572,8 @@ class BattleOverlay : Gui(Minecraft.getInstance()), Schedulable {
         val portraitDiameter = if (isCompact) COMPACT_PORTRAIT_DIAMETER else PORTRAIT_DIAMETER
         val infoOffsetX = if (isCompact) COMPACT_INFO_OFFSET_X else INFO_OFFSET_X
         val portraitStartX = x + if (!reversed) portraitOffsetX else { tileWidth - portraitDiameter - portraitOffsetX }
+        // Same offset, but off the resting x so the benched column doesn't slide with the tile animation.
+        val columnPortraitStartX = columnX + if (!reversed) portraitOffsetX else { tileWidth - portraitDiameter - portraitOffsetX }
         val portraitStartY = y + portraitOffsetY
         val matrixStack = context.pose()
         val isPortraitHovered = isPortraitHovered(portraitStartX, portraitStartY, portraitDiameter)
@@ -758,21 +862,31 @@ class BattleOverlay : Gui(Minecraft.getInstance()), Schedulable {
             shadow = true
         )
 
-        drawPartyPokeBalls(
-            context,
-            x,
-            y,
-            reversed,
-            actor,
-            rank,
-            isCompact
-        )
-
-        if (isPortraitHovered) {
-            renderExtendedBattleInfo(context, portraitStartX, portraitStartY, reversed, battlePokemon, isCompact)
+        if (isCompact) {
+            // Doubles/triples: the rest of an actor's team renders as the benched-portrait column singles
+            // use, anchored below the whole active stack at the resting x. Replaces the poke-ball row.
+            // Emitted once per actor (deduped) rather than per tile.
+            if (actor.uuid !in columnDrawnActors) {
+                columnDrawnActors.add(actor.uuid)
+                val activePerSide = CobblemonClient.battle?.battleFormat?.battleType?.pokemonPerSide ?: 2
+                val stackBottomTileY = (VERTICAL_INSET + (activePerSide - 1) * COMPACT_VERTICAL_SPACING).toFloat()
+                queueOrDrawColumn(context, stackBottomTileY, columnPortraitStartX, portraitDiameter, reversed, actor, partialTicks, isCompact)
+            }
+        } else {
+            // Benched portraits draw their own side panel on hover. Anchored to the resting x so they stay
+            // put while the active tile slides out/in on faint or switch.
+            queueOrDrawColumn(context, y, columnPortraitStartX, portraitDiameter, reversed, actor, partialTicks, isCompact)
         }
-        else if (hoveredPartyPokemon != null) {
-            renderExtendedBattleInfo(context, portraitStartX, portraitStartY, reversed, hoveredPartyPokemon, isCompact)
+
+        // The active Pokémon's panel renders under it. Defer it so it layers above the benched portraits
+        // (which are themselves deferred to the screen pass), instead of behind them.
+        val panelPokemon = if (isPortraitHovered) battlePokemon else hoveredPartyPokemon
+        if (panelPokemon != null) {
+            if (Minecraft.getInstance().screen is BattleGUI) {
+                pendingActivePanels.add(PendingActivePanel(portraitStartX, portraitStartY, reversed, panelPokemon, isCompact))
+            } else {
+                renderExtendedBattleInfo(context, portraitStartX, portraitStartY, reversed, panelPokemon, isCompact)
+            }
         }
     }
 
@@ -988,19 +1102,9 @@ class BattleOverlay : Gui(Minecraft.getInstance()), Schedulable {
         return mouseX >= portraitStartX && mouseX <= portraitStartX + portraitDiameter && mouseY >= portraitStartY && mouseY <= portraitStartY + portraitDiameter
     }
 
-    private fun getHoveredPartyPokeBall(x: Float, y: Float, actor: ClientBattleActor, reversed: Boolean, rank: Int): Int? {
-        val scalar = 0.4
-        val partySize = ClientBattleInformationRepository.actors[actor.uuid]?.size ?: 0
-        if (partySize < 2) return null
-        for (i in 0 until partySize) {
-            val offsetX = if (reversed) (x + 18 + i * (19 * scalar)) / scalar else (x + 94.725 - 18 + (5 * 19 * scalar) - i * (19 * scalar)) / scalar
-            val offsetY = y + VERTICAL_INSET + rank * 45
-            if (mouseX >= offsetX * scalar && mouseX <= (offsetX + 19) * scalar && mouseY >= offsetY * scalar && mouseY <= (offsetY + 18) * scalar) {
-                return i
-            }
-        }
-        return null
-    }
+    // Poke balls are replaced by the benched-portrait column, which does its own hover detection in
+    // drawPartyColumn — so there is no poke ball left to hover.
+    private fun getHoveredPartyPokeBall(x: Float, y: Float, actor: ClientBattleActor, reversed: Boolean, rank: Int): Int? = null
 
     fun renderExtendedBattleInfo(context: GuiGraphics, x: Float, y: Float, reversed: Boolean, pokemon: ClientBattlePokemon, compact: Boolean) {
         context.pose().pushPose()
@@ -1085,7 +1189,7 @@ class BattleOverlay : Gui(Minecraft.getInstance()), Schedulable {
         dto?.buffs?.get(Stats.ATTACK)?.let {
             drawScaledText(
                 context = context,
-                text = getMultiplierText(it),
+                text = BattlePokemonInfoPanel.getBoostText(Stats.ATTACK, it),
                 x = startX + 50,
                 y = startY + 42.5,
                 scale = SCALE,
@@ -1109,7 +1213,7 @@ class BattleOverlay : Gui(Minecraft.getInstance()), Schedulable {
         dto?.buffs?.get(Stats.DEFENCE)?.let {
             drawScaledText(
                 context = context,
-                text = getMultiplierText(it),
+                text = BattlePokemonInfoPanel.getBoostText(Stats.DEFENCE, it),
                 x = startX + 50,
                 y = startY + 50.5,
                 scale = SCALE,
@@ -1133,7 +1237,7 @@ class BattleOverlay : Gui(Minecraft.getInstance()), Schedulable {
         dto?.buffs?.get(Stats.SPECIAL_ATTACK)?.let {
             drawScaledText(
                 context = context,
-                text = getMultiplierText(it),
+                text = BattlePokemonInfoPanel.getBoostText(Stats.SPECIAL_ATTACK, it),
                 x = startX + 50,
                 y = startY + 58.5,
                 scale = SCALE,
@@ -1157,7 +1261,7 @@ class BattleOverlay : Gui(Minecraft.getInstance()), Schedulable {
         dto?.buffs?.get(Stats.SPECIAL_DEFENCE)?.let {
             drawScaledText(
                 context = context,
-                text = getMultiplierText(it),
+                text = BattlePokemonInfoPanel.getBoostText(Stats.SPECIAL_DEFENCE, it),
                 x = startX + 50,
                 y = startY + 66.5,
                 scale = SCALE,
@@ -1181,7 +1285,7 @@ class BattleOverlay : Gui(Minecraft.getInstance()), Schedulable {
         dto?.buffs?.get(Stats.SPEED)?.let {
             drawScaledText(
                 context = context,
-                text = getMultiplierText(it),
+                text = BattlePokemonInfoPanel.getBoostText(Stats.SPEED, it),
                 x = startX + 50,
                 y = startY + 74.5,
                 scale = SCALE,
@@ -1205,7 +1309,7 @@ class BattleOverlay : Gui(Minecraft.getInstance()), Schedulable {
         dto?.buffs?.get(Stats.ACCURACY)?.let {
             drawScaledText(
                 context = context,
-                text = getMultiplierText(it),
+                text = BattlePokemonInfoPanel.getBoostText(Stats.ACCURACY, it),
                 x = startX + 50,
                 y = startY + 82.5,
                 scale = SCALE,
@@ -1229,7 +1333,7 @@ class BattleOverlay : Gui(Minecraft.getInstance()), Schedulable {
         dto?.buffs?.get(Stats.EVASION)?.let {
             drawScaledText(
                 context = context,
-                text = getMultiplierText(it),
+                text = BattlePokemonInfoPanel.getBoostText(Stats.EVASION, it),
                 x = startX + 50,
                 y = startY + 90.5,
                 scale = SCALE,
@@ -1538,6 +1642,263 @@ class BattleOverlay : Gui(Minecraft.getInstance()), Schedulable {
         }
     }
 
+    /**
+     * Draws the benched-team column now, unless the BattleGUI screen is open — in which case the screen
+     * renders after the HUD (including chat) and the switch menu's underlay gradient, so we queue the
+     * column and let [renderDeferredColumns] draw it on top once the screen has rendered everything else.
+     */
+    private fun queueOrDrawColumn(context: GuiGraphics, tileY: Float, portraitStartX: Float, portraitDiameter: Int, reversed: Boolean, actor: ClientBattleActor, partialTicks: Float, isCompact: Boolean) {
+        if (Minecraft.getInstance().screen is BattleGUI) {
+            pendingColumns.add(PendingColumn(tileY, portraitStartX, portraitDiameter, reversed, actor, partialTicks, isCompact))
+        } else {
+            drawPartyColumn(context, tileY, portraitStartX, portraitDiameter, reversed, actor, partialTicks, isCompact)
+        }
+    }
+
+    /**
+     * Drains the work queued during the HUD pass (benched columns, then the active Pokémon's hover panel),
+     * drawing it above the screen's own widgets, the switch-menu underlay and the chat. Called by
+     * [BattleGUI] at the end of its render, so this is the last thing painted. The active panel is drawn
+     * after the columns so a hovered active Pokémon's info sits on top of the portraits, not behind them.
+     */
+    fun renderDeferredColumns(context: GuiGraphics) {
+        if (pendingColumns.isEmpty() && pendingActivePanels.isEmpty()) return
+        val queuedColumns = pendingColumns.toList()
+        pendingColumns.clear()
+        queuedColumns.forEach { drawPartyColumn(context, it.tileY, it.portraitStartX, it.portraitDiameter, it.reversed, it.actor, it.partialTicks, it.isCompact) }
+        val queuedPanels = pendingActivePanels.toList()
+        pendingActivePanels.clear()
+        queuedPanels.forEach { renderExtendedBattleInfo(context, it.x, it.y, it.reversed, it.pokemon, it.isCompact) }
+    }
+
+    /**
+     * Renders the rest of an actor's team as a vertical column of small portraits beneath the active tile.
+     * Each portrait is smaller than the active so it reads as a benched Pokémon, faded when fainted.
+     * Hovering one shows its info panel to the side. Knowledge gating is inherited from the DTO.
+     */
+    fun drawPartyColumn(
+        context: GuiGraphics,
+        tileY: Float,
+        portraitStartX: Float,
+        portraitDiameter: Int,
+        reversed: Boolean,
+        actor: ClientBattleActor,
+        partialTicks: Float,
+        isCompact: Boolean
+    ) {
+        val team = ClientBattleInformationRepository.actors[actor.uuid] ?: return
+        val activeUuids = actor.activePokemon.mapNotNull { it.battlePokemon?.uuid }
+        val benched = team.filter { it.uuid !in activeUuids }
+        if (benched.isEmpty()) return
+
+        // Each cell is the Info menu tile (41x39 frame with a 28 portrait) uniformly scaled down by `f`,
+        // so the portraits read as smaller benched versions while keeping the same border and animation.
+        val f = 0.65f
+        val frameWidth = 41
+        val frameHeight = 39
+        val cellWidth = frameWidth * f
+        val cellHeight = frameHeight * f
+        val gap = 1f
+        val tileHeight = if (isCompact) COMPACT_TILE_HEIGHT else TILE_HEIGHT
+        // The whole column can be dragged as one group to a custom offset (default = under the active).
+        val offset = columnOffsets[actor.uuid] ?: (0f to 0f)
+        val cellX = portraitStartX + (portraitDiameter - cellWidth) / 2f + offset.first
+        val startY = tileY + tileHeight + 3f + offset.second
+        // Record the column bounds for click/drag hit-testing (used by BattleGUI mouse handling).
+        columnHitboxes[actor.uuid] = floatArrayOf(cellX, startY, cellWidth, benched.size * cellHeight + (benched.size - 1) * gap)
+        val matrixStack = context.pose()
+        var hoveredPokemon: ClientBattlePokemon? = null
+        var hoveredDto: BattlePokemonDTO? = null
+        var hoveredCellY = 0f
+
+        benched.forEachIndexed { index, dto ->
+            val cellY = startY + index * (cellHeight + gap)
+            val isFainted = dto.fainted
+            val activeDto = dto.activeBattlePokemonDTO
+
+            if (activeDto != null) {
+                val clientPokemon = ClientBattlePokemon(
+                    uuid = activeDto.uuid,
+                    properties = activeDto.properties,
+                    aspects = activeDto.aspects,
+                    displayName = activeDto.displayName,
+                    hpValue = activeDto.hpValue,
+                    maxHp = activeDto.maxHp,
+                    isHpFlat = activeDto.isFlatHp,
+                    status = activeDto.status,
+                    statChanges = activeDto.statChanges,
+                )
+                clientPokemon.actor = actor
+                val species = clientPokemon.species
+                // Persistent per-Pokémon state so the portrait keeps animating across frames.
+                val state = partyTileStates.getOrPut(activeDto.uuid) { FloatingState() }
+                state.currentAspects = activeDto.aspects
+
+                val insetX = 5 + (if (reversed) 3 else 0)
+
+                // 1. Portrait background (unscissored), in scaled tile space.
+                matrixStack.pushPose()
+                matrixStack.translate(cellX.toDouble(), cellY.toDouble(), 0.0)
+                matrixStack.scale(f, f, f)
+                blitk(
+                    matrixStack = matrixStack,
+                    texture = battleInfoUnderlay,
+                    x = insetX,
+                    y = 4,
+                    width = 28,
+                    height = 28,
+                    alpha = opacity
+                )
+                matrixStack.popPose()
+
+                // 2. Portrait, clipped to the (scaled) portrait window.
+                context.enableScissor(
+                    (cellX + insetX * f).toInt(),
+                    (cellY + 5 * f).toInt(),
+                    (cellX + (insetX + 28) * f).toInt(),
+                    (cellY + (5 + 28) * f).toInt()
+                )
+                matrixStack.pushPose()
+                matrixStack.translate(cellX.toDouble(), cellY.toDouble(), 0.0)
+                matrixStack.scale(f, f, f)
+                matrixStack.translate(insetX + 28 / 2.0, 0.0, 0.0)
+                drawCustomPosablePortrait(
+                    identifier = species.resourceIdentifier,
+                    matrixStack = matrixStack,
+                    scale = 18F,
+                    contextScale = species.getForm(state.currentAspects).baseScale,
+                    reversed = reversed,
+                    state = state,
+                    partialTicks = partialTicks
+                )
+                matrixStack.popPose()
+                context.disableScissor()
+
+                // 3. Border frame on top (disabled variant when fainted), in scaled tile space.
+                val frame = when {
+                    isFainted && reversed -> partyColumnTileDisabledReversed
+                    isFainted -> partyColumnTileDisabled
+                    reversed -> partyColumnTileReversed
+                    else -> partyColumnTile
+                }
+                matrixStack.pushPose()
+                matrixStack.translate(cellX.toDouble(), cellY.toDouble(), 0.0)
+                matrixStack.scale(f, f, f)
+                blitk(
+                    matrixStack = matrixStack,
+                    texture = frame,
+                    x = 0,
+                    y = 0,
+                    width = frameWidth,
+                    height = frameHeight,
+                    alpha = opacity
+                )
+                matrixStack.popPose()
+
+                // 4. Status condition badge in the bottom-left of the portrait. Reuses the same coloured
+                //    status bar Cobblemon draws on the active Pokémon, shrunk to a corner pill with the
+                //    3-letter abbreviation (BRN/PAR/SLP/...). Fainted mons are already greyed, so skip them.
+                val status = activeDto.status
+                if (status != null && !isFainted) {
+                    val abbrev = status.showdownName
+                    val badgeW = 17f
+                    val badgeH = 7f
+                    val badgeX = cellX + insetX * f
+                    val badgeY = cellY + (4 + 28) * f - badgeH
+                    matrixStack.pushPose()
+                    matrixStack.translate(badgeX.toDouble(), badgeY.toDouble(), 50.0)
+                    matrixStack.scale(badgeW / 74f, badgeH / 7f, 1f)
+                    blitk(
+                        matrixStack = matrixStack,
+                        texture = cobblemonResource("textures/gui/battle/battle_status_$abbrev.png"),
+                        x = 0,
+                        y = 0,
+                        width = 74,
+                        height = 7,
+                        textureWidth = 74,
+                        textureHeight = 7,
+                        alpha = opacity
+                    )
+                    matrixStack.popPose()
+                    drawScaledText(
+                        context = context,
+                        text = abbrev.uppercase().text().bold(),
+                        x = badgeX + badgeW / 2f,
+                        y = badgeY + 1.5f,
+                        scale = 0.5f,
+                        shadow = true,
+                        centered = true
+                    )
+                }
+
+                if (mouseX >= cellX && mouseX <= cellX + cellWidth && mouseY >= cellY && mouseY <= cellY + cellHeight) {
+                    hoveredPokemon = clientPokemon
+                    hoveredDto = dto
+                    hoveredCellY = cellY
+                }
+            }
+            else {
+                // Defensive fallback: species not transmitted (no team preview) — show an unrevealed ball.
+                blitk(
+                    matrixStack = matrixStack,
+                    texture = partyPokeballIcon,
+                    x = cellX,
+                    y = cellY,
+                    width = cellWidth,
+                    height = cellHeight,
+                    textureHeight = 76,
+                    textureWidth = 18,
+                    vOffset = 36,
+                    alpha = opacity
+                )
+            }
+        }
+
+        val hp = hoveredPokemon
+        val hd = hoveredDto
+        // Don't pop the panel while this column is being dragged.
+        if (hp != null && hd != null && draggedColumnActor != actor.uuid) {
+            val maxY = (Minecraft.getInstance().window.guiScaledHeight - 116).toFloat()
+            val panelY = hoveredCellY.coerceAtMost(maxY).coerceAtLeast(4f)
+            BattlePokemonInfoPanel.render(context, cellX, panelY, cellWidth, reversed, hp, hd, showGap = false, showBuffs = false)
+        }
+    }
+
+    /** Begins dragging a benched-team column if the press landed on one. Returns true if consumed. */
+    fun columnMouseClicked(mx: Double, my: Double): Boolean {
+        for ((uuid, box) in columnHitboxes) {
+            if (mx >= box[0] && mx <= box[0] + box[2] && my >= box[1] && my <= box[1] + box[3]) {
+                draggedColumnActor = uuid
+                dragStartMouseX = mx
+                dragStartMouseY = my
+                val off = columnOffsets[uuid] ?: (0f to 0f)
+                dragStartOffsetX = off.first
+                dragStartOffsetY = off.second
+                columnDragMoved = false
+                return true
+            }
+        }
+        return false
+    }
+
+    /** Moves the grabbed column group with the cursor. Returns true while a drag is in progress. */
+    fun columnMouseDragged(mx: Double, my: Double): Boolean {
+        val uuid = draggedColumnActor ?: return false
+        columnDragMoved = true
+        columnOffsets[uuid] = (dragStartOffsetX + (mx - dragStartMouseX).toFloat()) to (dragStartOffsetY + (my - dragStartMouseY).toFloat())
+        return true
+    }
+
+    /** Ends a column drag. A click without movement resets that column back under the active Pokémon. */
+    fun columnMouseReleased(): Boolean {
+        val uuid = draggedColumnActor ?: return false
+        if (!columnDragMoved) {
+            columnOffsets.remove(uuid)
+        }
+        draggedColumnActor = null
+        return true
+    }
+
     fun drawFieldIcons(context: GuiGraphics) {
         val battle = CobblemonClient.battle ?: return
         val battleInfo = ClientBattleInformationRepository.battles[battle.battleId] ?: return
@@ -1618,10 +1979,10 @@ class BattleOverlay : Gui(Minecraft.getInstance()), Schedulable {
             "primordialsea" -> "${translationKeyStart}.primordialsea".asTranslated()
             "desolateland" -> "${translationKeyStart}.desolateland".asTranslated()
             "deltastream" -> "$translationKeyStart.deltastream".asTranslated()
-            "trickroom" -> "$translationKeyStart.trickroom".asTranslated(5 - turnsPassed)
-            "magicroom" -> "$translationKeyStart.magicroom".asTranslated(5 - turnsPassed)
-            "wonderroom" -> "$translationKeyStart.wonderroom".asTranslated(5 - turnsPassed)
-            "tailwind" -> "$translationKeyStart.tailwind".asTranslated(4 - turnsPassed)
+            "trickroom" -> "$translationKeyStart.trickroom".asTranslated((5 - turnsPassed).coerceAtLeast(1))
+            "magicroom" -> "$translationKeyStart.magicroom".asTranslated((5 - turnsPassed).coerceAtLeast(1))
+            "wonderroom" -> "$translationKeyStart.wonderroom".asTranslated((5 - turnsPassed).coerceAtLeast(1))
+            "tailwind" -> "$translationKeyStart.tailwind".asTranslated((4 - turnsPassed).coerceAtLeast(1))
             "toxicspikes" -> "$translationKeyStart.toxicspikes".asTranslated()
             "spikes" -> "$translationKeyStart.spikes".asTranslated()
             "stealthrock" -> "$translationKeyStart.stealthrock".asTranslated()
@@ -1631,7 +1992,10 @@ class BattleOverlay : Gui(Minecraft.getInstance()), Schedulable {
                     "$translationKeyStart.${effect.id}.range".asTranslated(5 - turnsPassed, 8 - turnsPassed)
                 }
                 else {
-                    "$translationKeyStart.${effect.id}".asTranslated(5 - turnsPassed)
+                    // Past 5 turns means the rock (e.g. Damp Rock) is confirmed, so the 8-turn duration
+                    // is now certain — count down from that. Clamp to 1 so a weather that lingers a turn
+                    // past its 8th shows "1" rather than "0 turns remaining".
+                    "$translationKeyStart.${effect.id}".asTranslated((8 - turnsPassed).coerceAtLeast(1))
                 }
             }
         }

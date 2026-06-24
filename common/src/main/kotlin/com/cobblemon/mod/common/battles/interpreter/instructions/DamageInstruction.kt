@@ -18,6 +18,7 @@ import com.cobblemon.mod.common.api.moves.animations.ActionEffectContext
 import com.cobblemon.mod.common.api.moves.animations.ActionEffects
 import com.cobblemon.mod.common.api.moves.animations.UsersProvider
 import com.cobblemon.mod.common.api.pokemon.status.Statuses
+import com.cobblemon.mod.common.api.text.aqua
 import com.cobblemon.mod.common.api.text.red
 import com.cobblemon.mod.common.battles.ShowdownInterpreter
 import com.cobblemon.mod.common.battles.dispatch.ActionEffectInstruction
@@ -143,6 +144,10 @@ class DamageInstruction(
         val lastCauser  = instructionSet.getMostRecentCauser(comparedTo = this)
         battle.dispatch {
             val pokemonName = battlePokemon.getName()
+            // Captured inside the dispatch (after any earlier hit of a multi-hit move has already been
+            // applied) so the reported damage is this hit's amount, not the cumulative total.
+            val previousHealth = battlePokemon.effectedPokemon.currentHealth
+            val maxHp = battlePokemon.effectedPokemon.maxHealth
             val pokemonEntity = battlePokemon.entity
             //Play recoil animation if the pokemon recoiling isnt dead
             if (!causedFaint && pokemonEntity != null) {
@@ -172,6 +177,13 @@ class DamageInstruction(
                     else -> battleLang("damage.${effect.id}", pokemonName, source?.getName() ?: Component.literal("UNKOWN"))
                 }
                 battle.broadcastChatMessage(lang.red())
+            }
+
+            // Announce the percentage of the target's max HP that this hit removed.
+            val damageDealt = (previousHealth - remainingHealth).coerceAtLeast(0)
+            if (damageDealt > 0 && maxHp > 0) {
+                val percent = Math.round(damageDealt.toFloat() / maxHp * 100f).coerceAtLeast(1)
+                battle.broadcastChatMessage(battleLang("damage_dealt", battlePokemon.effectedPokemon.getDisplayName(), "${percent}%").aqua())
             }
 
             if (causedFaint) {

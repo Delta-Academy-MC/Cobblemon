@@ -21,6 +21,9 @@ import net.minecraft.client.gui.GuiGraphics
 import net.minecraft.client.gui.components.ObjectSelectionList
 import net.minecraft.locale.Language
 import net.minecraft.network.chat.Component
+import net.minecraft.network.chat.Style
+import net.minecraft.network.chat.TextColor
+import net.minecraft.network.chat.contents.TranslatableContents
 import net.minecraft.util.FormattedCharSequence
 import kotlin.math.max
 import kotlin.math.min
@@ -43,6 +46,12 @@ class BattleMessagePane(
 ), CobblemonRenderable {
     var opacity = 1F
     private var scrolling = false
+    private var resizing = false
+    private var movingBox = false
+    // Offset from the mouse to the box's top-left when a move-drag begins, so the box tracks the cursor
+    // exactly (positioning absolutely avoids the GUI-scale mismatch that accumulating deltas causes).
+    private var dragOffsetX = 0.0
+    private var dragOffsetY = 0.0
 
     val appropriateX: Int
         get() = minecraft.window.guiScaledWidth - (FRAME_WIDTH + 12)
@@ -67,7 +76,19 @@ class BattleMessagePane(
         clearEntries()
         val textRenderer = Minecraft.getInstance().font
         for (message in battleMessages) {
-            val line = message.copy().setStyle(message.style.withBold(true).withFont(CobblemonResources.DEFAULT_LARGE))
+            // Turn announcements ("It is now turn N") render as a centered "Turn N" divider header.
+            val contents = message.contents
+            if (contents is TranslatableContents && contents.key == "cobblemon.battle.turn") {
+                val turnNum = contents.args.firstOrNull()?.toString() ?: ""
+                addEntry(BattleMessageLine(this, null, "Turn $turnNum"))
+                continue
+            }
+            // Tint certain message categories by their translation key: weather/field/screen → teal,
+            // stat changes → purple, damage → blue. Other messages keep their existing styling.
+            var style = message.style.withBold(true).withFont(CobblemonResources.DEFAULT_LARGE)
+            val color = messageColor((contents as? TranslatableContents)?.key)
+            if (color != null) style = style.withColor(TextColor.fromRgb(color))
+            val line = message.copy().setStyle(style)
             val wrappedLines = textRenderer.splitter.splitLines(line, battleLogWidth - 27, line.style)
             val lines = Language.getInstance().getVisualOrder(wrappedLines)
             for (finalLine in lines) {
@@ -77,6 +98,21 @@ class BattleMessagePane(
         if (isFullyScrolled) {
             scrollAmount = maxScroll.toDouble()
         }
+    }
+
+    /** Colour for a battle message based on its translation key, or null to keep its existing styling. */
+    private fun messageColor(key: String?): Int? = when {
+        key == null -> null
+        key == "cobblemon.battle.damage_dealt" -> 0x4298ED // damage % → blue
+        key.startsWith("cobblemon.battle.weather.") -> 0x42EDAF // weather → teal
+        key.startsWith("cobblemon.battle.fieldstart.") -> 0x42EDAF // terrains, rooms, gravity, etc.
+        key.startsWith("cobblemon.battle.fieldend.") -> 0x42EDAF
+        key.startsWith("cobblemon.battle.fieldactivate.") -> 0x42EDAF
+        key.startsWith("cobblemon.battle.sidestart.") -> 0x42EDAF // Reflect, Light Screen, etc.
+        key.startsWith("cobblemon.battle.sideend.") -> 0x42EDAF
+        key.startsWith("cobblemon.battle.boost.") -> 0x8C42ED // stat rose → purple
+        key.startsWith("cobblemon.battle.unboost.") -> 0x8C42ED // stat fell → purple
+        else -> null
     }
 
     private fun correctSize() {
@@ -325,54 +361,66 @@ class BattleMessagePane(
     }
 
     override fun mouseClicked(mouseX: Double, mouseY: Double, button: Int): Boolean {
+        if (BattleTeamInfoSelection.visible || button != 0) return false
+        // Intentionally NOT calling super.mouseClicked — that selects the clicked log line, which we no
+        // longer want. Instead the press grabs the scrollbar, the bottom-right resize handle, or (anywhere
+        // else on the box) moves the whole box.
         updateScrollingState(mouseX, mouseY)
-        if (scrolling) {
-            focused = getEntryAtPosition(mouseX, mouseY)
-            isDragging = true
+        if (scrolling) return true
+        if (isOnResizeHandle(mouseX, mouseY)) {
+            resizing = true
+            return true
         }
-        return super.mouseClicked(mouseX, mouseY, button)
+        if (isWithinBox(mouseX, mouseY)) {
+            movingBox = true
+            dragOffsetX = mouseX - battleLogX
+            dragOffsetY = mouseY - battleLogY
+            return true
+        }
+        return false
+    }
+
+    override fun mouseReleased(mouseX: Double, mouseY: Double, button: Int): Boolean {
+        scrolling = false
+        resizing = false
+        movingBox = false
+        return super.mouseReleased(mouseX, mouseY, button)
     }
 
     override fun mouseDragged(mouseX: Double, mouseY: Double, button: Int, deltaX: Double, deltaY: Double): Boolean {
         if (scrolling) {
-            if (mouseY < this.y) {
-                scrollAmount = 0.0
-            } else if (mouseY > bottom) {
-                scrollAmount = maxScroll.toDouble()
-            } else {
-                scrollAmount += deltaY
+            when {
+                mouseY < this.y -> scrollAmount = 0.0
+                mouseY > bottom -> scrollAmount = maxScroll.toDouble()
+                else -> scrollAmount += deltaY
             }
+            return true
         }
-        if (!tryMove(mouseX, mouseY, deltaX, deltaY)) {
-            tryAdjustWidth(mouseX, mouseY, button, deltaX, deltaY)
+        if (resizing) {
+            battleLogHeight = max(mouseY.toInt() + 7 - y, TEXT_BOX_HEIGHT)
+            battleLogWidth = max(mouseX.toInt() - x, TEXT_BOX_WIDTH)
+            correctSize()
+            correctBattleText()
+            return true
         }
-        return super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY)
+        if (movingBox) {
+            battleLogX = mouseX - dragOffsetX
+            battleLogY = mouseY - dragOffsetY
+            return true
+        }
+        return false
     }
 
-    private fun tryMove(mouseX: Double, mouseY: Double, deltaX: Double, deltaY: Double): Boolean {
-        if (mouseY - deltaY < y - 5 || mouseY - deltaY > y + 5) return false
-        if (mouseX - deltaX < x - 5 || mouseX - deltaX > (x + width + 5)) return false
-        battleLogX = battleLogX + deltaX
-        battleLogY = battleLogY + deltaY
-        return true
+    /** The whole message box (frame included) — grab it anywhere here to move it. */
+    private fun isWithinBox(mouseX: Double, mouseY: Double): Boolean {
+        return mouseX >= battleLogX && mouseX <= battleLogX + battleLogWidth &&
+            mouseY >= battleLogY && mouseY <= battleLogY + battleLogHeight
     }
 
-    private fun tryAdjustWidth(mouseX: Double, mouseY: Double, button: Int, deltaX: Double, deltaY: Double) {
-        if (button == 1) return
-        val frameWidth = battleLogWidth + 16
-        val frameHeight = battleLogHeight + 9
-        val expandButtonX1 = frameWidth - 9
-        val expandButtonX2 = frameWidth - 4
-        val expandButtonY1 = frameHeight - 9
-        val expandButtonY2 = frameHeight - 4
-        if (mouseX - deltaX < x + expandButtonX1 - 15 || mouseX - deltaX > x + expandButtonX2 + 15) return
-        if (mouseY - deltaY < y + expandButtonY1 - 15 || mouseY - deltaY > y + expandButtonY2 + 15) return
-        val newHeight = max(mouseY.toInt() + 7 - y, TEXT_BOX_HEIGHT)
-        val newWidth = max(mouseX.toInt() - x, TEXT_BOX_WIDTH)
-        battleLogHeight = newHeight
-        battleLogWidth = newWidth
-        correctSize()
-        correctBattleText()
+    /** The resize handle in the bottom-right corner (drag to expand); takes priority over moving. */
+    private fun isOnResizeHandle(mouseX: Double, mouseY: Double): Boolean {
+        return mouseX >= battleLogX + battleLogWidth - 13 && mouseX <= battleLogX + battleLogWidth &&
+            mouseY >= battleLogY + battleLogHeight - 10 && mouseY <= battleLogY + battleLogHeight
     }
 
     private fun updateScrollingState(mouseX: Double, mouseY: Double) {
@@ -382,7 +430,7 @@ class BattleMessagePane(
                 && mouseY < bottom
     }
 
-    class BattleMessageLine(val pane: BattleMessagePane, val line: FormattedCharSequence) : Entry<BattleMessageLine>() {
+    class BattleMessageLine(val pane: BattleMessagePane, val line: FormattedCharSequence?, val headerText: String? = null) : Entry<BattleMessageLine>() {
         override fun getNarration() = "".text()
         override fun render(
             context: GuiGraphics,
@@ -396,9 +444,46 @@ class BattleMessagePane(
             isHovered: Boolean,
             partialTicks: Float
         ) {
+            if (headerText != null) {
+                // "Turn N" centered on the divider's true midpoint, with an equal-length line each side.
+                val comp = headerText.text().setStyle(Style.EMPTY.withBold(true).withFont(CobblemonResources.DEFAULT_LARGE))
+                val textWidth = Minecraft.getInstance().font.width(comp)
+                val dividerLeft = rowLeft - 3
+                val dividerRight = rowLeft + rowWidth - 7
+                val centerX = (dividerLeft + dividerRight) / 2
+                val lineY = rowTop + 2
+                val leftEnd = centerX - textWidth / 2 - 3
+                val rightStart = centerX + textWidth / 2 + 3
+                blitk(
+                    matrixStack = context.pose(),
+                    texture = CobblemonResources.WHITE,
+                    x = dividerLeft,
+                    y = lineY,
+                    width = (leftEnd - dividerLeft).coerceAtLeast(0),
+                    height = 1,
+                    alpha = pane.opacity * 0.6f
+                )
+                blitk(
+                    matrixStack = context.pose(),
+                    texture = CobblemonResources.WHITE,
+                    x = rightStart,
+                    y = lineY,
+                    width = (dividerRight - rightStart).coerceAtLeast(0),
+                    height = 1,
+                    alpha = pane.opacity * 0.6f
+                )
+                drawScaledText(
+                    context = context,
+                    text = comp,
+                    x = centerX - textWidth / 2,
+                    y = rowTop - 2,
+                    opacity = pane.opacity
+                )
+                return
+            }
             drawScaledText(
                 context,
-                line,
+                line ?: return,
                 rowLeft,
                 rowTop - 2,
                 opacity = pane.opacity
