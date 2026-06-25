@@ -83,7 +83,7 @@ object CobblemonCaptureCalculator: CaptureCalculator, CriticalCaptureProvider, P
                 modifiedCatchRate *= max(0.1F, min(1F, 1F - ((pokemon.level - highestLevelThrower) / (config.maxPokemonLevel / 2))))
             }
         }
-        val critical = if (thrower is ServerPlayer) this.shouldHaveCriticalCapture(thrower, modifiedCatchRate) else false
+        val critical = false
         val shakeProbability = (65536F / (255F / modifiedCatchRate).pow(0.1875F)).roundToInt()
         var shakes = 0
         repeat(4) {

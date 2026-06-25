@@ -38,6 +38,8 @@ import com.cobblemon.mod.common.api.events.pokemon.evolution.EvolutionDisplayEve
 import com.cobblemon.mod.common.api.events.pokemon.evolution.EvolutionTestedEvent
 import com.cobblemon.mod.common.api.events.pokemon.healing.PokemonHealedEvent
 import com.cobblemon.mod.common.api.events.pokemon.interaction.ExperienceCandyUseEvent
+import com.cobblemon.mod.common.api.events.pokemon.interaction.InteractWheelOpenEvent
+import com.cobblemon.mod.common.api.events.pokemon.interaction.OfferCosmeticItemEvent
 import com.cobblemon.mod.common.api.events.pokemon.interaction.PokemonInteractionGUICreationEvent
 import com.cobblemon.mod.common.api.events.starter.StarterChosenEvent
 import com.cobblemon.mod.common.api.events.storage.*
@@ -447,6 +449,12 @@ object CobblemonEvents {
 
     @JvmField
     val TRANSFORMATION_VALIDATION_EVENT = EventObservable<TransformationValidationEvent>()
+
+    @JvmField
+    val INTERACT_WHEEL_OPEN = EventObservable<InteractWheelOpenEvent>()
+
+    @JvmField
+    val OFFER_COSMETIC_ITEM = EventObservable<OfferCosmeticItemEvent>()
 
     @JvmField
     val HOOPA_RING_ACTIVATED = EventObservable<HoopaRingActivateEvent>()

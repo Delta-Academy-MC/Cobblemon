@@ -22,8 +22,10 @@ import com.cobblemon.mod.common.api.events.entity.PokemonEntityLoadEvent
 import com.cobblemon.mod.common.api.events.entity.PokemonEntitySaveEvent
 import com.cobblemon.mod.common.api.events.entity.PokemonEntitySaveToWorldEvent
 import com.cobblemon.mod.common.api.events.pokemon.HeldItemEvent
+import com.cobblemon.mod.common.api.events.pokemon.interaction.InteractWheelOpenEvent
 import com.cobblemon.mod.common.api.events.pokemon.RidePokemonEvent
 import com.cobblemon.mod.common.api.events.pokemon.ShoulderMountEvent
+import com.cobblemon.mod.common.api.events.pokemon.interaction.OfferCosmeticItemEvent
 import com.cobblemon.mod.common.api.interaction.PokemonEntityInteraction
 import com.cobblemon.mod.common.api.interaction.PokemonInteractions
 import com.cobblemon.mod.common.api.mark.Marks
@@ -1308,13 +1310,24 @@ open class PokemonEntity(
                 itemStack
             )
 
+            val event = InteractWheelOpenEvent(
+                pokemon = this,
+                player = player,
+                canMountShoulder = canSitOnShoulder() && pokemon in player.party(),
+                canGiveHeldItem = !(pokemon.heldItemNoCopy().isEmpty && itemStack.isEmpty),
+                canGiveCosmeticItem = (!pokemon.cosmeticItem.isEmpty && itemStack.isEmpty) || cosmeticItemDefinition != null,
+                canRide = canRide,
+                canTransform = canTransform,
+            )
+            CobblemonEvents.INTERACT_WHEEL_OPEN.post(event)
+
             InteractPokemonUIPacket(
                 this.getUUID(),
-                canSitOnShoulder() && pokemon in player.party(),
-                !(pokemon.heldItemNoCopy().isEmpty && itemStack.isEmpty),
-                (!pokemon.cosmeticItem.isEmpty && itemStack.isEmpty) || cosmeticItemDefinition != null,
-                canRide,
-                canTransform
+                event.canMountShoulder,
+                event.canGiveHeldItem,
+                event.canGiveCosmeticItem,
+                event.canRide,
+                event.canTransform,
             ).sendToPlayer(player)
         }
         else if (!pokemon.isWild() && canRide) {
@@ -1528,6 +1541,9 @@ open class PokemonEntity(
     }
 
     fun offerCosmeticItem(player: Player, stack: ItemStack): Boolean {
+        val event = OfferCosmeticItemEvent(this, player, stack)
+        CobblemonEvents.OFFER_COSMETIC_ITEM.post(event)
+        if (event.isCanceled) return false
         return offerItem(player, stack, isCosmetic = true)
     }
 
