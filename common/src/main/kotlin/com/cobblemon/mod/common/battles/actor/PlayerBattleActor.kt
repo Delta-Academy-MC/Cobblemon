@@ -77,7 +77,6 @@ class PlayerBattleActor(
     }
 
     override fun turn() {
-        timer?.startTurn()
         super.turn()
     }
 
@@ -86,7 +85,6 @@ class PlayerBattleActor(
     }
 
     override fun setActionResponses(responses: List<ShowdownActionResponse>) {
-        timer?.selection()
         super.setActionResponses(responses)
         val player = uuid.getPlayer() ?: return
         battle.players.filter { it != uuid.getPlayer() && hasStreamerBattleMode(it) }

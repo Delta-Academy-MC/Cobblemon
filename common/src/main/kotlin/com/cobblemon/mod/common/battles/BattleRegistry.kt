@@ -208,7 +208,7 @@ object BattleRegistry {
         canPreempt: Boolean = true,
         playerTimer: (PokemonBattle, PlayerBattleActor) -> PlayerBattleTimer? = { _, _ -> null }
     ): BattleStartResult {
-        val battle = PokemonBattle(battleFormat, side1, side2, playerTimer)
+        val battle = PokemonBattle(battleFormat, side1, side2)
         val start: () -> Unit = {
             battleMap[battle.battleId] = battle
             startShowdown(battle)

@@ -8,6 +8,7 @@
 
 package com.cobblemon.mod.common.api.battles.model.actor
 
+import com.cobblemon.mod.common.CobblemonNetwork.sendPacket
 import com.cobblemon.mod.common.api.battles.model.PokemonBattle
 import com.cobblemon.mod.common.api.events.CobblemonEvents
 import com.cobblemon.mod.common.api.events.battles.BattleChoiceMadeEvent
@@ -17,6 +18,7 @@ import com.cobblemon.mod.common.battles.ActiveBattlePokemon
 import com.cobblemon.mod.common.battles.ForcePassActionResponse
 import com.cobblemon.mod.common.battles.ShowdownActionRequest
 import com.cobblemon.mod.common.battles.ShowdownActionResponse
+import com.cobblemon.mod.common.battles.actor.PlayerBattleActor
 import com.cobblemon.mod.common.battles.pokemon.BattlePokemon
 import com.cobblemon.mod.common.entity.pokemon.PokemonEntity
 import com.cobblemon.mod.common.exception.IllegalActionChoiceException
@@ -24,6 +26,7 @@ import com.cobblemon.mod.common.item.battle.BagItem
 import com.cobblemon.mod.common.net.messages.client.battle.BattleApplyPassResponsePacket
 import com.cobblemon.mod.common.net.messages.client.battle.BattleMakeChoicePacket
 import com.cobblemon.mod.common.net.messages.client.battle.BattleMessagePacket
+import com.cobblemon.mod.common.net.messages.client.battle.BattleTimerPacket
 import com.cobblemon.mod.common.util.getPlayer
 import net.minecraft.network.chat.Component
 import net.minecraft.network.chat.MutableComponent
@@ -52,6 +55,20 @@ abstract class BattleActor(
     var responses = mutableListOf<ShowdownActionResponse>()
     val expectingPassActions = mutableListOf<ShowdownActionResponse>()
     var mustChoose = false
+        set(value) {
+            field = value
+            if (this is PlayerBattleActor) {
+                if (value) {
+                    timer?.let {
+                        it.startSelection()
+                        uuid.getPlayer()?.sendPacket(BattleTimerPacket(it.mustChooseBy()))
+                    }
+                }
+                else {
+                    timer?.endSelection()
+                }
+            }
+        }
 
     var itemsUsed = mutableListOf<BagItem>()
     /** For when battles start, it's the number of Pokémon that are still in the process of being sent out (animation wise) */

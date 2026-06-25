@@ -17,8 +17,8 @@ interface PlayerBattleTimer {
     val actor: PlayerBattleActor
     val battle: PokemonBattle
 
-    fun startTurn()
-    fun selection()
+    fun startSelection()
+    fun endSelection()
     fun tick()
     fun mustChooseBy(): Instant
 

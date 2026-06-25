@@ -13,7 +13,6 @@ import com.cobblemon.mod.common.api.text.text
 import com.cobblemon.mod.common.client.CobblemonResources
 import com.cobblemon.mod.common.client.battle.ClientBattleMessageQueue
 import com.cobblemon.mod.common.client.gui.CobblemonRenderable
-import com.cobblemon.mod.common.client.gui.battle.subscreen.BattleTeamInfoSelection
 import com.cobblemon.mod.common.client.render.drawScaledText
 import com.cobblemon.mod.common.util.cobblemonResource
 import net.minecraft.client.Minecraft
@@ -236,7 +235,6 @@ class BattleMessagePane(
     }
 
     override fun renderWidget(context: GuiGraphics, mouseX: Int, mouseY: Int, partialTicks: Float) {
-        if (BattleTeamInfoSelection.visible) return
         correctSize()
 
         val isFullyScrolled = opacity != 1f || maxScroll - scrollAmount < 2
@@ -361,7 +359,7 @@ class BattleMessagePane(
     }
 
     override fun mouseClicked(mouseX: Double, mouseY: Double, button: Int): Boolean {
-        if (BattleTeamInfoSelection.visible || button != 0) return false
+        if (button != 0) return false
         // Intentionally NOT calling super.mouseClicked — that selects the clicked log line, which we no
         // longer want. Instead the press grabs the scrollbar, the bottom-right resize handle, or (anywhere
         // else on the box) moves the whole box.

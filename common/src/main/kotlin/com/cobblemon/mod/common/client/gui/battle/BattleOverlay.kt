@@ -31,7 +31,6 @@ import com.cobblemon.mod.common.client.battle.ClientBattleInformationRepository
 import com.cobblemon.mod.common.client.battle.ClientBattlePokemon
 import com.cobblemon.mod.common.net.messages.client.battle.BattlePokemonDTO
 import com.cobblemon.mod.common.client.gui.TypeIcon
-import com.cobblemon.mod.common.client.gui.battle.subscreen.BattleTeamInfoSelection
 import com.cobblemon.mod.common.client.gui.battle.widgets.BattleMessagePane
 import com.cobblemon.mod.common.client.keybind.boundKey
 import com.cobblemon.mod.common.client.keybind.keybinds.PartySendBinding
@@ -260,7 +259,7 @@ class BattleOverlay : Gui(Minecraft.getInstance()), Schedulable {
         val isOnSide1 = battle.side1.actors.any { it.uuid == playerUUID }
         val isOnSide2 = battle.side2.actors.any { it.uuid == playerUUID }
         val isSpectating = !isOnSide1 && !isOnSide2
-        if (!hidePortraits && !BattleTeamInfoSelection.visible) {
+        if (!hidePortraits) {
             // We always want to keep player on left-hand side
             val side1 = if (isOnSide1) battle.side1 else battle.side2
             val side2 = if (side1 == battle.side1) battle.side2 else battle.side1

@@ -18,7 +18,6 @@ import com.cobblemon.mod.common.client.gui.battle.subscreen.BattleActionSelectio
 import com.cobblemon.mod.common.client.gui.battle.subscreen.BattleBackButton
 import com.cobblemon.mod.common.client.gui.battle.subscreen.BattleGeneralActionSelection
 import com.cobblemon.mod.common.client.gui.battle.subscreen.BattleSwitchPokemonSelection
-import com.cobblemon.mod.common.client.gui.battle.subscreen.BattleTeamInfoSelection
 import com.cobblemon.mod.common.client.gui.battle.subscreen.ForfeitConfirmationSelection
 import com.cobblemon.mod.common.client.gui.battle.widgets.BattleMessagePane
 import com.cobblemon.mod.common.client.gui.battle.widgets.BattleOptionTile
@@ -51,14 +50,6 @@ class BattleGUI : Screen(battleLang("gui.title")), CobblemonRenderable {
     var opacity = 0F
     val actor = CobblemonClient.battle?.side1?.actors?.find { it.uuid == Minecraft.getInstance().player?.uuid }
     val specBackButton = BattleBackButton(OPTION_ROOT_X - 3F, Minecraft.getInstance().window.guiScaledHeight - 22F)
-    val teamInfoButton = BattleOptionTile(
-        battleGUI = this,
-        x = OPTION_ROOT_X,
-        y = Minecraft.getInstance().window.guiScaledHeight - OPTION_VERTICAL_OFFSET + BattleOptionTile.OPTION_HEIGHT + OPTION_HORIZONTAL_SPACING,
-        resource = BattleGeneralActionSelection.battleInfoSelection,
-        text = "cobblemon.battle.ui.team_info.button".asTranslated(),
-        onClick = {}
-    )
 
     var queuedActions = mutableListOf<() -> Unit>()
 
@@ -127,9 +118,8 @@ class BattleGUI : Screen(battleLang("gui.title")), CobblemonRenderable {
             }
         }
 
-        if (battle.spectating && !BattleTeamInfoSelection.visible) {
+        if (battle.spectating) {
             specBackButton.render(context, mouseX, mouseY, delta)
-            teamInfoButton.render(context, mouseX, mouseY, delta)
         }
 
         val currentSelection = getCurrentActionSelection()
@@ -179,7 +169,6 @@ class BattleGUI : Screen(battleLang("gui.title")), CobblemonRenderable {
     override fun onClose() {
         super.onClose()
         CobblemonClient.battle?.minimised = true
-        BattleTeamInfoSelection.visible = false
     }
 
     override fun mouseDragged(mouseX: Double, mouseY: Double, button: Int, deltaX: Double, deltaY: Double): Boolean {
@@ -208,14 +197,10 @@ class BattleGUI : Screen(battleLang("gui.title")), CobblemonRenderable {
         }
 
         val battle = CobblemonClient.battle
-        if (battle?.spectating == true && !BattleTeamInfoSelection.visible) {
+        if (battle?.spectating == true) {
             if (specBackButton.isHovered(mouseX, mouseY)) {
                 RemoveSpectatorPacket(battle.battleId).sendToServer()
                 CobblemonClient.endBattle()
-            }
-            if (teamInfoButton.isHovered(mouseX, mouseY)) {
-                changeActionSelection(BattleTeamInfoSelection(this))
-                BattleTeamInfoSelection.visible = true
             }
         }
         return super.mouseClicked(mouseX, mouseY, button)

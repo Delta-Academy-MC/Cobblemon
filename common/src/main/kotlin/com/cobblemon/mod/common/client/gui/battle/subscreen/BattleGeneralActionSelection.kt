@@ -79,12 +79,6 @@ class BattleGeneralActionSelection(
                     battleGUI.changeActionSelection(ForfeitConfirmationSelection(battleGUI, request))
                     playDownSound(Minecraft.getInstance().soundManager)
                 }
-
-                addOption(rank++, "cobblemon.battle.ui.team_info.button".asTranslated(), battleInfoSelection) {
-                    BattleTeamInfoSelection.visible = true
-                    battleGUI.changeActionSelection(BattleTeamInfoSelection(battleGUI))
-                    playDownSound(Minecraft.getInstance().soundManager)
-                }
             }
         }
     }

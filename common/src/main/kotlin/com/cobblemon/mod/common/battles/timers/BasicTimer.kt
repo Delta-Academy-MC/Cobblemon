@@ -16,8 +16,8 @@ import java.time.Instant
 class BasicTimer(override val battle: PokemonBattle, override val actor: PlayerBattleActor, val duration: Duration) : PlayerBattleTimer {
     val endTime = Instant.now().plusSeconds(duration.toSeconds())
 
-    override fun startTurn() {}
-    override fun selection() {}
+    override fun startSelection() {}
+    override fun endSelection() {}
     override fun tick() {}
 
     override fun mustChooseBy(): Instant {

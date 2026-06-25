@@ -41,15 +41,15 @@ class ShowdownTimer(override val battle: PokemonBattle, override val actor: Play
         if (secondsRemaining - secondsSinceStart <= 0) timeout()
     }
 
-    override fun selection() {
-        val secondsSinceStart = Duration.between(turnStart, Instant.now()).seconds.toInt()
-        secondsRemaining = secondsRemaining - secondsSinceStart + 10
-        hasSelected = true
-    }
-
-    override fun startTurn() {
+    override fun startSelection() {
         turnStart = Instant.now()
         hasSelected = false
+    }
+
+    override fun endSelection() {
+        hasSelected = true
+        val secondsSinceStart = Duration.between(turnStart, Instant.now()).seconds.toInt()
+        secondsRemaining = secondsRemaining - secondsSinceStart + 10
     }
 
     override fun mustChooseBy(): Instant {

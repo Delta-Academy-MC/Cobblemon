@@ -266,11 +266,6 @@ open class PokemonBattle(
 
     fun turn(newTurnNumber: Int) {
         actors.forEach { it.turn() }
-        actors.filterIsInstance<PlayerBattleActor>().forEach { actor ->
-            actor.timer?.mustChooseBy()?.let {
-                actor.uuid.getPlayer()?.sendPacket(BattleTimerPacket(it))
-            }
-        }
         // TODO: If a pokemon switches in the same turn another pokemon is KO'd it will not receive exp for the KO
         for (side in sides) {
             val opposite = side.getOppositeSide()
