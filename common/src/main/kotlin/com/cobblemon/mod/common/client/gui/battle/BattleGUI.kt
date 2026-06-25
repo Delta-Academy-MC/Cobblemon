@@ -149,6 +149,9 @@ class BattleGUI : Screen(battleLang("gui.title")), CobblemonRenderable {
         queuedActions.clear()
         CobblemonClient.battleOverlay.mouseX = mouseX
         CobblemonClient.battleOverlay.mouseY = mouseY
+        // The benched-team portrait columns + active hover panels are queued during the HUD pass and drawn
+        // here, last, so they sit above the switch-menu underlay, our own widgets and the chat.
+        CobblemonClient.battleOverlay.renderDeferredColumns(context)
     }
 
     override fun renderBackground(context: GuiGraphics, mouseX: Int, mouseY: Int, delta: Float) {
@@ -180,8 +183,14 @@ class BattleGUI : Screen(battleLang("gui.title")), CobblemonRenderable {
     }
 
     override fun mouseDragged(mouseX: Double, mouseY: Double, button: Int, deltaX: Double, deltaY: Double): Boolean {
+        if (CobblemonClient.battleOverlay.columnMouseDragged(mouseX, mouseY)) return true
         if (this::messagePane.isInitialized) messagePane.mouseDragged(mouseX, mouseY, button, deltaX, deltaY)
         return super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY)
+    }
+
+    override fun mouseReleased(mouseX: Double, mouseY: Double, button: Int): Boolean {
+        if (CobblemonClient.battleOverlay.columnMouseReleased()) return true
+        return super.mouseReleased(mouseX, mouseY, button)
     }
 
     override fun charTyped(chr: Char, modifiers: Int): Boolean {
@@ -192,6 +201,8 @@ class BattleGUI : Screen(battleLang("gui.title")), CobblemonRenderable {
     }
 
     override fun mouseClicked(mouseX: Double, mouseY: Double, button: Int): Boolean {
+        // Grab a benched-team portrait column to drag it (left-click). Consumes the click if one was hit.
+        if (button == 0 && CobblemonClient.battleOverlay.columnMouseClicked(mouseX, mouseY)) return true
         if (button == PartySendBinding.boundKey().value && CobblemonClient.battleOverlay.opacity == BattleOverlay.MAX_OPACITY && PartySendBinding.canAction()) {
             return minimizeBattle()
         }
