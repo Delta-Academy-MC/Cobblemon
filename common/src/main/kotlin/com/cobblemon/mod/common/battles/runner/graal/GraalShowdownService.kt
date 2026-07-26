@@ -144,6 +144,11 @@ class GraalShowdownService : ShowdownService {
         return gson.fromJson(result, JsonArray::class.java)
     }
 
+    override fun getRandomTeam(format: String): String {
+        val func = context.getBindings("js").getMember("getRandomTeam")
+        return func.execute(format).asString()
+    }
+
     override fun sendRegistryData(data: Map<String, String>, type: String) {
         val payload = data.entries.joinToString(prefix = "{", postfix = "}") { (k, v) ->
             val newV = v.replace(Regex("[\r\n]+"), " ")

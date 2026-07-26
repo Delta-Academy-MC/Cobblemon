@@ -30,6 +30,7 @@ interface ShowdownService {
     fun endBattle(battle: PokemonBattle)
     fun send(battleId: UUID, messages: Array<String>)
     fun getRegistryData(type: String): JsonArray
+    fun getRandomTeam(format: String): String
     fun sendRegistryData(data: Map<String, String>, type: String)
     fun sendRegistryEntry(data: String, type: String)
     fun resetRegistryData(type: String)

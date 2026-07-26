@@ -140,6 +140,10 @@ class SocketShowdownService(val host: String = "localhost", val port: Int = 1846
         return gson.fromJson(response, JsonArray::class.java)
     }
 
+    override fun getRandomTeam(format: String): String {
+        throw UnsupportedOperationException("getRandomTeam is not supported by SocketShowdownService")
+    }
+
     override fun resetRegistryData(type: String) {
         writer.write(">resetData $type")
         acknowledge()
